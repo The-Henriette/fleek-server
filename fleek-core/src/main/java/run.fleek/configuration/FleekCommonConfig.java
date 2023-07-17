@@ -11,4 +11,5 @@ import org.springframework.context.annotation.Import;
 @EntityScan(basePackages = {"run.fleek"})
 @Import({RelationalDatabaseConfig.class})
 public class FleekCommonConfig {
+
 }
