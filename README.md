@@ -1,2 +1,2 @@
-# huick_server
-server for huick
+# fleek_server
+server for FLEEK
