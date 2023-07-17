@@ -1,0 +1,83 @@
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+group 'run.fleek'
+version '0.0.1-SNAPSHOT'
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring common
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-webflux"
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.boot:spring-boot-starter-mail"
+
+    // spring persistence
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "com.querydsl:querydsl-core:${queryDslVersion}"
+    compile "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    compile "com.querydsl:querydsl-apt:${queryDslVersion}"
+    compile "com.querydsl:querydsl-sql-spatial:${queryDslVersion}"
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+    // persistence
+    compile 'org.postgresql:postgresql'
+
+    // aws
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.675'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sts', version: '1.11.675'
+
+    // Slack
+    compile group: 'com.slack.api', name: 'slack-api-client', version: '1.26.1'
+
+    // common utils
+    compile 'com.google.guava:guava:22.0'
+    compile 'org.apache.commons:commons-lang3:3.9'
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+    compile 'commons-fileupload:commons-fileupload:1.4'
+
+    // Geo
+    implementation 'ch.hsr:geohash:1.4.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+def querydslSrcDir = 'src/main/generated'
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java',querydslSrcDir,'build/generated/sources/annotationProcessor/java/main']
+        }
+    }
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}

@@ -1,0 +1,52 @@
+server:
+  address: 192.168.0.103 # local only
+
+jwt:
+  secret: 68576D5A7134743777217A25432A462D4A614E635266556A586E3272357538782F413F4428472B4B6250655367566B5970337336763979244226452948404D63
+
+spring:
+  jpa:
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: true
+        order_inserts: true
+        order_updates: true
+        enable_lazy_load_no_trans: true
+        jdbc:
+          batch_size: 1000
+          batch_versioned_data: true
+          lob:
+            non_contextual_creation: true
+        temp:
+          use_jdbc_metadata_defaults: false
+        hibernate:
+          default_schema: public
+      hibernate.ddl-auto: none
+      hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  datasource:
+    hikari:
+      jdbc-url: 'jdbc:postgresql://localhost:5432/trace?reWriteBatchedInserts=true'
+      driver-class-name: 'org.postgresql.Driver'
+      username: 'trace'
+      password: '13o1714QO^WXep@A'
+      maximum-pool-size: 10
+      minimum-idle: 10
+
+aws:
+  accessKey: AKIAVSJKCMEOTD34XJV6
+  secretKey: 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
+
+external:
+  token:
+    kakao: 82699b2e0b597f59994b16dd559bdfd4
+
+logging:
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    house.trace: DEBUG # Set the desired log level for your specific package
+
