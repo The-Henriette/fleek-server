@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface FleekUserRepository extends JpaRepository<FleekUser, Long>, FleekUserRepositoryCustom {
-  boolean existsByUserName(String userName);
-  Optional<FleekUser> findByUserName(String userName);
+  boolean existsByPhoneNumber(String userName);
+  Optional<FleekUser> findByPhoneNumber(String userName);
 }

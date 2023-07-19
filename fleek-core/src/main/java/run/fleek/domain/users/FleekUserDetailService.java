@@ -11,9 +11,4 @@ import javax.transaction.Transactional;
 public class FleekUserDetailService {
 
   private final FleekUserDetailRepository fleekUserDetailRepository;
-
-  @Transactional
-  public void addTraceUserDetail(FleekUser fleekUser, SignUpDto signUpDto) {
-    fleekUserDetailRepository.save(FleekUserDetail.create(fleekUser, signUpDto));
-  }
 }

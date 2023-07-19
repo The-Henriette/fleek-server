@@ -15,6 +15,8 @@ import run.fleek.configuration.auth.FleekAuthenticationProvider;
 import run.fleek.configuration.auth.FleekTokenProvider;
 import run.fleek.configuration.auth.JwtSecurityConfig;
 
+import static run.fleek.common.constants.Constants.publicPathAntPatterns;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalAuthentication
@@ -25,10 +27,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private FleekAuthenticationProvider fleekAuthenticationProvider;
     @Autowired
     private FleekTokenProvider fleekTokenProvider;
-
-    public static final String[] publicPathAntPatterns = {
-        "/error**", "/hello", "/auth/sign-up", "/auth/sign-in", "/auth/username/validate"
-    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

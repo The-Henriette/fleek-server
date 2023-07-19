@@ -26,17 +26,17 @@ public class FleekAuthenticationProvider {
     }
 
     public FleekUser authenticate(FleekPrincipalVo principal, FleekCredentialsVo credentials) {
-        FleekUser FleekUser;
+        FleekUser fleekUser;
         if (Objects.nonNull(principal.getFleekUserId())) {
-            FleekUser = fleekUserService.getByUserId(principal.getFleekUserId())
+            fleekUser = fleekUserService.getByUserId(principal.getFleekUserId())
               .orElseThrow();
         } else {
-            FleekUser = fleekUserService.getByUserName(principal.getUserName())
+            fleekUser = fleekUserService.getByUserName(principal.getUserName())
               .orElseThrow();
         }
 
-        if (passwordEncoder.matches(credentials.getPassword(), FleekUser.getPassword())) {
-            return FleekUser;
+        if (passwordEncoder.matches(credentials.getPassword(), fleekUser.getPhoneNumber())) {
+            return fleekUser;
         }
 
         return null;

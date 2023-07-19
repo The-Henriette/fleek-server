@@ -53,7 +53,7 @@ public class FleekAuthentication implements Authentication {
         return FleekAuthentication.builder()
           .principal(FleekPrincipalVo.builder()
             .fleekUserId(FleekUser.getFleekUserId())
-            .userName(FleekUser.getUserName())
+            .userName(FleekUser.getPhoneNumber())
             .build())
           .details(FleekUserDetailsVo.builder()
             .languageCode("ko")
