@@ -32,6 +32,8 @@ public class ProfileInfoType implements SystemMetadata {
   @Column(name = "description")
   private String description;
 
+//  @Column(name = "inputType")
+
   @Column(name = "profile_info_category")
   @Enumerated(EnumType.STRING)
   private ProfileInfoCategory profileInfoCategory; // uk2

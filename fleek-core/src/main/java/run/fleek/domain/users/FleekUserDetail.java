@@ -1,10 +1,12 @@
 package run.fleek.domain.users;
 
 import lombok.*;
+import run.fleek.application.dto.SignUpDto;
 import run.fleek.common.jpa.CreatedAtListener;
 import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.enums.Gender;
+import run.fleek.utils.TimeUtil;
 
 import javax.persistence.*;
 
@@ -46,4 +48,14 @@ public class FleekUserDetail implements SystemMetadata {
 
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
+
+  public static FleekUserDetail from(SignUpDto signUpDto, FleekUser fleekUser) {
+    return FleekUserDetail.builder()
+      .fleekUser(fleekUser)
+      .name(signUpDto.getName())
+      .gender(Gender.of(signUpDto.getGender()))
+      .orientation(Gender.of(signUpDto.getGender()).getDefaultOrientation())
+      .birthDate(TimeUtil.convertToEpochTime(signUpDto.getDateOfBirth()))
+      .build();
+  }
 }

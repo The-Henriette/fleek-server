@@ -37,14 +37,14 @@ public class JwtFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
-    String idStr = this.FleekTokenProvider.validateToken(jwt);
     try {
-      if (StringUtils.hasLength(idStr)) {
-        Long FleekUserId = Long.parseLong(this.FleekTokenProvider.validateToken(jwt));
+      String idStr = this.FleekTokenProvider.validateToken(jwt);
 
-        Authentication authentication = this.FleekAuthenticationProvider.getAuthentication(FleekUserId);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      }
+      Long FleekUserId = Long.parseLong(idStr);
+
+      Authentication authentication = this.FleekAuthenticationProvider.getAuthentication(FleekUserId);
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
       filterChain.doFilter(request, response);
     } catch (Exception e) {

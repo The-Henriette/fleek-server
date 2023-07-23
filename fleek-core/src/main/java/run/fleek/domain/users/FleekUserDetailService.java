@@ -11,4 +11,9 @@ import javax.transaction.Transactional;
 public class FleekUserDetailService {
 
   private final FleekUserDetailRepository fleekUserDetailRepository;
+
+  @Transactional
+  public void addUserDetail(FleekUserDetail userDetail) {
+    fleekUserDetailRepository.save(userDetail);
+  }
 }

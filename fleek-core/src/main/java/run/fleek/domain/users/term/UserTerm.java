@@ -27,7 +27,6 @@ public class UserTerm implements SystemMetadata {
   @JoinColumn(name = "fleek_user_id")
   private FleekUser fleekUser;
 
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "term_id")
   private Term term;

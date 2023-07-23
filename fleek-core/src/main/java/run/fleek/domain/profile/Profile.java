@@ -38,4 +38,11 @@ public class Profile implements SystemMetadata {
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
 
+  public static Profile from(FleekUser fleekUser, String profileName) {
+    return Profile.builder()
+      .fleekUser(fleekUser)
+      .profileName(profileName)
+      .build();
+  }
+
 }

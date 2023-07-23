@@ -36,4 +36,11 @@ public class FleekUser implements SystemMetadata {
 
     @Column(name = "updated_at", nullable = false)
     private Long updatedAt;
+
+    public static FleekUser of(String phoneNumber) {
+        return FleekUser.builder()
+                .phoneNumber(phoneNumber)
+                .userStatus(UserStatus.ACTIVE)
+                .build();
+    }
 }

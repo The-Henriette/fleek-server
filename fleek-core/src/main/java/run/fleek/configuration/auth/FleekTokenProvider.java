@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import run.fleek.configuration.auth.dto.TokenDto;
 import run.fleek.configuration.auth.vo.FleekPrincipalVo;
+import run.fleek.domain.users.FleekUser;
 import run.fleek.utils.TimeUtil;
 
 import java.security.Key;
@@ -30,19 +31,14 @@ public class FleekTokenProvider {
     this.key = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public TokenDto generateTokenDto(Authentication authentication) {
-    FleekAuthentication FleekAuthentication = (FleekAuthentication) authentication;
-    FleekPrincipalVo principal = FleekAuthentication.fetchPrincipal();
-
-    String accessToken = Jwts.builder().setSubject(principal.getFleekUserId().toString())
-      .claim("id", principal.getFleekUserId())
-      .claim("userName", principal.getUserName())
+  public TokenDto generateTokenDto(FleekUser fleekUser) {
+    String accessToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
+      .claim("id", fleekUser.getFleekUserId().toString())
       .claim("auth", "[]")
       .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
 
-    String refreshToken = Jwts.builder().setSubject(principal.getFleekUserId().toString())
-      .claim("id", principal.getFleekUserId())
-      .claim("userName", principal.getUserName())
+    String refreshToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
+      .claim("id", fleekUser.getFleekUserId().toString())
       .claim("auth", "[]")
       .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
 

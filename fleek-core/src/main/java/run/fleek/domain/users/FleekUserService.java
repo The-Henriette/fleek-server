@@ -13,6 +13,10 @@ public class FleekUserService {
 
     private final FleekUserRepository fleekUserRepository;
 
+    @Transactional
+    public FleekUser addFleekUser(FleekUser fleekUser) {
+        return fleekUserRepository.save(fleekUser);
+    }
 
     @Transactional(readOnly = true)
     public boolean existsUserByUserName(String userName) {

@@ -32,6 +32,9 @@ public class ProfileInfo implements SystemMetadata {
   @Enumerated(EnumType.STRING)
   private ProfileInfoCategory profileInfoCategory;
 
+  @Column(name = "type_code")
+  private String typeCode;
+
   @Column(name = "type_name")
   private String typeName;
 
