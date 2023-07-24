@@ -28,6 +28,7 @@ CREATE TABLE profile_info (
   profile_info_id bigint PRIMARY KEY,
   profile_id bigint,
   profile_info_category varchar(50),
+  type_code varchar(255),
   type_name varchar(255),
   type_option varchar(255),
   type_value varchar(255),
@@ -69,14 +70,16 @@ CREATE SEQUENCE profile_info_type_seq INCREMENT BY 1 START WITH 1 NO CYCLE;
 
 -- Table
 CREATE TABLE profile_info_type (
-                                   profile_info_type_id bigint PRIMARY KEY,
-                                   profile_info_type_code varchar(255),
-                                   profile_info_type_name varchar(255),
-                                   description varchar(255),
-                                   profile_info_category varchar(50),
-                                   order_number integer,
-                                   created_at bigint NOT NULL,
-                                   updated_at bigint NOT NULL
+   profile_info_type_id bigint PRIMARY KEY,
+   profile_info_type_code varchar(255),
+   profile_info_type_name varchar(255),
+   description varchar(255),
+   profile_info_category varchar(50),
+   order_number integer,
+   emoji varchar(10),
+   input_type varchar(50),
+   created_at bigint NOT NULL,
+   updated_at bigint NOT NULL
 );
 
 -- Indexes
@@ -93,12 +96,12 @@ CREATE SEQUENCE profile_info_type_option_seq INCREMENT BY 1 START WITH 1 NO CYCL
 -- Table
 CREATE TABLE profile_info_type_option (
       profile_info_type_option_id bigint PRIMARY KEY,
-      profile_info_type_id bigint,
       profile_info_type_code varchar(255),
       option_code varchar(255),
       option_name varchar(255),
       option_description varchar(255),
       order_number integer,
+      emoji varchar(10),
       created_at bigint NOT NULL,
       updated_at bigint NOT NULL
 );
@@ -107,7 +110,7 @@ CREATE TABLE profile_info_type_option (
 CREATE UNIQUE INDEX profile_info_type_option_uk1 ON profile_info_type_option (option_code);
 CREATE UNIQUE INDEX profile_info_type_option_uk2 ON profile_info_type_option (profile_info_type_code, order_number);
 alter table profile_info_type_option add constraint profile_info_type_option_uk01 unique (option_code);
-alter table profile_info_type_option add constraint profile_info_type_option_uk02 unique (profile_info_type_id, order_number);
+alter table profile_info_type_option add constraint profile_info_type_option_uk02 unique (profile_info_type_code, order_number);
 
 CREATE INDEX profile_info_type_option_idx01 ON profile_info_type_option (created_at);
 CREATE INDEX profile_info_type_option_idx02 ON profile_info_type_option (updated_at);

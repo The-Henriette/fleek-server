@@ -3,7 +3,7 @@ package run.fleek.application.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import run.fleek.application.certification.CertificationApplication;
-import run.fleek.application.dto.SignUpDto;
+import run.fleek.application.auth.dto.SignUpDto;
 import run.fleek.application.term.TermApplication;
 import run.fleek.configuration.auth.FleekTokenProvider;
 import run.fleek.configuration.auth.dto.TokenDto;

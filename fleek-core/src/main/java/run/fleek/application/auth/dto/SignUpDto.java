@@ -1,4 +1,4 @@
-package run.fleek.application.dto;
+package run.fleek.application.auth.dto;
 
 import lombok.*;
 import run.fleek.domain.certification.dto.CertificationRegisterDto;

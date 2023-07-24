@@ -3,6 +3,7 @@ package run.fleek.configuration.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import run.fleek.common.response.FleekErrorResponse;
@@ -23,6 +24,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private final FleekTokenProvider FleekTokenProvider;
   private final FleekAuthenticationProvider FleekAuthenticationProvider;
+  private AntPathMatcher antPathMatcher = new AntPathMatcher();
+
 
   public JwtFilter(final FleekTokenProvider FleekTokenProvider,
                    final FleekAuthenticationProvider FleekAuthenticationProvider) {
@@ -33,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
     String jwt = this.resolveToken(request);
-    if (Arrays.stream(publicPathAntPatterns).collect(Collectors.toSet()).contains(request.getRequestURI())) {
+    if (isPublicPath(request.getRequestURI())) {
       filterChain.doFilter(request, response);
       return;
     }
@@ -53,6 +56,15 @@ public class JwtFilter extends OncePerRequestFilter {
       response.setContentType("application/json;charset=UTF-8");
       response.getWriter().write(mapper.writeValueAsString(FleekErrorResponse.from("Failed to authenticate", e.getMessage())));
     }
+  }
+
+  private boolean isPublicPath(String requestURI) {
+    for (String publicPathPattern : publicPathAntPatterns) {
+      if (antPathMatcher.match(publicPathPattern, requestURI)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private String resolveToken(HttpServletRequest request) {

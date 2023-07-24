@@ -22,10 +22,6 @@ public class ProfileInfoTypeOption implements SystemMetadata {
   @Column(name = "profile_info_type_option_id", nullable = false)
   private Long profileInfoTypeOptionId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_info_type_id")
-  private ProfileInfoType profileInfoType;
-
   @Column(name = "profile_info_type_code") // uk2
   private String profileInfoTypeCode;
 
@@ -40,6 +36,9 @@ public class ProfileInfoTypeOption implements SystemMetadata {
 
   @Column(name = "order_number")
   private String orderNumber; // uk2
+
+  @Column(name = "emoji")
+  private String emoji;
 
   @Column(name = "created_at", nullable = false)
   private Long createdAt;

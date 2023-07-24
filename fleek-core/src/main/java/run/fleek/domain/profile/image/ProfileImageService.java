@@ -16,6 +16,11 @@ public class ProfileImageService {
 
   private final ProfileImageRepository profileImageRepository;
 
+  @Transactional(readOnly = true)
+  public List<ProfileImage> listProfileImageByProfileId(Long profileId) {
+    return profileImageRepository.findAllByProfile_ProfileId(profileId);
+  }
+
   @Transactional
   public void addProfileImages(Profile profile, List<String> imageUrls) {
     if (CollectionUtils.isEmpty(imageUrls)) {

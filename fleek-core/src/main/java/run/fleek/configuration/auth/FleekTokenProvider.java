@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import run.fleek.configuration.auth.dto.TokenDto;
 import run.fleek.configuration.auth.vo.FleekPrincipalVo;
 import run.fleek.domain.users.FleekUser;

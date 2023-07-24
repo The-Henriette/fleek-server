@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum ProfileInfoCategory implements FleekEnum {
   BASIC("나에 대한 정보"),
   LIFESTYLE("라이프스타일"),
-  DATING_STYLE("연애스타일");
+  DATING_STYLE("연애스타일"),
+  CHARACTERISTICS("나만의 특징");
 
 
   private final String description;

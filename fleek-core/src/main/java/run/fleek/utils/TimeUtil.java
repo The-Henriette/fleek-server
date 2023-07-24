@@ -2,6 +2,9 @@ package run.fleek.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -32,6 +35,21 @@ public final class TimeUtil {
 
         // Convert the date to UTC-0 epoch time in milliseconds
         return dob.getTime();
+    }
+
+    public static int calculateAge(long dobEpochMillis) {
+        Instant dobInstant = Instant.ofEpochMilli(dobEpochMillis);
+        LocalDate dobDate = dobInstant.atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        int age = currentDate.getYear() - dobDate.getYear();
+
+        if (currentDate.getMonthValue() < dobDate.getMonthValue()
+          || (currentDate.getMonthValue() == dobDate.getMonthValue() && currentDate.getDayOfMonth() < dobDate.getDayOfMonth())) {
+            age--;
+        }
+
+        return age;
     }
 
 }

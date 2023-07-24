@@ -5,6 +5,7 @@ import run.fleek.common.jpa.CreatedAtListener;
 import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.enums.ProfileInfoCategory;
+import run.fleek.enums.ProfileInfoInputType;
 
 import javax.persistence.*;
 
@@ -32,7 +33,12 @@ public class ProfileInfoType implements SystemMetadata {
   @Column(name = "description")
   private String description;
 
-//  @Column(name = "inputType")
+  @Column(name = "emoji")
+  private String emoji;
+
+  @Column(name = "input_type")
+  @Enumerated(EnumType.STRING)
+  private ProfileInfoInputType inputType;
 
   @Column(name = "profile_info_category")
   @Enumerated(EnumType.STRING)

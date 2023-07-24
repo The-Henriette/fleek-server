@@ -1,7 +1,7 @@
 package run.fleek.domain.users;
 
 import lombok.*;
-import run.fleek.application.dto.SignUpDto;
+import run.fleek.application.auth.dto.SignUpDto;
 import run.fleek.common.jpa.CreatedAtListener;
 import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;

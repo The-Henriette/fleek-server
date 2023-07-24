@@ -25,6 +25,9 @@ public class Certification implements SystemMetadata {
   @Column(name = "certification_code")
   private String certificationCode;
 
+  @Column(name = "certification_name")
+  private String certificationName;
+
   @Column(name = "certification_description")
   private String certificationDescription;
 
