@@ -1,0 +1,31 @@
+### Create User
+POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/users
+Content-Type: application/json
+Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
+
+{
+  "user_id": "fleek_anonymous_1",
+  "nickname": "방탕한 고래 여창준",
+  "profile_url": "https://dyambf064m3ww.cloudfront.net/fleek/chang_yeh1.jpeg"
+}
+
+### Create Group Channel
+POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/group_channels
+Content-Type: application/json
+Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
+
+{
+  "user_ids": ["first_user", "fleek_anonymous_1"],
+  "is_distinct": true
+}
+
+### Create Message
+POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/group_channels/sendbird_group_channel_124610683_536a784623119509d5551aeba7ce4463a113f3b8/messages
+Content-Type: application/json
+Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
+
+{
+  "message_type": "MESG",
+  "user_id": "fleek_anonymous_1",
+  "message": "안녕하세요. 저는 고래입니다."
+}

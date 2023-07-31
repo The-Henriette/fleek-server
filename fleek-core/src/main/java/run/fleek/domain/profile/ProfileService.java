@@ -29,6 +29,11 @@ public class ProfileService {
     return profileRepository.save(profile);
   }
 
+  @Transactional
+  public Profile addProfile(Profile profile) {
+    return profileRepository.save(profile);
+  }
+
   @Transactional(readOnly = true)
   public Optional<Profile> getProfileByProfileName(String profileName) {
     return profileRepository.findByProfileName(profileName);

@@ -32,11 +32,21 @@ public class Profile implements SystemMetadata {
   @Column(name = "bio")
   private String bio;
 
+  @Column(name = "chat_profile_key")
+  private String chatProfileKey;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
+
+  public static Profile fromExternalChat(String profileName, String chatProfileKey) {
+    return Profile.builder()
+      .profileName(profileName)
+      .chatProfileKey(chatProfileKey)
+      .build();
+  }
 
   public static Profile from(FleekUser fleekUser, String profileName) {
     return Profile.builder()

@@ -7,6 +7,7 @@ CREATE TABLE profile (
      profile_id bigint PRIMARY KEY,
      fleek_user_id bigint,
      profile_name varchar(255),
+     chat_profile_key varchar(255),
      bio text,
      created_at bigint NOT NULL,
      updated_at bigint NOT NULL
@@ -15,6 +16,8 @@ CREATE TABLE profile (
 -- Indexes
 CREATE INDEX profile_idx01 ON profile (created_at);
 CREATE INDEX profile_idx02 ON profile (updated_at);
+
+alter table profile add constraint profile_uk01 unique (profile_name);
 
 -- Foreign Key (Index instead of constraint)
 CREATE INDEX profile_fk01 ON profile (fleek_user_id);
