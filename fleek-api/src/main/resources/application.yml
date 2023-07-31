@@ -1,5 +1,5 @@
-#server:
-#  address: 192.168.0.103 # local only
+server:
+  address: 192.168.0.103 # local only
 
 jwt:
   secret: 68576D5A7134743777217A25432A462D4A614E635266556A586E3272357538782F413F4428472B4B6250655367566B5970337336763979244226452948404D63
@@ -29,12 +29,20 @@ spring:
 
   datasource:
     hikari:
+#      jdbc-url: 'jdbc:postgresql://host.docker.internal:5432/fleek?reWriteBatchedInserts=true'
       jdbc-url: 'jdbc:postgresql://localhost:5432/fleek?reWriteBatchedInserts=true'
       driver-class-name: 'org.postgresql.Driver'
       username: 'cherrypop'
       password: '13o1714QO^WXep@A'
       maximum-pool-size: 10
       minimum-idle: 10
+#      jdbc-url: 'jdbc:postgresql://fleek-vpc-postgres-dev.clriishsxhuj.ap-northeast-2.rds.amazonaws.com/fleek?reWriteBatchedInserts=true'
+#      driver-class-name: 'org.postgresql.Driver'
+#      username: 'henriette'
+#      password: 'y!Z-Zy7h9R9rc!$bSfguTcz7#A7%'
+#      maximum-pool-size: 10
+#      minimum-idle: 10
+
 
 aws:
   accessKey: AKIAVSJKCMEOTD34XJV6
@@ -49,4 +57,8 @@ logging:
     root: ERROR
     org.springframework: ERROR
     run.fleek: DEBUG # Set the desired log level for your specific package
+
+notification:
+  slack:
+    dev-verification: https://hooks.slack.com/services/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
 

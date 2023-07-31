@@ -3,6 +3,7 @@ package run.fleek.domain.users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.fleek.domain.users.vo.FleekUserVo;
 
 import java.util.Optional;
 
@@ -32,4 +33,12 @@ public class FleekUserService {
     public Optional<FleekUser> getByUserName(String userName) {
         return fleekUserRepository.findByPhoneNumber(userName);
     }
+
+  public Optional<FleekUser> getUserByPhoneNumber(String phoneNumber) {
+    return fleekUserRepository.findByPhoneNumber(phoneNumber);
+  }
+
+  public FleekUserVo getFleekUserVoById(Long fleekUserId) {
+    return fleekUserRepository.getFleekUserVoById(fleekUserId);
+  }
 }

@@ -1,0 +1,33 @@
+
+### login verification request
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "phoneNumber": "01012345678"
+}
+
+###
+POST {{base_uri}}/auth/verify
+Content-Type: application/json
+
+{
+  "verificationCode": "84cf3c56-317f-416e-9915-dd1ff5f5e0b7",
+  "verificationNumber": "18425"
+}
+
+### AuthCheck
+GET {{base_uri}}/auth/check
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### Refresh
+POST {{base_uri}}/auth/refresh
+Content-Type: application/json
+
+{
+  "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWQiOiI0IiwiYXV0aCI6IltdIiwiZXhwIjoxNjkwNzQ0MTc4fQ.ncGAMYeWea8ByFu4hgfJVIQAoZ0KsiwuD4BcOo_2PU-5okjZkLm17KRfYiF-azVtlalogELl0sM05lqref_Ncg",
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWQiOiI0IiwiYXV0aCI6IltdIiwiZXhwIjoxNzAxMTExOTM4fQ.6eboGHS9_4pi4g_58EHjZBC_rZPKtq5J-pybiERoCaVAy8wQ0HDQOZ6F6Sbj9-HJa5lUfv7sQl6VoxbuxJz8uA"
+}
+
+

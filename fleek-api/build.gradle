@@ -9,3 +9,23 @@ repositories {
 dependencies {
     implementation project(':fleek-core')
 }
+
+jib {
+    from {
+        image = 'adoptopenjdk:11-jre-hotspot'
+    }
+    to {
+//        image = 'fleek-api'
+//        tags = ['latest']
+        image = 'docker.io/henriettefleek/fleek-api:latest'
+        auth {
+            username = 'henriettefleek'
+            password = 'fXV2ESHL,!c6pz='
+        }
+    }
+    container {
+        mainClass = "run.fleek.api.FleekApiApplication"
+        ports = ['8080']
+        jvmFlags = ['-Xms512m', '-Xmx1024m']
+    }
+}

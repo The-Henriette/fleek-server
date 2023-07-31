@@ -6,8 +6,10 @@ import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.domain.users.FleekUser;
 import run.fleek.enums.VerificationType;
+import run.fleek.utils.RandomUtil;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -31,8 +33,11 @@ public class UserVerification implements SystemMetadata {
   @Enumerated(EnumType.STRING)
   private VerificationType verificationType;
 
+  @Column(name = "verification_code")
+  private String verificationCode;
+
   @Column(name = "verification_number")
-  private Integer verificationNumber;
+  private String verificationNumber;
 
   @Column(name = "verified")
   private Boolean verified;
@@ -42,5 +47,15 @@ public class UserVerification implements SystemMetadata {
 
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
+
+  public static UserVerification init(VerificationType verificationType, FleekUser fleekUser) {
+    return UserVerification.builder()
+      .fleekUser(fleekUser)
+      .verificationType(verificationType)
+      .verificationCode(UUID.randomUUID().toString())
+      .verificationNumber(RandomUtil.generateRandomSixDigitNumber())
+      .verified(false)
+      .build();
+  }
 
 }

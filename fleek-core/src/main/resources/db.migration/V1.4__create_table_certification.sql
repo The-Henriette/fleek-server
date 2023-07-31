@@ -6,6 +6,7 @@ CREATE SEQUENCE certification_seq INCREMENT BY 1 START WITH 1 NO CYCLE;
 CREATE TABLE certification (
    certification_id bigint PRIMARY KEY,
    certification_code varchar(255),
+   certification_name varchar(255),
    certification_description varchar(255),
    created_at bigint NOT NULL,
    updated_at bigint NOT NULL

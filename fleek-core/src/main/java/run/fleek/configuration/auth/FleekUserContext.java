@@ -9,6 +9,7 @@ import run.fleek.configuration.auth.vo.FleekUserDetailsVo;
 import run.fleek.domain.users.FleekUser;
 import run.fleek.domain.users.FleekUserService;
 import run.fleek.domain.users.dto.UserInfoDto;
+import run.fleek.domain.users.vo.FleekUserVo;
 
 import java.util.Objects;
 
@@ -18,10 +19,10 @@ public class FleekUserContext {
 
   private final FleekUserService fleekUserService;
 
-  public FleekUser getFleekUser() {
+  public FleekUserVo getFleekUser() {
     FleekAuthentication authentication = (FleekAuthentication) SecurityContextHolder.getContext().getAuthentication();
     long userId = authentication.fetchPrincipal().getFleekUserId();
-    return fleekUserService.getByUserId(userId).orElseThrow(new FleekException("No User."));
+    return fleekUserService.getFleekUserVoById(userId);
   }
 
   public UserInfoDto getUserInfo() {

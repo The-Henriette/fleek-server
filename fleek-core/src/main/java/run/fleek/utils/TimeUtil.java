@@ -22,7 +22,7 @@ public final class TimeUtil {
 
     public static long convertToEpochTime(String dobString) {
         // Parse the input string using the specified format (ddMMyy)
-        SimpleDateFormat format = new SimpleDateFormat("ddMMyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyMMdd");
         Date dob = null;
         try {
             dob = format.parse(dobString);

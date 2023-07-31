@@ -1,0 +1,15 @@
+@global accessToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiaWQiOjcsInVzZXJOYW1lIjoiY2hhbmh5dXBraW0iLCJhdXRoIjoiW10iLCJleHAiOjE2ODQzNzE5MTZ9.DDemGSoaABtVucV_9n9pI4FgCQlK0KRZqFNpxp2XH3QOxAuAaKVIY6jhCT7WSS0XAMHvCd_wsKEjjH__hkNPXA
+
+### SignIn
+GET {{base_uri}}/dev/session?phoneNumber=01012345678
+
+> {%
+    client.test("Validate", function() { // Validate라는 이름의 테스트를 수행
+        client.assert(response.status === 200, "Response status is not 200"); // 응답값이 200이면 통과
+        client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json'"); // 응답값이 application/json이면 통과
+        client.assert(response.body.accessToken.trim().length > 0); // 토큰 길이가 0보다 크면 통과
+    });
+
+    client.log(response.body.accessToken); // 토큰 값 로깅, body에는 응답받은 json이 객체 형식으로 저장된다. 즉 { accessToken:"value" }가 응답이라면, 여기선 value라 로깅된다.
+    client.global.set("accessToken", response.body.accessToken) // 토큰 값을 global 변수에 set
+%}

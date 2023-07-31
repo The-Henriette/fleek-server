@@ -13,8 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static run.fleek.common.constants.Constants.publicPathAntPatterns;
 
@@ -61,6 +59,9 @@ public class JwtFilter extends OncePerRequestFilter {
   private boolean isPublicPath(String requestURI) {
     for (String publicPathPattern : publicPathAntPatterns) {
       if (antPathMatcher.match(publicPathPattern, requestURI)) {
+        return true;
+      }
+      if (publicPathPattern.equals(requestURI)) {
         return true;
       }
     }

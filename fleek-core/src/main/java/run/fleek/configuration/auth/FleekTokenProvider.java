@@ -17,6 +17,9 @@ import run.fleek.utils.TimeUtil;
 import java.security.Key;
 import java.util.Date;
 
+import static run.fleek.common.constants.Constants.Auth.ACCESS_TOKEN_TTL_MILLISECOND;
+import static run.fleek.common.constants.Constants.Auth.REFRESH_TOKEN_TTL_MILLISECOND;
+
 
 @Slf4j
 @Component
@@ -24,8 +27,6 @@ public class FleekTokenProvider {
 
   private static final String GRANT_TYPE = "Bearer";
   private final Key key;
-  private static final long ACCESS_TOKEN_TTL_MILLISECOND = 14400000L; // 4 hours
-  private static final long REFRESH_TOKEN_TTL_MILLISECOND = 2592000000L; // 30 Days
 
   public FleekTokenProvider(@Value("${jwt.secret}") String secretKey) {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -33,20 +34,47 @@ public class FleekTokenProvider {
   }
 
   public TokenDto generateTokenDto(FleekUser fleekUser) {
+    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND;
+
     String accessToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
       .claim("id", fleekUser.getFleekUserId().toString())
       .claim("auth", "[]")
       .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
 
+    long refreshTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND;
+
     String refreshToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
       .claim("id", fleekUser.getFleekUserId().toString())
       .claim("auth", "[]")
-      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
+      .setExpiration(new Date(refreshTokenExpiresAt)).signWith(this.key, SignatureAlgorithm.HS512).compact();
 
     return TokenDto.builder()
       .grantType(GRANT_TYPE)
       .accessToken(accessToken)
       .refreshToken(refreshToken)
+      .accessTokenExpiresAt(accessTokenExpiresAt)
+      .refreshTokenExpiresAt(refreshTokenExpiresAt)
+      .build();
+  }
+
+  public TokenDto generateDevTokenDto(FleekUser fleekUser) {
+    String accessToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
+      .claim("id", fleekUser.getFleekUserId().toString())
+      .claim("auth", "[]")
+      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
+
+    long refreshTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND;
+
+    String refreshToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
+      .claim("id", fleekUser.getFleekUserId().toString())
+      .claim("auth", "[]")
+      .setExpiration(new Date(refreshTokenExpiresAt)).signWith(this.key, SignatureAlgorithm.HS512).compact();
+
+    return TokenDto.builder()
+      .grantType(GRANT_TYPE)
+      .accessToken(accessToken)
+      .refreshToken(refreshToken)
+      .refreshTokenExpiresAt(refreshTokenExpiresAt)
       .build();
   }
 
@@ -64,6 +92,10 @@ public class FleekTokenProvider {
     }
 
     return null;
+  }
+
+  public Long getId(String token) {
+    return Long.parseLong(Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody().get("id").toString());
   }
 
   private Claims parseClaims(String accessToken) {

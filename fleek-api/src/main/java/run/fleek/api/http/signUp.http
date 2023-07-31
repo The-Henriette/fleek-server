@@ -1,5 +1,5 @@
 ### SignUp
-POST http://localhost:8080/auth/sign-up
+POST http://api.fleek.run/auth/sign-up
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
   "name": "여창준",
   "dateOfBirth": "980220",
   "gender": "MALE",
-  "phoneNumber": "010-1234-5678",
+  "phoneNumber": "01012345678",
   "profileName": "폭격기여씨",
   "profileImageUrls": ["yeahchangjun_dicpic.jpg", "yeahchangjun_profile.jpg"],
   "userTerms": [
