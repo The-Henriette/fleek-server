@@ -1,0 +1,14 @@
+# Upload file to S3
+POST {{base_uri}}/file/upload
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="files"; filename="chang_yeh2.jpeg"
+
+< /Users/chance/Desktop/chang_yeh2.jpeg
+--boundary
+Content-Disposition: form-data; name="files"; filename="cat.jpeg"
+
+< /Users/chance/Desktop/샐러드가싫은고양이.jpeg
+--boundary--

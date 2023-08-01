@@ -45,7 +45,7 @@ public class ProfileService {
   }
 
   @Transactional(readOnly = true)
-  public ProfileVo getProfileVoById(Long profileId) {
-    return profileRepository.getProfileVoById(profileId);
+  public ProfileVo getProfileVoByName(String profileName) {
+    return profileRepository.getProfileVoByProfileName(profileName);
   }
 }

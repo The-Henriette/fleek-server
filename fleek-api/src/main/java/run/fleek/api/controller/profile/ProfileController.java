@@ -13,8 +13,8 @@ public class ProfileController {
 
   private final ProfileApplication profileApplication;
 
-  @GetMapping("/profile/{profileId}/detail")
-  public ProfileViewDto getProfileDetail(@PathVariable Long profileId) {
-    return profileApplication.getProfileDetail(profileId);
+  @GetMapping("/profile/{profileName}/detail")
+  public ProfileViewDto getProfileDetail(@PathVariable String profileName) {
+    return profileApplication.getProfileDetail(profileName);
   }
 }

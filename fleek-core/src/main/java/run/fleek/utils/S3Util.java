@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import run.fleek.common.exception.FleekException;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,46 +20,46 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class S3Util {
 
-//  private final AmazonS3 amazonS3;
-//
-//  private static File loadFile(MultipartFile file) {
-//    try {
-//
-//      System.out.println("File size: " + file.getSize());
-//
-//      String extension = '.' + FilenameUtils.getExtension(file.getOriginalFilename());
-//      File targetFile = File.createTempFile(UUID.randomUUID().toString(), extension);
-//      file.transferTo(targetFile);
-//
-//      if (targetFile.length() == 0) {
-//      }
-//
-//      System.out.println("File size: " + targetFile.length());
-//
-//
-//
-//
-//      return targetFile;
-//    } catch (IOException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
-//
-//  public List<String> uploadFiles(String bucketName, String key, List<MultipartFile> files) {
-//      List<File> uploadTargets = files.stream()
-//        .map(S3Util::loadFile)
-//        .collect(Collectors.toList());
-//
-//      return null;
-//  }
-//
-//  private String uploadFileToS3(String bucketName, String key, File file) {
-//    PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file);
-//    amazonS3.putObject(putObjectRequest);
-//
-//    if (!file.delete()) {
-//      log.warn("Failed to delete S3 temporary file");
-//    }
-//    return key;
-//  }
+  private final AmazonS3 amazonS3;
+
+  private static File loadFile(MultipartFile file) {
+    try {
+
+      System.out.println("File size: " + file.getSize());
+
+      String extension = '.' + FilenameUtils.getExtension(file.getOriginalFilename());
+      File targetFile = File.createTempFile(UUID.randomUUID().toString(), extension);
+      file.transferTo(targetFile);
+
+      if (targetFile.length() == 0) {
+        throw new FleekException("Failed to upload file");
+      }
+
+      System.out.println("File size: " + targetFile.length());
+
+      return targetFile;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public List<String> uploadFiles(String bucketName, String key, List<MultipartFile> files) {
+    List<File> uploadTargets = files.stream()
+      .map(S3Util::loadFile)
+      .collect(Collectors.toList());
+
+    return uploadTargets.stream()
+      .map(target -> uploadFileToS3(bucketName, JoinUtil.SLASH_JOINER.join(key, target.getName()), target))
+      .collect(Collectors.toList());
+  }
+
+  private String uploadFileToS3(String bucketName, String key, File file) {
+    PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file);
+    amazonS3.putObject(putObjectRequest);
+
+    if (!file.delete()) {
+      log.warn("Failed to delete S3 temporary file");
+    }
+    return key;
+  }
 }

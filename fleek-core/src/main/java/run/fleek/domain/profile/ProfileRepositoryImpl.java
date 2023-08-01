@@ -18,11 +18,11 @@ public class ProfileRepositoryImpl extends FleekQueryDslRepositorySupport implem
   }
 
   @Override
-  public ProfileVo getProfileVoById(Long profileId) {
+  public ProfileVo getProfileVoByProfileName(String profileName) {
     return from(qProfile)
-      .where(qProfile.profileId.eq(profileId))
+      .where(qProfile.profileName.eq(profileName))
       .leftJoin(qProfile.fleekUser, qFleekUser)
-      .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
+      .leftJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
       .select(PROFILE_VO_PROJECTION)
       .fetchOne();
   }

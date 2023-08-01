@@ -5,6 +5,9 @@ import run.fleek.domain.certification.dto.CertificationDto;
 import run.fleek.domain.profile.dto.ProfileCategoryInfoDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static run.fleek.common.constants.Constants.CDN_PREFIX;
 
 @Getter
 @Setter
@@ -21,4 +24,10 @@ public class ProfileViewDto {
   private List<String> profileImages;
   private List<CertificationDto> certifications;
   private List<ProfileCategoryInfoDto> details;
+
+  public List<String> getProfileImages() {
+    return profileImages.stream()
+      .map(url -> CDN_PREFIX + url)
+      .collect(Collectors.toList());
+  }
 }

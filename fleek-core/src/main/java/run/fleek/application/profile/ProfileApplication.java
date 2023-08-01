@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import run.fleek.application.profile.dto.ProfileViewDto;
-import run.fleek.configuration.auth.FleekUserContext;
-import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.ProfileService;
 import run.fleek.domain.profile.dto.ProfileCategoryInfoDto;
 import run.fleek.domain.profile.dto.ProfileInfoDto;
@@ -17,8 +15,6 @@ import run.fleek.domain.profile.info.ProfileInfoService;
 import run.fleek.domain.profile.type.ProfileInfoType;
 import run.fleek.domain.profile.type.ProfileInfoTypeOption;
 import run.fleek.domain.profile.vo.ProfileVo;
-import run.fleek.domain.users.FleekUser;
-import run.fleek.domain.users.FleekUserService;
 import run.fleek.enums.ImageType;
 import run.fleek.enums.ProfileInfoCategory;
 import run.fleek.enums.ProfileInfoInputType;
@@ -39,8 +35,8 @@ public class ProfileApplication {
   private final ProfileImageService profileImageService;
   private final ProfileInfoTypeHolder profileInfoTypeHolder;
 
-  public ProfileViewDto getProfileDetail(Long profileId) {
-    ProfileVo targetProfile = profileService.getProfileVoById(profileId);
+  public ProfileViewDto getProfileDetail(String profileName) {
+    ProfileVo targetProfile = profileService.getProfileVoByName(profileName);
     List<ProfileInfo> profileInfoList = profileInfoService.listProfileInfoByProfile(targetProfile.getProfileId());
     List<ProfileImage> profileImageList = profileImageService.listProfileImageByProfileId(targetProfile.getProfileId());
     // TODO: add certifications

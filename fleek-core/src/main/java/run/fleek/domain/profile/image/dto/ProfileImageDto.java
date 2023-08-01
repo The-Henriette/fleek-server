@@ -3,6 +3,9 @@ package run.fleek.domain.profile.image.dto;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static run.fleek.common.constants.Constants.CDN_PREFIX;
 
 @Getter
 @Setter
@@ -12,4 +15,10 @@ import java.util.List;
 public class ProfileImageDto {
   private String profileName;
   private List<String> profileImageUrls;
+
+  public List<String> getProfileImageUrls() {
+    return profileImageUrls.stream()
+      .map(url -> CDN_PREFIX + url)
+      .collect(Collectors.toList());
+  }
 }
