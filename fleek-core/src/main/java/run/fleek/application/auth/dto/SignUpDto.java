@@ -19,6 +19,7 @@ public class SignUpDto {
   private String gender;
   private String phoneNumber;
   private String profileName;
+  private String profileChatCode;
   private List<String> profileImageUrls;
   private List<UserTermDto> userTerms;
   private CertificationRegisterDto certification;

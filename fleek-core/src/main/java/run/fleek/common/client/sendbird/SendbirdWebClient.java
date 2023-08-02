@@ -36,11 +36,15 @@ public class SendbirdWebClient {
     return JsonUtil.read(sendbirdResponse, SendbirdAddUserResponseDto.class);
   }
 
-  public SendbirdAddChatResponseDto addChat(List<String> sendbirdUserIds) {
+  public SendbirdAddChatResponseDto addChat(List<String> sendbirdUserIds, String nickname) {
+    Map<String, String> customData = Maps.newHashMap();
+    customData.put("anonymousProfile", nickname);
+
     String sendbirdResponse = fleekWebClient.postFromMap(sendbirdUri + "group_channels",
         SendbirdAddChatDto.builder()
           .userIds(sendbirdUserIds)
           .isDistinct(false)
+          .data(JsonUtil.write(customData))
           .build(),
       getHeaders()
       )
@@ -66,6 +70,15 @@ public class SendbirdWebClient {
     .block();
 
     return JsonUtil.read(sendbirdResponse, SendbirdSendMessageDto.class);
+  }
+
+  public void inviteMember(String memberId, String channelUrl) {
+    fleekWebClient.postFromMap(sendbirdUri + "group_channels/" + channelUrl + "/invite",
+        SendbirdUserInviteDto.builder()
+          .userIds(List.of(memberId))
+          .build(),
+      getHeaders()
+      ).bodyToMono(String.class).block();
   }
 
   private Map<String, String> getHeaders() {

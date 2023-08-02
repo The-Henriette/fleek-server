@@ -14,6 +14,7 @@ import static run.fleek.common.constants.Constants.CDN_PREFIX;
 @AllArgsConstructor
 public class ProfileImageDto {
   private String profileName;
+  private String chatProfileKey;
   private List<String> profileImageUrls;
 
   public List<String> getProfileImageUrls() {

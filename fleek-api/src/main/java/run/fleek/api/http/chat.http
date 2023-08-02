@@ -3,7 +3,7 @@ POST {{base_uri}}/chat/create/external
 Content-Type: application/json
 
 {
-  "senderProfileName": "빨간 미어캣 성윤",
-  "receiverProfileName": "폭격기여씨",
-  "firstMessage": null
+  "senderProfileName": null,
+  "receiverProfileName": "빨간 미어캣 성윤",
+  "firstMessage": "반갑습니다 야스야스"
 }

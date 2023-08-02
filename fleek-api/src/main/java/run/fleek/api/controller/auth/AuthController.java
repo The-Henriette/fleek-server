@@ -19,7 +19,7 @@ public class AuthController {
   private final AuthApplication authApplication;
 
   @PostMapping("/auth/sign-up")
-  public TokenDto signUp(@RequestBody SignUpDto signUpDto) {
+  public SignUpResultDto signUp(@RequestBody SignUpDto signUpDto) {
     return signUpApplication.signUp(signUpDto);
   }
 

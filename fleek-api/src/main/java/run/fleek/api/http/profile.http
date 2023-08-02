@@ -1,3 +1,3 @@
 ### GET profile detail
-GET {{base_uri}}/profile/폭격기여씨/detail
+GET {{base_uri}}/profile/빨간 미어캣 성윤/detail
 Content-Type: application/json

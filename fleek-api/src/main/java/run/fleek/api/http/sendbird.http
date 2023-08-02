@@ -29,3 +29,12 @@ Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
   "user_id": "fleek_anonymous_1",
   "message": "안녕하세요. 저는 고래입니다."
 }
+
+### Invite User
+POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/group_channels/sendbird_group_channel_124610683_6a506f9605daeb8b137587246d66d99f5afc891f/invite
+Content-Type: application/json
+Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
+
+{
+  "user_ids": ["second_user"]
+}

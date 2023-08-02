@@ -1,7 +1,7 @@
 @global accessToken = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI3IiwiaWQiOjcsInVzZXJOYW1lIjoiY2hhbmh5dXBraW0iLCJhdXRoIjoiW10iLCJleHAiOjE2ODQzNzE5MTZ9.DDemGSoaABtVucV_9n9pI4FgCQlK0KRZqFNpxp2XH3QOxAuAaKVIY6jhCT7WSS0XAMHvCd_wsKEjjH__hkNPXA
 
 ### SignIn
-GET {{base_uri}}/dev/session?phoneNumber=01012345678
+GET {{base_uri}}/dev/session?phoneNumber=01069696969
 
 > {%
     client.test("Validate", function() { // Validate라는 이름의 테스트를 수행

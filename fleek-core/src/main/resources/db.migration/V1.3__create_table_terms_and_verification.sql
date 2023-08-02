@@ -31,6 +31,8 @@ CREATE TABLE term (
   mandatory boolean,
   term_contents_url varchar(255),
   term_code varchar(255),
+  term_name varchar(255),
+  term_appeal varchar(50),
   created_at bigint NOT NULL,
   updated_at bigint NOT NULL
 );

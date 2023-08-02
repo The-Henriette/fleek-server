@@ -61,7 +61,8 @@ public class ChatApplication {
     Profile receiverProfile = profileService.getProfileByProfileName(externalChatCreateDto.getReceiverProfileName())
       .orElseThrow(new FleekException("Receiver profile does not exist."));
     SendbirdAddChatResponseDto sendbirdChannelResult =
-      sendbirdWebClient.addChat(Arrays.asList(senderProfile.getChatProfileKey(), receiverProfile.getChatProfileKey()));
+      sendbirdWebClient.addChat(Arrays.asList(senderProfile.getChatProfileKey(), receiverProfile.getChatProfileKey()),
+        senderProfile.getProfileName());
 
     Chat chat = chatService.addChat(Chat.builder()
       .chatUri(sendbirdChannelResult.getChannelUrl())

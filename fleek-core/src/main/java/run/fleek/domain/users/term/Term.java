@@ -31,6 +31,12 @@ public class Term implements SystemMetadata {
   @Column(name = "term_code")
   private String termCode;
 
+  @Column(name = "term_name")
+  private String termName;
+
+  @Column(name = "term_appeal")
+  private String termAppeal;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 

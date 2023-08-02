@@ -1,14 +1,14 @@
 ### SignUp
-POST http://api.fleek.run/auth/sign-up
+POST {{base_uri}}/auth/sign-up
 Content-Type: application/json
 
 {
   "verificationCode": "verificationCode",
-  "name": "여창준",
+  "name": "남창순",
   "dateOfBirth": "980220",
-  "gender": "MALE",
-  "phoneNumber": "01012345678",
-  "profileName": "폭격기여씨",
+  "gender": "FEMALE",
+  "phoneNumber": "01012345671",
+  "profileChatCode": "폭격기여씨153354",
   "profileImageUrls": ["yeahchangjun_dicpic.jpg", "yeahchangjun_profile.jpg"],
   "userTerms": [
     {

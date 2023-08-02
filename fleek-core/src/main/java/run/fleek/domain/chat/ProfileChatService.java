@@ -20,11 +20,14 @@ public class ProfileChatService {
       return Optional.empty();
     }
 
-
     return profileChatRepository.findBySenderAndReceiverName(senderProfileName, receiverProfileName);
   }
 
   public ProfileChat addProfileChat(ProfileChat profileChat) {
     return profileChatRepository.save(profileChat);
+  }
+
+  public Optional<ProfileChat> getProfileByProfileChatCode(String profileChatCode) {
+    return profileChatRepository.findProfileByProfileChatCode(profileChatCode);
   }
 }

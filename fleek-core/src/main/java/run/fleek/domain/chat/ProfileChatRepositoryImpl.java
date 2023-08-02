@@ -3,6 +3,7 @@ package run.fleek.domain.chat;
 import com.querydsl.core.types.Projections;
 import run.fleek.configuration.database.FleekQueryDslRepositorySupport;
 import run.fleek.domain.chat.vo.ProfileChatVo;
+import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.QProfile;
 
 import java.util.Optional;
@@ -41,5 +42,17 @@ public class ProfileChatRepositoryImpl extends FleekQueryDslRepositorySupport im
         qReceiverProfile.chatProfileKey,
         qChat.chatUri))
       .fetchOne());
+  }
+
+  @Override
+  public Optional<ProfileChat> findProfileByProfileChatCode(String profileChatCode) {
+    return Optional.ofNullable(
+      from(qProfileChatSender)
+        .innerJoin(qProfileChatSender.profile, qSenderProfile).fetchJoin()
+        .innerJoin(qProfileChatSender.chat, qChat).fetchJoin()
+        .where(qProfileChatSender.profileChatCode.eq(profileChatCode))
+        .select(qProfileChatSender)
+        .fetchOne()
+    );
   }
 }

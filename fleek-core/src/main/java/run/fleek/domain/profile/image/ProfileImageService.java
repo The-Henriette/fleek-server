@@ -34,6 +34,7 @@ public class ProfileImageService {
     return profileToImagesMap.entrySet().stream()
       .map(e -> ProfileImageDto.builder()
         .profileName(e.getKey())
+        .chatProfileKey(e.getValue().get(0).getProfile().getChatProfileKey())
         .profileImageUrls(e.getValue().stream()
           .map(ProfileImage::getImageUrl)
           .collect(Collectors.toList()))

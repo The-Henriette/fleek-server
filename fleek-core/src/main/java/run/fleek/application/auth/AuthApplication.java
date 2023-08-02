@@ -73,8 +73,15 @@ public class AuthApplication {
     if (verificationDto.getVerificationNumber().equals(userVerification.getVerificationNumber())) {
       userVerificationService.verify(userVerification);
       if (Objects.nonNull(userVerification.getFleekUser())) {
-        userAuthService.addUserAuth(userVerification.getFleekUser());
-        TokenDto tokenDto = tokenProvider.generateTokenDto(userVerification.getFleekUser());
+        UserAuth userAuth = userAuthService.addUserAuth(userVerification.getFleekUser());
+//        TokenDto tokenDto = tokenProvider.generateTokenDto(userVerification.getFleekUser());
+        TokenDto tokenDto = TokenDto.builder()
+          .accessToken(userAuth.getAccessToken())
+          .refreshToken(userAuth.getRefreshToken())
+          .grantType("Bearer")
+          .accessTokenExpiresAt(userAuth.getAccessTokenExpiresAt())
+          .refreshTokenExpiresAt(userAuth.getExpiredAt())
+          .build();
 
         return VerificationResultDto.success(tokenDto);
       }
