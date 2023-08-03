@@ -42,6 +42,11 @@ public class ProfileImageService {
       .collect(Collectors.toList());
   }
 
+  @Transactional(readOnly = true)
+  public boolean isCertified(Profile profile) {
+    return profileImageRepository.existsByProfileAndImageType(profile, ImageType.FACE_IMAGE);
+  }
+
   @Transactional
   public void addProfileImages(Profile profile, List<String> imageUrls) {
     if (CollectionUtils.isEmpty(imageUrls)) {

@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public enum ImageType {
 
-  PROFILE,
+  FACE_IMAGE,
   PROFILE_POST,
 }

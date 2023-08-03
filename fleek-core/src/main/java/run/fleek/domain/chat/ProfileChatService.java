@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import run.fleek.domain.chat.vo.ProfileChatVo;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class ProfileChatService {
 
   public Optional<ProfileChat> getProfileByProfileChatCode(String profileChatCode) {
     return profileChatRepository.findProfileByProfileChatCode(profileChatCode);
+  }
+
+  @Transactional(readOnly = true)
+  public List<ProfileChat> listProfileChatsByChatUrl(String chatUrl) {
+    return profileChatRepository.listProfileChatsByChatUrl(chatUrl);
   }
 }

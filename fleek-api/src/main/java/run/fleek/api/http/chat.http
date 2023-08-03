@@ -5,5 +5,10 @@ Content-Type: application/json
 {
   "senderProfileName": null,
   "receiverProfileName": "빨간 미어캣 성윤",
-  "firstMessage": "반갑습니다 야스야스"
+  "firstMessage": "fuck yeah! me!!!!"
 }
+
+
+###
+GET {{base_uri}}/chat/sendbird_group_channel_124610683_6d47722c42b3012b4e06550ace36eedbc190a90d/detail?profileName=고마운 침팬지 햇님
+Authorization: Bearer {{accessToken}}

@@ -12,8 +12,8 @@ POST {{base_uri}}/auth/verify
 Content-Type: application/json
 
 {
-  "verificationCode": "84cf3c56-317f-416e-9915-dd1ff5f5e0b7",
-  "verificationNumber": "18425"
+  "verificationCode": "c18537ec-48e2-45a8-985e-8999e1b42ca4",
+  "verificationNumber": "793726"
 }
 
 ### AuthCheck

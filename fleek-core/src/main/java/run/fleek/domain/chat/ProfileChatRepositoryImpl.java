@@ -6,6 +6,7 @@ import run.fleek.domain.chat.vo.ProfileChatVo;
 import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.QProfile;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProfileChatRepositoryImpl extends FleekQueryDslRepositorySupport implements ProfileChatRepositoryCustom {
@@ -54,5 +55,15 @@ public class ProfileChatRepositoryImpl extends FleekQueryDslRepositorySupport im
         .select(qProfileChatSender)
         .fetchOne()
     );
+  }
+
+  @Override
+  public List<ProfileChat> listProfileChatsByChatUrl(String chatUrl) {
+    return from(qProfileChatSender)
+      .innerJoin(qProfileChatSender.chat, qChat).fetchJoin()
+      .innerJoin(qProfileChatSender.profile, qSenderProfile).fetchJoin()
+      .where(qChat.chatUri.eq(chatUrl))
+      .select(qProfileChatSender)
+      .fetch();
   }
 }
