@@ -1,5 +1,7 @@
 ### request exchange
 POST {{base_uri}}/exchange/request
+Authorization: Bearer {{accessToken}}
+
 Content-Type: application/json
 
 {
@@ -9,9 +11,14 @@ Content-Type: application/json
 
 ### accept exchange
 POST {{base_uri}}/exchange/1/accept/
+Authorization: Bearer {{accessToken}}
+
 
 ### reject exchange
 POST {{base_uri}}/exchange/1/reject/
+Authorization: Bearer {{accessToken}}
+
 
 ### watch exchange
-POST {{base_uri}}/exchange/1/watch/
+POST {{base_uri}}/exchange/2/watch/고마운 침팬지 햇님
+Authorization: Bearer {{accessToken}}

@@ -10,6 +10,7 @@ import run.fleek.application.exchange.dto.SendbirdExchangeDataDto;
 import run.fleek.common.client.sendbird.SendbirdWebClient;
 import run.fleek.common.client.sendbird.dto.SendbirdSendMessageDto;
 import run.fleek.common.exception.FleekException;
+import run.fleek.common.response.FleekGeneralResponse;
 import run.fleek.domain.chat.ProfileChat;
 import run.fleek.domain.chat.ProfileChatService;
 import run.fleek.domain.exchange.Exchange;
@@ -102,11 +103,20 @@ public class ExchangeApplication {
   }
 
   @Transactional
-  public void processExchange(Long exchangeId, String profileName, String state) {
+  public FleekGeneralResponse processExchange(Long exchangeId, String profileName, String state) {
     Exchange exchange = exchangeService.getExchange(exchangeId);
     Profile profile = profileService.getProfileByProfileName(profileName)
       .orElseThrow(new FleekException("Invalid profile name"));
 
+    if (state.equals("accepted")) {
+      boolean faceValidated = profileImageService.isCertified(profile);
+      if (!faceValidated) {
+        return FleekGeneralResponse.builder()
+          .success(false)
+          .errorMessage("얼굴인증이 필요합니다.")
+          .build();
+      }
+    }
     // 1. update previous sendbird message status
     sendbirdWebClient.updateMessage(exchange.getRequestMessageId(), exchange.getChat().getChatUri(), "사진교환", "EXCHANGE", JsonUtil.write(SendbirdExchangeDataDto.builder()
       .exchangeId(exchange.getExchangeId().toString())
@@ -130,6 +140,12 @@ public class ExchangeApplication {
         .state(state)
         .build())
     );
+
+    return FleekGeneralResponse.builder()
+      .success(true)
+      .errorMessage(null)
+      .build();
+
   }
 
   @Transactional
@@ -164,6 +180,7 @@ public class ExchangeApplication {
     List<ProfileImage> counterPartFaceImages = profileImageService.listProfileImageByProfileId(counterPart.getProfileId());
 
     return ExchangeWatchDto.builder()
+      .success(true)
       .faceUrls(counterPartFaceImages.stream()
         .filter(pi -> pi.getImageType().equals(ImageType.FACE_IMAGE))
         .map(ProfileImage::getImageUrl)

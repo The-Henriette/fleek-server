@@ -25,18 +25,12 @@ public class ExchangeController {
 
   @PostMapping("/exchange/{exchangeId}/accept/{profileName}")
   public FleekGeneralResponse acceptExchange(@PathVariable Long exchangeId, @PathVariable String profileName) {
-    exchangeApplication.processExchange(exchangeId, profileName, "accepted");
-    return FleekGeneralResponse.builder()
-      .success(true)
-      .build();
+    return exchangeApplication.processExchange(exchangeId, profileName, "accepted");
   }
 
   @PostMapping("/exchange/{exchangeId}/reject/{profileName}")
   public FleekGeneralResponse rejectExchange(@PathVariable Long exchangeId, @PathVariable String profileName) {
-    exchangeApplication.processExchange(exchangeId, profileName, "rejected");
-    return FleekGeneralResponse.builder()
-      .success(true)
-      .build();
+    return exchangeApplication.processExchange(exchangeId, profileName, "rejected");
   }
 
   @PostMapping("/exchange/{exchangeId}/watch/{profileName}")

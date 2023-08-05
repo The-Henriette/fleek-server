@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,10 @@ public class CertificationService {
   @Transactional(readOnly = false)
   public Certification addCertification(Certification certification) {
     return certificationRepository.save(certification);
+  }
+
+  @Transactional(readOnly = true)
+  public List<Certification> listCertifications() {
+    return certificationRepository.findAll();
   }
 }

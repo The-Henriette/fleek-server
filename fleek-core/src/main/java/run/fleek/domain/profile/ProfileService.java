@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.fleek.domain.profile.vo.ProfileVo;
 import run.fleek.domain.users.FleekUser;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -47,5 +48,9 @@ public class ProfileService {
   @Transactional(readOnly = true)
   public ProfileVo getProfileVoByName(String profileName) {
     return profileRepository.getProfileVoByProfileName(profileName);
+  }
+
+  public List<Profile> listProfiles(FleekUser fleekUser) {
+    return profileRepository.findAllByFleekUser(fleekUser);
   }
 }

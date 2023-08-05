@@ -65,4 +65,9 @@ public class ProfileImageService {
 
     profileImageRepository.saveAll(profileImages);
   }
+
+  @Transactional
+  public void addProfileImageList(List<ProfileImage> profileImages) {
+    profileImageRepository.saveAll(profileImages);
+  }
 }

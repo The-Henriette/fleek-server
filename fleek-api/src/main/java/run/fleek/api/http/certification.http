@@ -1,0 +1,3 @@
+### Confirm Certification
+POST {{base_uri}}/certification/9/confirm
+Authorization: Bearer {{accessToken}}

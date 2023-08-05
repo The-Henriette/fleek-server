@@ -16,4 +16,8 @@ public class CertificationResourceService {
   public void addCertificationResources(List<CertificationResource> resources) {
     certificationResourceRepository.saveAll(resources);
   }
+
+  public List<CertificationResource> listCertificationResources(UserCertification userCertification) {
+    return certificationResourceRepository.findAllByUserCertification(userCertification);
+  }
 }

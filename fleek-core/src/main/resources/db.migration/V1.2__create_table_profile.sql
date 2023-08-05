@@ -65,7 +65,7 @@ CREATE TABLE profile_image (
 CREATE INDEX profile_image_idx01 ON profile_image (created_at);
 CREATE INDEX profile_image_idx02 ON profile_image (updated_at);
 
-alter table profile_image add constraint profile_image_uk01 unique (profile_id, order_number);
+alter table profile_image add constraint profile_image_uk01 unique (profile_id, image_type, order_number);
 
 -- Sequence
 DROP SEQUENCE IF EXISTS profile_info_type_seq;
