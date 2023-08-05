@@ -48,7 +48,7 @@ public class ChatApplication {
     Optional<ProfileChatVo> profileChatVoOpt = profileChatService.getProfileChatVoByParticipants(externalChatCreateDto.getSenderProfileName(), externalChatCreateDto.getReceiverProfileName());
     if (profileChatVoOpt.isPresent()) {
       sendbirdWebClient.sendMessage(profileChatVoOpt.get().getChannelUrl(), externalChatCreateDto.getFirstMessage(),
-        profileChatVoOpt.get().getAnonymousChatKey());
+        profileChatVoOpt.get().getAnonymousChatKey(), null, null);
 
       return ExternalChatDto.builder()
         .chatUserId(profileChatVoOpt.get().getSenderChatProfileKey())
@@ -91,7 +91,7 @@ public class ChatApplication {
     );
 
     if (StringUtils.hasLength(externalChatCreateDto.getFirstMessage())) {
-      sendbirdWebClient.sendMessage(sendbirdChannelResult.getChannelUrl(), externalChatCreateDto.getFirstMessage(), senderProfile.getChatProfileKey());
+      sendbirdWebClient.sendMessage(sendbirdChannelResult.getChannelUrl(), externalChatCreateDto.getFirstMessage(), senderProfile.getChatProfileKey(), null, null);
     }
 
     return ExternalChatDto.builder()

@@ -9,6 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SendbirdSendMessageDto {
+
+  @JsonProperty("message_id")
+  private Long messageId;
+
   @JsonProperty("message_type")
   private String messageType;
 
@@ -16,4 +20,9 @@ public class SendbirdSendMessageDto {
   private String userId;
 
   private String message;
+
+  private String data;
+
+  @JsonProperty("custom_type")
+  private String customType;
 }

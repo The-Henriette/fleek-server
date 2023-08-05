@@ -54,20 +54,56 @@ public class SendbirdWebClient {
     return JsonUtil.read(sendbirdResponse, SendbirdAddChatResponseDto.class);
   }
 
-  public SendbirdSendMessageDto sendMessage(String sendbirdChannelUrl, String message, String sendbirdUserId) {
+  public SendbirdSendMessageDto sendMessage(String sendbirdChannelUrl, String message, String sendbirdUserId,
+                                            String customType, String data) {
     if (!StringUtils.hasLength(message)) {
       return null;
     }
+
+    SendbirdSendMessageDto sendMessage = SendbirdSendMessageDto.builder()
+      .messageType("MESG")
+      .userId(sendbirdUserId)
+      .message(message)
+      .build();
+
+    if (StringUtils.hasLength(customType)) {
+      sendMessage.setCustomType(customType);
+    }
+
+    if (StringUtils.hasLength(data)) {
+      sendMessage.setData(data);
+    }
+
     String sendbirdResponse = fleekWebClient.postFromMap(sendbirdUri + "group_channels/" + sendbirdChannelUrl + "/messages",
-        SendbirdSendMessageDto.builder()
-          .messageType("MESG")
-          .userId(sendbirdUserId)
-          .message(message)
-          .build(),
+       sendMessage,
       getHeaders()
       )
     .bodyToMono(String.class)
     .block();
+
+    return JsonUtil.read(sendbirdResponse, SendbirdSendMessageDto.class);
+  }
+
+  public SendbirdSendMessageDto updateMessage(String messageId, String channelUrl, String message,
+                                              String customType, String data) {
+    SendbirdSendMessageDto sendMessage = SendbirdSendMessageDto.builder()
+      .messageType("MESG")
+      .message(message)
+      .build();
+
+    if (StringUtils.hasLength(customType)) {
+      sendMessage.setCustomType(customType);
+    }
+
+    if (StringUtils.hasLength(data)) {
+      sendMessage.setData(data);
+    }
+
+    String sendbirdResponse = fleekWebClient.putFromMap(sendbirdUri + "group_channels/" + channelUrl + "/messages/" + messageId,
+        sendMessage,
+      getHeaders()
+      ).bodyToMono(String.class)
+      .block();
 
     return JsonUtil.read(sendbirdResponse, SendbirdSendMessageDto.class);
   }

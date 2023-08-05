@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
+import run.fleek.common.client.sendbird.dto.SendbirdSendMessageDto;
 import run.fleek.common.exception.FleekException;
 
 import java.time.Duration;
@@ -113,6 +114,31 @@ public class FleekWebClient {
         HttpClientRequest req = consumer.getNativeRequest();
         req.responseTimeout(Duration.ofMillis(timeoutMillis));
       })
+      .bodyValue(body)
+      .retrieve()
+      .onStatus(HttpStatus::is4xxClientError, response
+        -> response.bodyToMono(String.class)
+        .flatMap(r -> Mono.error((Throwable) new FleekException())))
+      .onStatus(HttpStatus::is5xxServerError, response
+        -> response.bodyToMono(String.class)
+        .flatMap(r -> Mono.error((Throwable) new FleekException())));
+  }
+
+  public WebClient.ResponseSpec putFromMap(String uri, Object body, Map<String, String> headers) {
+    MultiValueMap<String, String> headerMulti = new LinkedMultiValueMap<>();
+    headerMulti.setAll(headers);
+
+    return this.put(uri, body, headerMulti);
+  }
+
+  public WebClient.ResponseSpec put(String uri, Object body, MultiValueMap<String, String> headers) {
+    return webClient.put()
+      .uri(uri)
+      .headers(httpHeaders -> httpHeaders.addAll(headers))
+//      .httpRequest(consumer -> {
+//        //  httpClient 에서 설정한 responseTimeout 값을 override 하는 과정
+//        HttpClientRequest req = consumer.getNativeRequest();
+//      })
       .bodyValue(body)
       .retrieve()
       .onStatus(HttpStatus::is4xxClientError, response

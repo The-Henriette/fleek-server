@@ -1,0 +1,17 @@
+### request exchange
+POST {{base_uri}}/exchange/request
+Content-Type: application/json
+
+{
+  "chatUrl": "",
+  "requesterProfileName": ""
+}
+
+### accept exchange
+POST {{base_uri}}/exchange/1/accept/
+
+### reject exchange
+POST {{base_uri}}/exchange/1/reject/
+
+### watch exchange
+POST {{base_uri}}/exchange/1/watch/
