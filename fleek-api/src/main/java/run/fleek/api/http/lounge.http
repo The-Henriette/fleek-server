@@ -1,0 +1,3 @@
+### 토픽 조회
+GET {{base_uri}}/lounge/topics
+Authorization: Bearer {{accessToken}}

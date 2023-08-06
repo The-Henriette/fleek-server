@@ -22,7 +22,7 @@ public class ProfileImage implements SystemMetadata {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_image_seq")
   @SequenceGenerator(name = "profile_image_seq", sequenceName = "profile_image_seq", allocationSize = 1)
   @Column(name = "profile_image_id", nullable = false)
-  private Long profileInfoId;
+  private Long profileImageId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_id")

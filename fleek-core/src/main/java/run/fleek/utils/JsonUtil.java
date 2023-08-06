@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public class JsonUtil {
   private static final String EXCEPTION_MESSAGE_PREFIX = "Json read error : ";
@@ -115,6 +116,13 @@ public class JsonUtil {
     } catch (IOException e) {
       throw new RuntimeException(EXCEPTION_MESSAGE_PREFIX, e);
     }
+  }
+
+  public static Map<String, String> readMap(final String json) {
+    TypeReference<Map<String, String>> mapType = new TypeReference<Map<String, String>>() {};
+
+    // Call the read method to deserialize the JSON into the map
+    return read(json, mapType);
   }
 
   public static <T> T readWithOutRoot(final String json, final Class<T> clazz) {
