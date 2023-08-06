@@ -39,12 +39,17 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
             predicate.and(qLoungePost.topic.eq(LoungeTopic.valueOf(topicCode)));
         }
 
+        if (StringUtils.hasLength(profileName)) {
+            predicate.and(qProfile.profileName.eq(profileName));
+        }
+
         QueryResults<LoungePostVo> queryResults =
           from(qLoungePost)
             .innerJoin(qLoungePost.profile, qProfile)
             .innerJoin(qProfile.fleekUser, qFleekUser)
             .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
-            .leftJoin(qPostLike).on(qPostLike.profile.profileName.eq(StringUtils.hasLength(profileName) ? profileName : ""))
+            .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
+                  .and(qPostLike.profile.profileId.eq(qProfile.profileId)))
             .where(predicate)
             .select(LOUNGE_POST_VO_PROJECTION)
             .orderBy(qLoungePost.createdAt.desc())
@@ -63,12 +68,19 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
 
     @Override
     public LoungePostVo getLoungePost(Long postId, String profileName) {
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and(qLoungePost.loungePostId.eq(postId));
+        if (StringUtils.hasLength(profileName)) {
+            predicate.and(qProfile.profileName.eq(profileName));
+        }
+
         return from(qLoungePost)
           .innerJoin(qLoungePost.profile, qProfile)
           .innerJoin(qProfile.fleekUser, qFleekUser)
           .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
-          .leftJoin(qPostLike).on(qPostLike.profile.profileName.eq(StringUtils.hasLength(profileName) ? profileName : ""))
-          .where(qLoungePost.loungePostId.eq(postId))
+           .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
+                .and(qPostLike.profile.profileId.eq(qProfile.profileId)))
+          .where(predicate)
           .select(LOUNGE_POST_VO_PROJECTION)
           .fetchOne();
     }

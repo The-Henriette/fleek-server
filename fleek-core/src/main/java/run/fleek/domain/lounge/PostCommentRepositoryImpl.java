@@ -35,7 +35,7 @@ public class PostCommentRepositoryImpl extends FleekQueryDslRepositorySupport im
             .innerJoin(qPostComment.profile, qProfile)
             .where(qPostComment.loungePost.loungePostId.eq(postId))
             .select(POST_COMMENT_VO_PROJECTION)
-            .orderBy(qLoungePost.createdAt.desc())
+            .orderBy(qPostComment.createdAt.desc())
             .offset((long) size * page)
             .limit(size)
             .fetchResults();
