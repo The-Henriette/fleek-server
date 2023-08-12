@@ -16,4 +16,5 @@ public class ProfileInfoDto {
   private String typeValue;
   private String inputType;
   private String emoji;
+  private Integer order;
 }

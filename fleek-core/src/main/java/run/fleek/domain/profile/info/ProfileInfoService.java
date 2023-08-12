@@ -17,4 +17,9 @@ public class ProfileInfoService {
   public List<ProfileInfo> listProfileInfoByProfile(Long profileId) {
     return profileInfoRepository.findAllByProfile_ProfileId(profileId);
   }
+
+  @Transactional
+  public void putProfileInfos(List<ProfileInfo> updateTargets) {
+    profileInfoRepository.saveAll(updateTargets);
+  }
 }

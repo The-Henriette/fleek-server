@@ -15,19 +15,19 @@ Content-Type: application/json
 Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
 
 {
-  "user_ids": ["first_user", "fleek_anonymous_1"],
+  "user_ids": ["first_user", "c8951052-b206-4932-9cc8-a2c3fc05f09b"],
   "is_distinct": true
 }
 
 ### Create Message
-POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/group_channels/sendbird_group_channel_124610683_536a784623119509d5551aeba7ce4463a113f3b8/messages
+POST https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/group_channels/sendbird_group_channel_124972581_6413c95669fc07383b492efa5cec881baa6f8c73/messages
 Content-Type: application/json
 Api-Token: 03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1
 
 {
   "message_type": "MESG",
-  "user_id": "fleek_anonymous_1",
-  "message": "안녕하세요. 저는 고래입니다."
+  "user_id": "c8951052-b206-4932-9cc8-a2c3fc05f09b",
+  "message": "안녕하세요."
 }
 
 ### Invite User

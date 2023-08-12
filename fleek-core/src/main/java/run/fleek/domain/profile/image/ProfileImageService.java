@@ -36,6 +36,7 @@ public class ProfileImageService {
         .profileName(e.getKey())
         .chatProfileKey(e.getValue().get(0).getProfile().getChatProfileKey())
         .profileImageUrls(e.getValue().stream()
+          .filter(pi -> pi.getImageType() == ImageType.PROFILE_POST)
           .map(ProfileImage::getImageUrl)
           .collect(Collectors.toList()))
         .build())
@@ -70,4 +71,11 @@ public class ProfileImageService {
   public void addProfileImageList(List<ProfileImage> profileImages) {
     profileImageRepository.saveAll(profileImages);
   }
+
+  @Transactional
+  public void putProfileImageList(Profile profile, List<String> imageUrls) {
+    profileImageRepository.deleteAllByProfileAndImageType(profile, ImageType.PROFILE_POST);
+    addProfileImages(profile, imageUrls);
+  }
+
 }

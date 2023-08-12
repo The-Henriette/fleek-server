@@ -7,6 +7,8 @@ import run.fleek.enums.ImageType;
 import java.util.List;
 
 public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long>, ProfileImageRepositoryCustom {
-  List<ProfileImage> findAllByProfile_ProfileId(Long profileId);
-  boolean existsByProfileAndImageType(Profile profile, ImageType imageType);
+    List<ProfileImage> findAllByProfile_ProfileId(Long profileId);
+    boolean existsByProfileAndImageType(Profile profile, ImageType imageType);
+
+    void deleteAllByProfileAndImageType(Profile profile, ImageType imageType);
 }

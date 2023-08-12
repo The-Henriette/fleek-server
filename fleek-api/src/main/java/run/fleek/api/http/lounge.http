@@ -20,6 +20,11 @@ Authorization: Bearer {{accessToken}}
 GET {{base_uri}}/lounge/posts?size=10&page=0&profileName=빨간 미어캣 성윤
 Authorization: Bearer {{accessToken}}
 
+### 게시글 조회
+GET {{base_uri}}/lounge/posts?size=10&page=0
+Authorization: Bearer {{accessToken}}
+
+
 ### 게시글 단건 조회 및 View 수정
 POST {{base_uri}}/lounge/post/1
 Authorization: Bearer {{accessToken}}
@@ -30,7 +35,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "profileName": "빨간 미어캣 성윤",
+    "profileName": "폭격기여씨",
     "content": "댓글입니다."
 }
 
