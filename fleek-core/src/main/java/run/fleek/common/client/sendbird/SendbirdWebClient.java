@@ -15,9 +15,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SendbirdWebClient {
 
-  private final String sendbirdUri = "https://api-AC3C369D-9B6F-4D89-A7B0-47A7460DED7E.sendbird.com/v3/";
+  private final String sendbirdUri = "https://api-6EAB14E9-EB51-4E9C-B14C-1B25E2420C9C.sendbird.com/v3/"; // production
 
-  private final String sendbirdToken = "03a0e5dc6158e8a312ee30e27b1c8fa1bddaf1c1";
+  private final String sendbirdToken = "f929720544a30c5c2d0a7668d9ef9b2fbc07f22a"; // production
 
   private final FleekWebClient fleekWebClient;
 

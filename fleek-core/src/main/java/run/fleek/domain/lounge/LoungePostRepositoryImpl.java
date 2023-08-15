@@ -2,10 +2,12 @@ package run.fleek.domain.lounge;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Projections;
 import org.springframework.util.StringUtils;
 import run.fleek.application.post.dto.LoungePostDto;
 import run.fleek.application.post.dto.LoungePostPageDto;
 import run.fleek.configuration.database.FleekQueryDslRepositorySupport;
+import run.fleek.domain.chat.vo.ProfileChatVo;
 import run.fleek.domain.lounge.vo.LoungePostVo;
 import run.fleek.domain.profile.QProfile;
 import run.fleek.domain.users.QFleekUser;
@@ -23,6 +25,9 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
     QPostImage qLoungeImage = QPostImage.postImage;
     QPostLike qPostLike = QPostLike.postLike;
     QProfile qProfile = QProfile.profile;
+
+    QProfile qWriterProfile = new QProfile("writerProfile");
+    QProfile qReaderProfile = new QProfile("readerProfile");
     QFleekUser qFleekUser = QFleekUser.fleekUser;
     QFleekUserDetail qFleekUserDetail = QFleekUserDetail.fleekUserDetail;
 
@@ -39,19 +44,33 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
             predicate.and(qLoungePost.topic.eq(LoungeTopic.valueOf(topicCode)));
         }
 
-        if (StringUtils.hasLength(profileName)) {
-            predicate.and(qProfile.profileName.eq(profileName));
-        }
-
+//        if (StringUtils.hasLength(profileName)) {
+//            predicate.and(qReaderProfile.profileName.eq(profileName));
+//        }
         QueryResults<LoungePostVo> queryResults =
           from(qLoungePost)
-            .innerJoin(qLoungePost.profile, qProfile)
-            .innerJoin(qProfile.fleekUser, qFleekUser)
+            .innerJoin(qLoungePost.profile, qWriterProfile)
+            .innerJoin(qWriterProfile.fleekUser, qFleekUser)
             .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
-            .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
-                  .and(qPostLike.profile.profileId.eq(qProfile.profileId)))
+            .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId))
+            .leftJoin(qReaderProfile).on(qPostLike.profile.profileId.eq(qReaderProfile.profileId)
+              .and(qReaderProfile.profileName.eq(StringUtils.hasLength(profileName) ? profileName : "")))
             .where(predicate)
-            .select(LOUNGE_POST_VO_PROJECTION)
+            .select(Projections.constructor(LoungePostVo.class,
+              qLoungePost.loungePostId,
+              qLoungePost.topic,
+              qLoungePost.createdAt,
+              qLoungePost.title,
+              qLoungePost.content,
+              qLoungePost.topicAttributes,
+              qWriterProfile.profileName,
+              qFleekUserDetail.gender,
+              qLoungePost.likes,
+              qLoungePost.comments,
+              qLoungePost.views,
+              qPostLike.postLikeId,
+              qLoungePost.thumbnail
+            ))
             .orderBy(qLoungePost.createdAt.desc())
             .offset((long) size * page)
             .limit(size)
