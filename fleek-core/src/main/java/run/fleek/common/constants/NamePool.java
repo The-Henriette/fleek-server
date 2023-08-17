@@ -13,7 +13,7 @@ public final class NamePool {
     String randomMiddleName = MIDDLE_NAMES.get((int) (MIDDLE_NAMES.size() * Math.random()));
     String randomLastName = LAST_NAMES.get((int) (LAST_NAMES.size() * Math.random()));
 
-    return JoinUtil.SPACE_JOINER.join(randomFirstName, randomMiddleName, randomLastName);
+    return JoinUtil.BLANK_JOINER.join(randomFirstName, randomMiddleName, randomLastName);
   }
 
   public static final List<String> MIDDLE_NAMES = Arrays.asList(

@@ -49,11 +49,24 @@ public class FleekAuthentication implements Authentication {
         return principal.toString();
     }
 
-    public static FleekAuthentication fromUser(FleekUser FleekUser) {
+    public static FleekAuthentication fromUser(FleekUser fleekUser, Long userId) {
+        if (Objects.isNull(fleekUser)) {
+            return FleekAuthentication.builder()
+              .principal(FleekPrincipalVo.builder()
+                .fleekUserId(userId)
+                .userName(null)
+                .build())
+              .details(FleekUserDetailsVo.builder()
+                .languageCode("ko")
+                .countryCode("ko")
+                .build())
+              .build();
+        }
+
         return FleekAuthentication.builder()
           .principal(FleekPrincipalVo.builder()
-            .fleekUserId(FleekUser.getFleekUserId())
-            .userName(FleekUser.getPhoneNumber())
+            .fleekUserId(fleekUser.getFleekUserId())
+            .userName(fleekUser.getPhoneNumber())
             .build())
           .details(FleekUserDetailsVo.builder()
             .languageCode("ko")

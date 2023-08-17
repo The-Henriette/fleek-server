@@ -1,0 +1,29 @@
+
+### Admin Notification
+POST {{base_uri}}/notification/admin
+Content-Type: application/json
+
+{
+  "pushToken": "d1HME7-SQOarFeQ10WgqLO:APA91bHvAU2k3as2eL3hP6Ra-EwVzk1xWFKwdYw8oXHQ9s8xVKRKNmSF858jevygXo9Ft0s1FCJzAA9nu6TQAZlh4UVW_5vUoVO_59289a7GJvtkauVAMQhKPC3aftwQhrShIoyscr1y",
+  "title": "Admin Notification",
+  "message": "SEX",
+  "data": {
+    "type": "unknown",
+    "uri": "123"
+  }
+}
+
+### Add/Update Push Token
+POST {{base_uri}}/notification/token
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "pushToken": "fuckyeah2",
+  "previousPushToken": "fuckyeah",
+  "platformType": "ios"
+}
+
+### page notification
+GET {{base_uri}}/notification?page=0&size=10
+Authorization: Bearer {{accessToken}}

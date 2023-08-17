@@ -100,6 +100,7 @@ public class AuthApplication {
       .accessToken(userAuth.getAccessToken())
       .refreshToken(userAuth.getRefreshToken())
       .grantType("Bearer")
+      .accessTokenExpiresAt(userAuth.getAccessTokenExpiresAt())
       .refreshTokenExpiresAt(userAuth.getExpiredAt())
       .build();
   }

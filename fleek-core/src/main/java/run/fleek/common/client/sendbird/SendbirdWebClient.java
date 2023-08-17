@@ -15,9 +15,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SendbirdWebClient {
 
-  private final String sendbirdUri = "https://api-6EAB14E9-EB51-4E9C-B14C-1B25E2420C9C.sendbird.com/v3/"; // production
+//  private final String sendbirdUri = "https://api-6EAB14E9-EB51-4E9C-B14C-1B25E2420C9C.sendbird.com/v3/"; // production
+  private final String sendbirdUri = "https://api-881DA4ED-EF8A-4A88-926D-7BE1EC3ACF7D.sendbird.com/v3/"; // local
 
-  private final String sendbirdToken = "f929720544a30c5c2d0a7668d9ef9b2fbc07f22a"; // production
+//  private final String sendbirdToken = "f929720544a30c5c2d0a7668d9ef9b2fbc07f22a"; // production
+  private final String sendbirdToken = "0ee87fbb9282a9d3b37bc820edd2e80863896089"; // local
 
   private final FleekWebClient fleekWebClient;
 
@@ -36,9 +38,11 @@ public class SendbirdWebClient {
     return JsonUtil.read(sendbirdResponse, SendbirdAddUserResponseDto.class);
   }
 
-  public SendbirdAddChatResponseDto addChat(List<String> sendbirdUserIds, String nickname) {
+  public SendbirdAddChatResponseDto addChat(List<String> sendbirdUserIds, String nickname, boolean external) {
     Map<String, String> customData = Maps.newHashMap();
-    customData.put("anonymousProfile", nickname);
+    if (external) {
+      customData.put("anonymousProfile", nickname);
+    }
 
     String sendbirdResponse = fleekWebClient.postFromMap(sendbirdUri + "group_channels",
         SendbirdAddChatDto.builder()

@@ -8,6 +8,17 @@ Content-Type: application/json
   "firstMessage": "fuck yeah! me!!!!"
 }
 
+### 인앱 채팅 생성
+POST {{base_uri}}/chat/create
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "senderProfileName": "언짢은 비둘기 몽찌",
+  "receiverProfileName": "잘빠진 스컹크 타호",
+  "firstMessage": "안녕하세요 저는 개발자고 테스트 중이에요 ㅋ ㅋ ㅋ"
+}
+
 
 ###
 GET {{base_uri}}/chat/sendbird_group_channel_124610683_6d47722c42b3012b4e06550ace36eedbc190a90d/detail?profileName=고마운 침팬지 햇님

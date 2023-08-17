@@ -7,7 +7,7 @@ public final class Constants {
   public static final String[] publicPathAntPatterns = {
     "/error**", "/hello", "/auth/sign-up", "/auth/sign-in", "/auth/username/validate", "/profile/{profileId}/detail",
     "/favicon.ico", "/auth/login", "/auth/verify", "/auth/refresh", "/dev/session",
-    "/chat/create/external", "/file/upload", "/terms"
+    "/chat/create/external", "/file/upload", "/terms", "/notification/admin"
   };
 
   public static final class Auth {

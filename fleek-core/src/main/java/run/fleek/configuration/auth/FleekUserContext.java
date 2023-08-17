@@ -25,6 +25,17 @@ public class FleekUserContext {
     return fleekUserService.getFleekUserVoById(userId);
   }
 
+  public FleekUser fetchUser() {
+    FleekAuthentication authentication = (FleekAuthentication) SecurityContextHolder.getContext().getAuthentication();
+    long userId = authentication.fetchPrincipal().getFleekUserId();
+    return fleekUserService.getByUserId(userId).orElseThrow(new FleekException("존재하지 않는 유저입니다."));
+  }
+
+  public Long getUserId() {
+    FleekAuthentication authentication = (FleekAuthentication) SecurityContextHolder.getContext().getAuthentication();
+    return authentication.fetchPrincipal().getFleekUserId();
+  }
+
   public UserInfoDto getUserInfo() {
     FleekAuthentication authentication = (FleekAuthentication) SecurityContextHolder.getContext().getAuthentication();
     if (Objects.isNull(authentication)) {

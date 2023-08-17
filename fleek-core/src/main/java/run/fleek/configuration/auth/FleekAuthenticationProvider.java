@@ -19,10 +19,10 @@ public class FleekAuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
 
     public Authentication getAuthentication(Long userId) {
-        FleekUser user = fleekUserService.getByUserId(userId)
-          .orElseThrow();
+//        FleekUser user = fleekUserService.getByUserId(userId)
+//          .orElseThrow();
 
-        return FleekAuthentication.fromUser(user);
+        return FleekAuthentication.fromUser(null, userId);
     }
 
     public FleekUser authenticate(FleekPrincipalVo principal, FleekCredentialsVo credentials) {

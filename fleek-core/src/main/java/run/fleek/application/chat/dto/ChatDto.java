@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExternalChatDto {
+public class ChatDto {
   private String chatUserId;
   private String senderProfileName;
   private String channelUrl;

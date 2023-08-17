@@ -3,9 +3,9 @@ package run.fleek.api.controller.chat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.fleek.application.chat.ChatApplication;
+import run.fleek.application.chat.dto.ChatCreateDto;
 import run.fleek.application.chat.dto.ChatDetailDto;
-import run.fleek.application.chat.dto.ExternalChatCreateDto;
-import run.fleek.application.chat.dto.ExternalChatDto;
+import run.fleek.application.chat.dto.ChatDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,9 +14,14 @@ public class ChatController {
   private final ChatApplication chatApplication;
 
   @PostMapping("/chat/create/external")
-  public ExternalChatDto createExternalChat(@RequestBody ExternalChatCreateDto externalChatCreateDto) {
+  public ChatDto createExternalChat(@RequestBody ChatCreateDto externalChatCreateDto) {
 
-    return chatApplication.createExternalChat(externalChatCreateDto);
+    return chatApplication.createChat(externalChatCreateDto, true);
+  }
+
+  @PostMapping("/chat/create")
+  public ChatDto createChat(@RequestBody ChatCreateDto chatCreateDto) {
+    return chatApplication.createChat(chatCreateDto, false);
   }
 
   @GetMapping("/chat/{chatUrl}/detail")

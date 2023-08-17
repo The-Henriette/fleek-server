@@ -29,7 +29,7 @@ public class CertificationApplication {
   }
 
   @Transactional
-  public void confirmCertification(Long userCertificationId) {
+  public UserCertification confirmCertification(Long userCertificationId) {
     UserCertification userCertification = userCertificationService.getUserCertification(userCertificationId)
       .orElseThrow(new FleekException("유효하지 않은 인증입니다."));
 
@@ -42,5 +42,7 @@ public class CertificationApplication {
 
     userCertification.setCertificationStatus(CertificationStatus.ACCEPTED);
     userCertificationService.addUserCertification(userCertification);
+
+    return userCertification;
   }
 }

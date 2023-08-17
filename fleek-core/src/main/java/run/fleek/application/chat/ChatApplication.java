@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import run.fleek.application.chat.dto.ChatCounterpartDto;
-import run.fleek.application.chat.dto.ChatDetailDto;
-import run.fleek.application.chat.dto.ExternalChatCreateDto;
-import run.fleek.application.chat.dto.ExternalChatDto;
+import run.fleek.application.chat.dto.*;
 import run.fleek.common.client.sendbird.SendbirdWebClient;
 import run.fleek.common.client.sendbird.dto.SendbirdAddChatResponseDto;
 import run.fleek.common.constants.NamePool;
@@ -29,7 +26,6 @@ import run.fleek.utils.RandomUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -42,35 +38,28 @@ public class ChatApplication {
   private final ProfileImageService profileImageService;
 
   @Transactional
-  public ExternalChatDto createExternalChat(ExternalChatCreateDto externalChatCreateDto) {
+  public ChatDto createChat(ChatCreateDto chatCreateDto, boolean external) {
 
     // First check that whether the external chat between given two profiles already exists.
-    Optional<ProfileChatVo> profileChatVoOpt = profileChatService.getProfileChatVoByParticipants(externalChatCreateDto.getSenderProfileName(), externalChatCreateDto.getReceiverProfileName());
+    Optional<ProfileChatVo> profileChatVoOpt = profileChatService.getProfileChatVoByParticipants(chatCreateDto.getSenderProfileName(), chatCreateDto.getReceiverProfileName());
     if (profileChatVoOpt.isPresent()) {
-      sendbirdWebClient.sendMessage(profileChatVoOpt.get().getChannelUrl(), externalChatCreateDto.getFirstMessage(),
-        profileChatVoOpt.get().getAnonymousChatKey(), null, null);
-
-      return ExternalChatDto.builder()
-        .chatUserId(profileChatVoOpt.get().getSenderChatProfileKey())
-        .senderProfileName(profileChatVoOpt.get().getSenderProfileName())
-        .channelUrl(profileChatVoOpt.get().getChannelUrl())
-        .profileChatCode(profileChatVoOpt.get().getProfileChatCode())
-        .build();
+      return fetchPreExistentChat(profileChatVoOpt.get(), chatCreateDto, external);
     }
 
     // If the external chat does not exist, then create it.
     // 1. Create temporary profile for the external chat.
-    Profile senderProfile = profileService.addProfile(Profile.fromExternalChat(
+    Profile senderProfile = external ? profileService.addProfile(Profile.fromExternalChat(
       NamePool.getRandomName(),
      "fleek_anonymous_1"
-    ));
+    )) : profileService.getProfileByProfileName(chatCreateDto.getSenderProfileName())
+      .orElseThrow(new FleekException("Sender profile does not exist."));
 
     // 2. Create a channel for the external chat.
-    Profile receiverProfile = profileService.getProfileByProfileName(externalChatCreateDto.getReceiverProfileName())
+    Profile receiverProfile = profileService.getProfileByProfileName(chatCreateDto.getReceiverProfileName())
       .orElseThrow(new FleekException("Receiver profile does not exist."));
     SendbirdAddChatResponseDto sendbirdChannelResult =
       sendbirdWebClient.addChat(Arrays.asList(senderProfile.getChatProfileKey(), receiverProfile.getChatProfileKey()),
-        senderProfile.getProfileName());
+        senderProfile.getProfileName(), external);
 
     Chat chat = chatService.addChat(Chat.builder()
       .chatUri(sendbirdChannelResult.getChannelUrl())
@@ -85,20 +74,20 @@ public class ChatApplication {
     ProfileChat senderProfileChat = profileChatService.addProfileChat(ProfileChat.builder()
       .profile(senderProfile)
       .chat(chat)
-      .profileChatCode(receiverProfile.getProfileName() + RandomUtil.generateRandomSixDigitNumber())
-      .anonymousChatKey(senderProfile.getChatProfileKey())
+      .profileChatCode(external ? receiverProfile.getProfileName() + RandomUtil.generateRandomSixDigitNumber() : null)
+      .anonymousChatKey(external ? senderProfile.getChatProfileKey() : null)
       .build()
     );
 
-    if (StringUtils.hasLength(externalChatCreateDto.getFirstMessage())) {
-      sendbirdWebClient.sendMessage(sendbirdChannelResult.getChannelUrl(), externalChatCreateDto.getFirstMessage(), senderProfile.getChatProfileKey(), null, null);
+    if (StringUtils.hasLength(chatCreateDto.getFirstMessage())) {
+      sendbirdWebClient.sendMessage(sendbirdChannelResult.getChannelUrl(), chatCreateDto.getFirstMessage(), senderProfile.getChatProfileKey(), null, null);
     }
 
-    return ExternalChatDto.builder()
+    return ChatDto.builder()
       .chatUserId(senderProfile.getChatProfileKey())
       .senderProfileName(senderProfile.getProfileName())
       .channelUrl(chat.getChatUri())
-      .profileChatCode(senderProfileChat.getProfileChatCode())
+      .profileChatCode(external ? senderProfileChat.getProfileChatCode() : null)
       .build();
   }
 
@@ -127,5 +116,18 @@ public class ChatApplication {
         StringUtils.hasLength(counterPartProfileChat.getProfileChatCode()))
       .wasAnonymous(StringUtils.hasLength(ownProfileChat.getAnonymousChatKey()))
       .build();
+  }
+
+  private ChatDto fetchPreExistentChat(ProfileChatVo chatVo, ChatCreateDto chatCreateDto, boolean external) {
+    sendbirdWebClient.sendMessage(chatVo.getChannelUrl(), chatCreateDto.getFirstMessage(),
+      external ? chatVo.getAnonymousChatKey() : chatVo.getSenderChatProfileKey(), null, null);
+
+    return ChatDto.builder()
+      .chatUserId(chatVo.getSenderChatProfileKey())
+      .senderProfileName(chatVo.getSenderProfileName())
+      .channelUrl(chatVo.getChannelUrl())
+      .profileChatCode(chatVo.getProfileChatCode())
+      .build();
+
   }
 }
