@@ -14,6 +14,7 @@ import run.fleek.enums.Gender;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileVo {
+  private Long userId;
   private Long profileId;
   private String profileName;
   private String bio;
@@ -29,6 +30,7 @@ public class ProfileVo {
 
     public ProfileVoProjection() {
       super(ProfileVo.class,
+        QFleekUser.fleekUser.fleekUserId,
         QProfile.profile.profileId,
         QProfile.profile.profileName,
         QProfile.profile.bio,
@@ -41,6 +43,7 @@ public class ProfileVo {
     @Override
     protected ProfileVo map(Tuple row) {
       return ProfileVo.builder()
+        .userId(row.get(QFleekUser.fleekUser.fleekUserId))
         .profileId(row.get(QProfile.profile.profileId))
         .profileName(row.get(QProfile.profile.profileName))
         .bio(row.get(QProfile.profile.bio))

@@ -11,4 +11,5 @@ public class CertificationDto {
   private String certificationCode;
   private String certificationName;
   private String certificationDescription;
+  private String certificationStatus;
 }

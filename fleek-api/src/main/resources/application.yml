@@ -64,4 +64,4 @@ logging:
 notification:
   slack:
     dev-verification: https://hooks.slack.com/services/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
-
+    dev-certification: https://hooks.slack.com/services/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

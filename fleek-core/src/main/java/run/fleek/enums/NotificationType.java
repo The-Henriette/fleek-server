@@ -11,6 +11,11 @@ public enum NotificationType {
   NER_COMMENT_ADDED("새로운 댓글이 추가되었습니다."),
   COMPANY_CERTIFICATION_REJECTED("회사 인증이 거절되었습니다."),
   COMPANY_CERTIFICATION_ACCEPTED("회사 인증이 승인되었습니다."),
+  COLLEGE_CERTIFICATION_REJECTED("대학 인증이 거절되었습니다."),
+  COLLEGE_CERTIFICATION_ACCEPTED("대학 인증이 승인되었습니다."),
+  INBODY_CERTIFICATION_REJECTED("인바디 인증이 거절되었습니다."),
+  INBODY_CERTIFICATION_ACCEPTED("인바디 인증이 승인되었습니다.")
+
   ;
 
   NotificationType(String message) {
@@ -18,4 +23,16 @@ public enum NotificationType {
   }
 
   private final String message;
+
+  public static NotificationType ofConfirm(String certificationCode) {
+    if (certificationCode.equals("FACE")) {
+      return FACE_CERTIFICATION_ACCEPTED;
+    } else if (certificationCode.equals("COMPANY")) {
+      return COMPANY_CERTIFICATION_ACCEPTED;
+    } else if (certificationCode.equals("COLLEGE")) {
+      return COLLEGE_CERTIFICATION_ACCEPTED;
+    } else {
+      return INBODY_CERTIFICATION_ACCEPTED;
+    }
+  }
 }

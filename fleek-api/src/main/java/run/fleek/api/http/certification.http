@@ -1,3 +1,22 @@
 ### Confirm Certification
-POST {{base_uri}}/certification/13/confirm
+POST {{base_uri}}/certification/17/confirm
 Authorization: Bearer {{accessToken}}
+
+###
+GET {{base_uri}}/user/certifications
+Authorization: Bearer {{accessToken}}
+
+###
+POST {{base_uri}}/certification/register
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "certificationCode": "COLLEGE",
+  "resources": [
+    {
+      "resourceUrl": "randomImageUrl",
+      "resourceContext": "서울대학교"
+    }
+  ]
+}

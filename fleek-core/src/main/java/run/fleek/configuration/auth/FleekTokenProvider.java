@@ -34,7 +34,7 @@ public class FleekTokenProvider {
   }
 
   public TokenDto generateTokenDto(FleekUser fleekUser) {
-    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND;
+    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND - 60000;
 
     String accessToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
       .claim("id", fleekUser.getFleekUserId().toString())

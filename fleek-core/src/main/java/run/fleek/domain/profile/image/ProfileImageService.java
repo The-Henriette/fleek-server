@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.image.dto.ProfileImageDto;
+import run.fleek.domain.users.FleekUser;
 import run.fleek.enums.ImageType;
 
 import java.util.List;
@@ -78,4 +79,8 @@ public class ProfileImageService {
     addProfileImages(profile, imageUrls);
   }
 
+  @Transactional
+  public void removeAllFaceImageByUser(FleekUser fleekUser) {
+    profileImageRepository.deleteAllByProfile_FleekUserAndImageType(fleekUser, ImageType.FACE_IMAGE);
+  }
 }

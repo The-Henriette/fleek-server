@@ -17,11 +17,11 @@ public class CertificationHolder {
   private final CertificationService certificationService;
   private Map<String, Certification> certificationMap;
 
-//  @PostConstruct
-//  public void init() {
-//    certificationMap = certificationService.listCertifications().stream()
-//      .collect(Collectors.toMap(Certification::getCertificationCode, Function.identity()));
-//  }
+  @PostConstruct
+  public void init() {
+    certificationMap = certificationService.listCertifications().stream()
+      .collect(Collectors.toMap(Certification::getCertificationCode, Function.identity()));
+  }
 
   public Certification getCertification(String certificationCode) {
     return certificationMap.get(certificationCode);

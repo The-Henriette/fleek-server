@@ -6,11 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import run.fleek.application.certification.CertificationApplication;
 import run.fleek.application.profile.dto.ProfileInfoMetaDto;
 import run.fleek.application.profile.dto.ProfileOptionMetaDto;
 import run.fleek.application.profile.dto.ProfileViewDto;
 import run.fleek.application.profile.vo.ProfileEditDto;
 import run.fleek.common.exception.FleekException;
+import run.fleek.domain.certification.dto.CertificationDto;
 import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.ProfileService;
 import run.fleek.domain.profile.dto.ProfileCategoryInfoDto;
@@ -42,6 +44,7 @@ public class ProfileApplication {
   private final ProfileImageService profileImageService;
   private final ProfileInfoTypeHolder profileInfoTypeHolder;
   private final ProfileInfoProcessor profileInfoProcessor;
+  private final CertificationApplication certificationApplication;
 
   @Transactional
   public void putProfileDetail(ProfileEditDto dto) {
@@ -78,12 +81,15 @@ public class ProfileApplication {
     ProfileVo targetProfile = profileService.getProfileVoByName(profileName);
     List<ProfileInfo> profileInfoList = profileInfoService.listProfileInfoByProfile(targetProfile.getProfileId());
     List<ProfileImage> profileImageList = profileImageService.listProfileImageByProfileId(targetProfile.getProfileId());
-    // TODO: add certifications
-    return this.buildProfileDetail(targetProfile, profileInfoList, profileImageList);
+    List<CertificationDto> certificationDtoList = Lists.newArrayList();
+    if (Objects.nonNull(targetProfile.getUserId())) {
+      certificationDtoList = certificationApplication.listUserCertifications(targetProfile.getUserId());
+    }
+    return this.buildProfileDetail(targetProfile, profileInfoList, profileImageList, certificationDtoList);
   }
 
   private ProfileViewDto buildProfileDetail(ProfileVo profile, List<ProfileInfo> profileInfoList,
-                                            List<ProfileImage> profileImageList) {
+                                            List<ProfileImage> profileImageList, List<CertificationDto> certificationDtoList) {
     ProfileViewDto profileViewDto = ProfileViewDto.builder()
       .profileId(profile.getProfileId())
       .profileName(profile.getProfileName())
@@ -97,7 +103,7 @@ public class ProfileApplication {
         .sorted(Comparator.comparing(ProfileImage::getOrderNumber))
         .map(ProfileImage::getImageUrl)
         .collect(Collectors.toList()))
-      .certifications(Lists.newArrayList())
+      .certifications(certificationDtoList)
       .profileImagePaths(profileImageList.stream()
         .filter(pi -> pi.getImageType().equals(ImageType.PROFILE_POST))
         .sorted(Comparator.comparing(ProfileImage::getOrderNumber))
@@ -123,7 +129,7 @@ public class ProfileApplication {
               .emoji(pi.getEmoji())
               .order(pi.getOrderNumber())
               .build();
-            if (Objects.nonNull(userProfileInfo) && pi.getInputType().equals(ProfileInfoInputType.CUSTOM)) {
+            if (Objects.nonNull(userProfileInfo) && (pi.getInputType().equals(ProfileInfoInputType.CUSTOM) || pi.getInputType().equals(ProfileInfoInputType.CERTIFIED_VALUE))) {
               profileInfoDto.setTypeValue(userProfileInfo.getTypeValue());
               return profileInfoDto;
             }

@@ -3,7 +3,9 @@ package run.fleek.domain.certification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.fleek.domain.users.FleekUser;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,11 +16,27 @@ public class UserCertificationService {
 
     @Transactional
     public UserCertification addUserCertification(UserCertification userCertification) {
+        boolean existsActiveCertification =
+          userCertificationRepository.existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(userCertification.getFleekUser().getFleekUserId(), userCertification.getCertificationCode());
+
+        if (existsActiveCertification) {
+            userCertification.setActive(false);
+        }
         return userCertificationRepository.save(userCertification);
     }
 
     @Transactional(readOnly = true)
     public Optional<UserCertification> getUserCertification(Long userCertificationId) {
       return userCertificationRepository.findById(userCertificationId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserCertification> listUserCertifications(Long userId) {
+      return userCertificationRepository.findAllByFleekUser_FleekUserIdAndActiveIsTrue(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserCertification> getActiveCertification(FleekUser fleekUser, String certificationCode) {
+      return userCertificationRepository.findByFleekUserAndCertificationCodeAndActiveIsTrue(fleekUser, certificationCode);
     }
 }

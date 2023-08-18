@@ -26,6 +26,7 @@ CREATE TABLE user_certification (
     fleek_user_id bigint,
     certification_code varchar(255),
     certification_status varchar(50),
+    active boolean,
     created_at bigint NOT NULL,
     updated_at bigint NOT NULL
 );

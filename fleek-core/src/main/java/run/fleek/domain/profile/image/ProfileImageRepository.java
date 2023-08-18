@@ -2,6 +2,7 @@ package run.fleek.domain.profile.image;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import run.fleek.domain.profile.Profile;
+import run.fleek.domain.users.FleekUser;
 import run.fleek.enums.ImageType;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface ProfileImageRepository extends JpaRepository<ProfileImage, Long
     boolean existsByProfileAndImageType(Profile profile, ImageType imageType);
 
     void deleteAllByProfileAndImageType(Profile profile, ImageType imageType);
+
+  void deleteAllByProfile_FleekUserAndImageType(FleekUser fleekUser, ImageType faceImage);
 }

@@ -35,6 +35,9 @@ public class UserCertification implements SystemMetadata {
   @Enumerated(EnumType.STRING)
   private CertificationStatus certificationStatus;
 
+  @Column(name = "active")
+  private Boolean active;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 
@@ -45,5 +48,6 @@ public class UserCertification implements SystemMetadata {
     this.certificationCode = targetCertification.getCertificationCode();
     this.fleekUser = fleekUser;
     this.certificationStatus = CertificationStatus.PENDING;
+    this.active = false;
   }
 }
