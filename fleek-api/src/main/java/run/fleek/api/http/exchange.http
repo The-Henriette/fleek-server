@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### accept exchange
-POST {{base_uri}}/exchange/8/accept/언짢은 비둘기 몽찌
+POST {{base_uri}}/exchange/13/accept/언짢은 비둘기 몽찌
 Authorization: Bearer {{accessToken}}
 
 

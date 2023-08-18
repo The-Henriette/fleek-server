@@ -36,4 +36,7 @@ public class UserWallet implements SystemMetadata {
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
 
+  public void purchase(Long increment) {
+    this.amount += increment;
+  }
 }

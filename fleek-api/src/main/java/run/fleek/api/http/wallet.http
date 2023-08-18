@@ -2,3 +2,7 @@
 ### Get Wallet Amount
 GET {{base_uri}}/wallet
 Authorization: Bearer {{accessToken}}
+
+### increment
+POST {{base_uri}}/wallet/purchase?increment=10
+Authorization: Bearer {{accessToken}}

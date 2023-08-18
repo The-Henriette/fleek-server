@@ -2,6 +2,8 @@ package run.fleek.api.controller.wallet;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import run.fleek.api.controller.wallet.dto.UserWalletDto;
 import run.fleek.configuration.auth.FleekUserContext;
@@ -21,5 +23,11 @@ public class UserWalletController {
     return UserWalletDto.builder()
         .amount(wallet.getAmount())
         .build();
+  }
+
+  @PostMapping("/wallet/purchase")
+  public void purchase(@RequestParam Long increment) {
+    UserWallet wallet = userWalletService.getWallet(fleekUserContext.getUserId());
+    userWalletService.purchase(wallet, increment);
   }
 }

@@ -27,6 +27,8 @@ import run.fleek.domain.users.FleekUserDetailService;
 import run.fleek.domain.users.FleekUserService;
 import run.fleek.domain.users.auth.UserAuth;
 import run.fleek.domain.users.auth.UserAuthService;
+import run.fleek.domain.users.wallet.UserWallet;
+import run.fleek.domain.users.wallet.UserWalletService;
 
 import java.util.UUID;
 
@@ -46,6 +48,7 @@ public class SignUpApplication {
   private final FleekTokenProvider tokenProvider;
   private final SendbirdWebClient sendbirdWebClient;
   private final UserAuthService userAuthService;
+  private final UserWalletService userWalletService;
 
   @Transactional
   public SignUpResultDto signUp(SignUpDto signUpDto) {
@@ -98,6 +101,11 @@ public class SignUpApplication {
       .refreshTokenExpiresAt(userAuth.getExpiredAt())
       .grantType("Bearer")
       .build();
+
+    userWalletService.putWallet(UserWallet.builder()
+      .amount(400L)
+      .fleekUser(fleekUser)
+      .build());
 
     result.setToken(token);
     result.setChatProfileKey(profile.getChatProfileKey());

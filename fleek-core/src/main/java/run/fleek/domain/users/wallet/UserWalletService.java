@@ -20,4 +20,10 @@ public class UserWalletService {
   public void putWallet(UserWallet userWallet) {
     userWalletRepository.save(userWallet);
   }
+
+  @Transactional
+  public void purchase(UserWallet userWallet, Long increment) {
+    userWallet.purchase(increment);
+    userWalletRepository.save(userWallet);
+  }
 }
