@@ -88,6 +88,16 @@ public class SendbirdWebClient {
     return JsonUtil.read(sendbirdResponse, SendbirdSendMessageDto.class);
   }
 
+  public SendbirdSendMessageDto getMessage(String channelUrl, String messageId) {
+    String sendbirdResponse = fleekWebClient.getFromMap(sendbirdUri + "group_channels/" + channelUrl + "/messages/" + messageId,
+      getHeaders()
+      )
+      .bodyToMono(String.class)
+      .block();
+
+    return JsonUtil.read(sendbirdResponse, SendbirdSendMessageDto.class);
+  }
+
   public SendbirdSendMessageDto updateMessage(String messageId, String channelUrl, String message,
                                               String customType, String data) {
     SendbirdSendMessageDto sendMessage = SendbirdSendMessageDto.builder()

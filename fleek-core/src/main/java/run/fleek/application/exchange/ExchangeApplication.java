@@ -11,6 +11,7 @@ import run.fleek.common.client.sendbird.SendbirdWebClient;
 import run.fleek.common.client.sendbird.dto.SendbirdSendMessageDto;
 import run.fleek.common.exception.FleekException;
 import run.fleek.common.response.FleekGeneralResponse;
+import run.fleek.configuration.auth.FleekUserContext;
 import run.fleek.domain.chat.ProfileChat;
 import run.fleek.domain.chat.ProfileChatService;
 import run.fleek.domain.exchange.Exchange;
@@ -21,12 +22,17 @@ import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.ProfileService;
 import run.fleek.domain.profile.image.ProfileImage;
 import run.fleek.domain.profile.image.ProfileImageService;
+import run.fleek.domain.users.wallet.UserWallet;
+import run.fleek.domain.users.wallet.UserWalletService;
+import run.fleek.enums.ExchangeFailureCode;
 import run.fleek.enums.ExchangeValidationCode;
 import run.fleek.enums.ImageType;
 import run.fleek.utils.JsonUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static run.fleek.common.constants.Constants.Price.EXCHANGE_PRICE;
 
 @Component
 @RequiredArgsConstructor
@@ -38,6 +44,8 @@ public class ExchangeApplication {
   private final SendbirdWebClient sendbirdWebClient;
   private final ProfileImageService profileImageService;
   private final ProfileService profileService;
+  private final FleekUserContext fleekUserContext;
+  private final UserWalletService userWalletService;
 
   @Transactional
   public ExchangeResponseDto requestExchange(ExchangeRequestDto requestDto) {
@@ -150,6 +158,7 @@ public class ExchangeApplication {
 
   @Transactional
   public ExchangeWatchDto watchExchange(Long exchangeId, String profileName) {
+    Long fleekUserId = fleekUserContext.getUserId();
 
     Exchange exchange = exchangeService.getExchange(exchangeId);
 
@@ -171,11 +180,21 @@ public class ExchangeApplication {
     if (profileExchange.getWatched()) {
       return ExchangeWatchDto.builder()
         .success(false)
-        .failureReason("서로의 안전을 위해 단 한 번만 사진을 볼 수 있습니다.")
+        .failureCode(ExchangeFailureCode.ALREADY_WATCHED.getName())
+        .failureReason(ExchangeFailureCode.ALREADY_WATCHED.getDescription())
         .build();
     }
-    profileExchange.setWatched(true);
-    profileExchangeService.addProfileExchanges(List.of(profileExchange));
+//    profileExchange.setWatched(true);
+//    profileExchangeService.addProfileExchanges(List.of(profileExchange));
+
+    UserWallet userWallet = userWalletService.getWallet(fleekUserId);
+    if (userWallet.getAmount() < EXCHANGE_PRICE) {
+      return ExchangeWatchDto.builder()
+        .success(false)
+        .failureCode(ExchangeFailureCode.NOT_ENOUGH_BALANCE.getName())
+        .failureReason(ExchangeFailureCode.NOT_ENOUGH_BALANCE.getDescription())
+        .build();
+    }
 
     List<ProfileImage> counterPartFaceImages = profileImageService.listProfileImageByProfileId(counterPart.getProfileId());
 
@@ -186,5 +205,33 @@ public class ExchangeApplication {
         .map(ProfileImage::getImageUrl)
         .collect(Collectors.toList()))
       .build();
+  }
+
+  @Transactional
+  public void readExchange(Long exchangeId, String profileName, Long readMessageId) {
+    Long fleekUserId = fleekUserContext.getUserId();
+    UserWallet userWallet = userWalletService.getWallet(fleekUserId);
+
+    ProfileExchange profileExchange = profileExchangeService.getProfileExchangeByExchangeIdAndProfileName(exchangeId, profileName);
+    profileExchange.setWatched(true);
+    profileExchangeService.addProfileExchanges(List.of(profileExchange));
+
+    userWallet.setAmount(userWallet.getAmount() - EXCHANGE_PRICE);
+    userWalletService.putWallet(userWallet);
+
+    Exchange exchange = profileExchange.getExchange();
+
+    // update exchange message
+    SendbirdSendMessageDto originalMessage =
+      sendbirdWebClient.getMessage(exchange.getChat().getChatUri(), readMessageId.toString());
+    SendbirdExchangeDataDto data = JsonUtil.read(originalMessage.getData(), SendbirdExchangeDataDto.class);
+
+    List<String> readProfileNames = data.getReadProfileNames();
+    readProfileNames.add(profileName);
+    data.setReadProfileNames(readProfileNames);
+
+    sendbirdWebClient.updateMessage(readMessageId.toString(), exchange.getChat().getChatUri(), "사진교환", "EXCHANGE",
+      JsonUtil.write(data)
+    );
   }
 }

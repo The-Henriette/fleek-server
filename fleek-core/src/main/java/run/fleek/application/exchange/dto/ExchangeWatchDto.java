@@ -16,6 +16,7 @@ import static run.fleek.common.constants.Constants.CDN_PREFIX;
 public class ExchangeWatchDto {
   private Boolean success;
   private List<String> faceUrls;
+  private String failureCode;
   private String failureReason;
 
   public List<String> getFaceUrls() {

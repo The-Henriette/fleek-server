@@ -14,4 +14,8 @@ public final class Constants {
     public static final long ACCESS_TOKEN_TTL_MILLISECOND = 240000L; // 5 minutes
     public static final long REFRESH_TOKEN_TTL_MILLISECOND = 10368000000L; // 120 Days
   }
+
+  public static final class Price {
+    public static final long EXCHANGE_PRICE = 80L;
+  }
 }

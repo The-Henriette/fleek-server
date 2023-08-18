@@ -1,0 +1,4 @@
+
+### Get Wallet Amount
+GET {{base_uri}}/wallet
+Authorization: Bearer {{accessToken}}

@@ -1,10 +1,7 @@
 package run.fleek.api.controller.exchange;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import run.fleek.application.exchange.ExchangeApplication;
 import run.fleek.application.exchange.dto.ExchangeRequestDto;
 import run.fleek.application.exchange.dto.ExchangeResponseDto;
@@ -36,6 +33,11 @@ public class ExchangeController {
   @PostMapping("/exchange/{exchangeId}/watch/{profileName}")
   public ExchangeWatchDto watchExchange(@PathVariable Long exchangeId, @PathVariable String profileName) {
     return exchangeApplication.watchExchange(exchangeId, profileName);
+  }
+
+  @PostMapping("/exchange/{exchangeId}/read/{profileName}")
+  public void readExchange(@PathVariable Long exchangeId, @PathVariable String profileName, @RequestParam Long readMessageId) {
+    exchangeApplication.readExchange(exchangeId, profileName, readMessageId);
   }
 
 }

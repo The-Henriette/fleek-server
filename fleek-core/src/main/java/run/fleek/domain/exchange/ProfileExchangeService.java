@@ -22,4 +22,9 @@ public class ProfileExchangeService {
   public ProfileExchange getProfileExchange(Exchange exchange, Profile profile) {
     return profileExchangeRepository.getByExchangeAndProfile(exchange, profile);
   }
+
+  @Transactional(readOnly = true)
+  public ProfileExchange getProfileExchangeByExchangeIdAndProfileName(Long exchangeId, String profileName) {
+    return profileExchangeRepository.getByExchange_ExchangeIdAndProfile_ProfileName(exchangeId, profileName);
+  }
 }

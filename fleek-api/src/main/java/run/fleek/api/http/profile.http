@@ -1,5 +1,5 @@
 ### GET profile detail
-GET {{base_uri}}/profile/빨간 미어캣 성윤/detail
+GET {{base_uri}}/profile/잘빠진 스컹크 타호/detail
 Content-Type: application/json
 
 ### GET profile info type meta

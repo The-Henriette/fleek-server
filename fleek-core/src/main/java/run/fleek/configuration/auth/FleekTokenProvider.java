@@ -39,7 +39,8 @@ public class FleekTokenProvider {
     String accessToken = Jwts.builder().setSubject(fleekUser.getFleekUserId().toString())
       .claim("id", fleekUser.getFleekUserId().toString())
       .claim("auth", "[]")
-      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND)).signWith(this.key, SignatureAlgorithm.HS512).compact();
+      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND + 60000))
+      .signWith(this.key, SignatureAlgorithm.HS512).compact();
 
     long refreshTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND;
 
