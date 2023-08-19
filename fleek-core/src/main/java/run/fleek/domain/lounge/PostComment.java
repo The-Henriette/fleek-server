@@ -32,11 +32,14 @@ public class PostComment implements SystemMetadata {
   @JoinColumn(name = "profile_id")
   private Profile profile;
 
-  @Column(name = "parent_profile_id")
-  private Long parentProfileId;
+  @Column(name = "parent_comment_id")
+  private Long parentCommentId;
 
   @Column(name = "content")
   private String content;
+
+  @Column(name = "sub_comments")
+  private Integer subComments;
 
   @Column(name = "likes")
   private Integer likes;
@@ -51,8 +54,10 @@ public class PostComment implements SystemMetadata {
     return PostComment.builder()
       .loungePost(loungePost)
       .profile(profile)
+      .parentCommentId(dto.getParentCommentId())
       .content(dto.getContent())
       .likes(0)
+      .subComments(0)
       .build();
   }
 }

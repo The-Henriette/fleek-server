@@ -7,4 +7,8 @@ import run.fleek.domain.profile.Profile;
 @Repository
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     boolean existsByLoungePostAndProfile(LoungePost loungePost, Profile profile);
+
+  boolean existsByLoungePost_LoungePostIdAndProfile_ProfileName(Long postId, String profileName);
+
+  void deleteByLoungePostAndProfile(LoungePost loungePost, Profile profile);
 }

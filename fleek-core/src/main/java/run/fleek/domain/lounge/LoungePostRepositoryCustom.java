@@ -4,7 +4,7 @@ import run.fleek.application.post.dto.LoungePostPageDto;
 import run.fleek.domain.lounge.vo.LoungePostVo;
 
 public interface LoungePostRepositoryCustom {
-  LoungePostPageDto pageLoungePosts(Integer size, Integer page, String profileName, String topicCode);
+  LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode);
 
-  LoungePostVo getLoungePost(Long postId, String profileName);
+  LoungePostVo getLoungePost(Long postId, Long readerProfileId);
 }

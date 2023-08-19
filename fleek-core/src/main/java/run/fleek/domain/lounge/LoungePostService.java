@@ -21,20 +21,27 @@ public class LoungePostService {
   }
 
   @Transactional(readOnly = true)
-  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, String profileName, String topicCode) {
-    return loungePostRepository.pageLoungePosts(size, page, profileName, topicCode);
+  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode) {
+    return loungePostRepository.pageLoungePosts(size, page, readerProfileId, topicCode);
   }
 
   @Transactional(readOnly = true)
-  public LoungePostVo getLoungePostVo(Long postId, String profileName) {
-    return loungePostRepository.getLoungePost(postId, profileName);
+  public LoungePostVo getLoungePostVo(Long postId, Long readerProfileId) {
+    return loungePostRepository.getLoungePost(postId, readerProfileId);
   }
 
+  @Transactional(readOnly = true)
   public LoungePost getLoungePost(Long postId) {
     return loungePostRepository.getById(postId);
   }
 
+  @Transactional
   public void addLoungePost(LoungePost loungePostEntity) {
     loungePostRepository.save(loungePostEntity);
+  }
+
+  @Transactional
+  public void deleteLoungePost(LoungePost loungePost) {
+    loungePostRepository.delete(loungePost);
   }
 }

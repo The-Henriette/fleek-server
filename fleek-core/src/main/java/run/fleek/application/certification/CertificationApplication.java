@@ -53,7 +53,7 @@ public class CertificationApplication {
       userCertification.getFleekUser(), userCertification.getCertificationCode()
     );
 
-    if (activeCertificationOpt.isPresent()) {
+    if (activeCertificationOpt.isPresent() && !activeCertificationOpt.get().getUserCertificationId().equals(userCertificationId)) {
       UserCertification activeCertification = activeCertificationOpt.get();
       activeCertification.setActive(false);
       userCertificationService.addUserCertification(activeCertification);

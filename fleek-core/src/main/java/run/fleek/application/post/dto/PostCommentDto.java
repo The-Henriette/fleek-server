@@ -15,6 +15,10 @@ public class PostCommentDto {
   private String content;
   private Long createdAt;
   private Integer likes;
+  private Boolean didLike;
+  private String profileGender;
+  private Integer subComments;
+  private Long parentCommentId;
 
   public static PostCommentDto from(PostCommentVo vo) {
     return PostCommentDto.builder()
@@ -23,6 +27,10 @@ public class PostCommentDto {
       .content(vo.getContent())
       .createdAt(vo.getCreatedAt())
       .likes(vo.getLikes())
+      .didLike(vo.getCommentLikeId() != null)
+      .profileGender(vo.getProfileGender().name())
+      .subComments(vo.getSubComments())
+      .parentCommentId(vo.getParentCommentId())
       .build();
   }
 }

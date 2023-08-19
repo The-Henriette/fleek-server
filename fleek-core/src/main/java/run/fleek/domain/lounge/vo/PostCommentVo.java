@@ -8,6 +8,7 @@ import run.fleek.domain.lounge.QPostComment;
 import run.fleek.domain.lounge.QPostLike;
 import run.fleek.domain.profile.QProfile;
 import run.fleek.domain.users.QFleekUserDetail;
+import run.fleek.enums.Gender;
 
 @Getter
 @Setter
@@ -20,6 +21,10 @@ public class PostCommentVo {
   private String content;
   private Long createdAt;
   private Integer likes;
+  private Gender profileGender;
+  private Long commentLikeId;
+  private Integer subComments;
+  private Long parentCommentId;
 
   public static final PostCommentVoProjection POST_COMMENT_VO_PROJECTION = new PostCommentVoProjection();
 

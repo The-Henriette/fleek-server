@@ -16,32 +16,74 @@ Authorization: Bearer {{accessToken}}
     "attributes": {}
 }
 
+### 게시글 수정
+PUT {{base_uri}}/lounge/post/6
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "profileName": "잘빠진 스컹크 타호",
+  "topicCode": "NSFW",
+  "title": "수정된 게시글 제목입니다.",
+  "content": "수정된 게시글 내용입니다.",
+  "photos": [],
+  "attributes": {}
+}
+
 ### 게시글 조회
-GET {{base_uri}}/lounge/posts?size=10&page=0&profileName=폭격기여씨
+GET {{base_uri}}/lounge/posts?size=10&page=0&profileName=잘빠진 스컹크 타호
 Authorization: Bearer {{accessToken}}
 
 ### 게시글 조회
 GET {{base_uri}}/lounge/posts?size=10&page=0
 Authorization: Bearer {{accessToken}}
 
-
 ### 게시글 단건 조회 및 View 수정
-POST {{base_uri}}/lounge/post/1
+POST {{base_uri}}/lounge/post/6?profileName=잘빠진 스컹크 타호
 Authorization: Bearer {{accessToken}}
 
 ### 게시글 댓글 추가
-POST {{base_uri}}/lounge/post/1/comment
+POST {{base_uri}}/lounge/post/8/comment
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "profileName": "폭격기여씨",
-    "content": "댓글입니다."
+    "profileName": "잘빠진 스컹크 타호",
+    "content": "댓글입니다.",
+    "parentCommentId": null
+}
+
+### 게시글 댓글 수정
+PUT {{base_uri}}/lounge/comment/12
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "profileName": "잘빠진 스컹크 타호",
+  "content": "수정해버렸다.",
+  "parentCommentId": null
+}
+
+
+### 게시글 대댓글 추가
+POST {{base_uri}}/lounge/post/8/comment
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "profileName": "잘빠진 스컹크 타호",
+  "content": "대댓글입니다.",
+  "parentCommentId": 12
 }
 
 ### 게시글 댓글 조회
-GET {{base_uri}}/lounge/post/1/comment?size=10&page=0
+GET {{base_uri}}/lounge/post/8/comment?size=10&page=0&profileName=언짢은 비둘기 몽찌&parentCommentId=
 Authorization: Bearer {{accessToken}}
+
+### 게시글 대댓글 조회
+GET {{base_uri}}/lounge/post/8/comment?size=10&page=0&profileName=언짢은 비둘기 몽찌&parentCommentId=10
+Authorization: Bearer {{accessToken}}
+
 
 ### 게시글 좋아요
 POST {{base_uri}}/lounge/post/1/like?profileName=빨간 미어캣 성윤
@@ -49,6 +91,14 @@ Authorization: Bearer {{accessToken}}
 
 ### 댓글 좋아요
 POST {{base_uri}}/lounge/comment/1/like?profileName=빨간 미어캣 성윤
+Authorization: Bearer {{accessToken}}
+
+### 댓글 삭제
+DELETE {{base_uri}}/lounge/comment/4
+Authorization: Bearer {{accessToken}}
+
+### 게시글 삭제
+DELETE {{base_uri}}/lounge/post/9
 Authorization: Bearer {{accessToken}}
 
 

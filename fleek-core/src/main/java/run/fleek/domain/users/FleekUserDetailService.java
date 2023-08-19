@@ -16,4 +16,9 @@ public class FleekUserDetailService {
   public void addUserDetail(FleekUserDetail userDetail) {
     fleekUserDetailRepository.save(userDetail);
   }
+
+  public FleekUserDetail getUserDetail(FleekUser user) {
+    return fleekUserDetailRepository.findByFleekUser(user)
+      .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+  }
 }

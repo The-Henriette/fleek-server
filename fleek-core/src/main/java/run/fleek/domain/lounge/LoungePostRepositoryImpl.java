@@ -15,6 +15,7 @@ import run.fleek.domain.users.QFleekUserDetail;
 import run.fleek.enums.LoungeTopic;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static run.fleek.domain.lounge.vo.LoungePostVo.LOUNGE_POST_VO_PROJECTION;
@@ -38,7 +39,7 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
 
 
     @Override
-    public LoungePostPageDto pageLoungePosts(Integer size, Integer page, String profileName, String topicCode) {
+    public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode) {
         BooleanBuilder predicate = new BooleanBuilder();
         if (StringUtils.hasLength(topicCode)) {
             predicate.and(qLoungePost.topic.eq(LoungeTopic.valueOf(topicCode)));
@@ -52,9 +53,8 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
             .innerJoin(qLoungePost.profile, qWriterProfile)
             .innerJoin(qWriterProfile.fleekUser, qFleekUser)
             .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
-            .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId))
-            .leftJoin(qReaderProfile).on(qPostLike.profile.profileId.eq(qReaderProfile.profileId)
-              .and(qReaderProfile.profileName.eq(StringUtils.hasLength(profileName) ? profileName : "")))
+            .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
+              .and(qPostLike.profile.profileId.eq(readerProfileId != null ? readerProfileId : 0L)))
             .where(predicate)
             .select(Projections.constructor(LoungePostVo.class,
               qLoungePost.loungePostId,
@@ -86,19 +86,16 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
     }
 
     @Override
-    public LoungePostVo getLoungePost(Long postId, String profileName) {
+    public LoungePostVo getLoungePost(Long postId, Long readerProfileId) {
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(qLoungePost.loungePostId.eq(postId));
-        if (StringUtils.hasLength(profileName)) {
-            predicate.and(qProfile.profileName.eq(profileName));
-        }
 
         return from(qLoungePost)
           .innerJoin(qLoungePost.profile, qProfile)
           .innerJoin(qProfile.fleekUser, qFleekUser)
           .innerJoin(qFleekUserDetail).on(qFleekUser.fleekUserId.eq(qFleekUserDetail.fleekUser.fleekUserId))
-           .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
-                .and(qPostLike.profile.profileId.eq(qProfile.profileId)))
+          .leftJoin(qPostLike).on(qPostLike.loungePost.loungePostId.eq(qLoungePost.loungePostId)
+            .and(qPostLike.profile.profileId.eq(Objects.nonNull(readerProfileId) ? readerProfileId : 0L)))
           .where(predicate)
           .select(LOUNGE_POST_VO_PROJECTION)
           .fetchOne();

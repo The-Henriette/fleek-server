@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String getHello() {
-        return "Fuck Yeah! - Fleek: up until wallet";
+        return "Fuck Yeah! - Fleek: up until certification";
     }
 }

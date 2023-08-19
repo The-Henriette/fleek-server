@@ -1,5 +1,5 @@
 ### GET profile detail
-GET {{base_uri}}/profile/잘빠진 스컹크 타호/detail
+GET {{base_uri}}/profile/있는치타김장미/detail
 Content-Type: application/json
 
 ### GET profile info type meta

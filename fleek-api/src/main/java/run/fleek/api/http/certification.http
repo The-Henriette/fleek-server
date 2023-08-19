@@ -1,5 +1,5 @@
 ### Confirm Certification
-POST {{base_uri}}/certification/17/confirm
+POST {{base_uri}}/certification/16/confirm
 Authorization: Bearer {{accessToken}}
 
 ###

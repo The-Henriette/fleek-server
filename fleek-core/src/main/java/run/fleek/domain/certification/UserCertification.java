@@ -48,6 +48,6 @@ public class UserCertification implements SystemMetadata {
     this.certificationCode = targetCertification.getCertificationCode();
     this.fleekUser = fleekUser;
     this.certificationStatus = CertificationStatus.PENDING;
-    this.active = false;
+    this.active = true;
   }
 }

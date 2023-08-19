@@ -11,4 +11,5 @@ public class CommentAddDto {
 
   private String content;
   private String profileName;
+  private Long parentCommentId;
 }

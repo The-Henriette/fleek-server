@@ -77,9 +77,10 @@ CREATE TABLE post_comment (
       post_comment_id bigint PRIMARY KEY,
       lounge_post_id bigint,
       profile_id bigint,
-      parent_profile_id bigint,
+      parent_comment_id bigint,
       content text,
       likes integer,
+      sub_comments integer,
       created_at bigint NOT NULL,
       updated_at bigint NOT NULL
 );
@@ -87,6 +88,7 @@ CREATE TABLE post_comment (
 -- Indexes
 CREATE INDEX post_comment_idx01 ON post_comment (created_at);
 CREATE INDEX post_comment_idx02 ON post_comment (updated_at);
+CREATE INDEX post_comment_idx03 ON post_comment (parent_comment_id);
 
 -- Foreign Keys (Indexes instead of constraints)
 CREATE INDEX post_comment_fk01 ON post_comment (lounge_post_id);
