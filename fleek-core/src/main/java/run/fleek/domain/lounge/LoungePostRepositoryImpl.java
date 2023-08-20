@@ -39,15 +39,22 @@ public class LoungePostRepositoryImpl extends FleekQueryDslRepositorySupport imp
 
 
     @Override
-    public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode) {
+    public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode,
+                                             String writerName, String keyword) {
         BooleanBuilder predicate = new BooleanBuilder();
         if (StringUtils.hasLength(topicCode)) {
             predicate.and(qLoungePost.topic.eq(LoungeTopic.valueOf(topicCode)));
         }
 
-//        if (StringUtils.hasLength(profileName)) {
-//            predicate.and(qReaderProfile.profileName.eq(profileName));
-//        }
+        if (StringUtils.hasLength(writerName)) {
+            predicate.and(qWriterProfile.profileName.eq(writerName));
+        }
+
+        if (StringUtils.hasLength(keyword)) {
+            predicate.and(qLoungePost.title.containsIgnoreCase(keyword)
+              .or(qLoungePost.content.containsIgnoreCase(keyword)));
+        }
+
         QueryResults<LoungePostVo> queryResults =
           from(qLoungePost)
             .innerJoin(qLoungePost.profile, qWriterProfile)

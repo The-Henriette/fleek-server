@@ -1,0 +1,13 @@
+
+### add report
+POST {{base_uri}}/report
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "reporterName": "잘빠진 스컹크 타호",
+  "targetProfileName": "언짢은 비둘기 몽찌",
+  "reportType": "POST",
+  "reportTargetId": 1,
+  "reportReason": "주는거 없이 좃같음"
+}

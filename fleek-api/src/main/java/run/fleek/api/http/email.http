@@ -1,0 +1,10 @@
+### 메일 전송
+POST {{base_uri}}/email
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "to": "rlacksque119@snu.ac.kr",
+  "subject": "[Fleek] 링크를 클릭해 학교 인증을 진행해주세요",
+  "text": "https://fleek.run"
+}

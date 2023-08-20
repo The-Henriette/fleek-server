@@ -101,4 +101,12 @@ Authorization: Bearer {{accessToken}}
 DELETE {{base_uri}}/lounge/post/9
 Authorization: Bearer {{accessToken}}
 
+### 내가 쓴 글 조회
+GET {{base_uri}}/lounge/posts?size=10&page=0&profileName=잘빠진 스컹크 타호&writerName=잘빠진 스컹크 타호
+Authorization: Bearer {{accessToken}}
+
+### 글 검색
+GET {{base_uri}}/lounge/posts?size=10&page=0&keyword=스하
+Authorization: Bearer {{accessToken}}
+
 

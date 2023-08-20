@@ -23,6 +23,9 @@ CREATE INDEX lounge_post_idx01 ON lounge_post (created_at);
 CREATE INDEX lounge_post_idx02 ON lounge_post (updated_at);
 CREATE INDEX lounge_post_idx03 ON lounge_post (topic);
 
+create index lounge_post_title_gin on lounge_post using gin(title gin_bigm_ops);
+create index lounge_post_content_gin on lounge_post using gin(content gin_bigm_ops);
+
 -- Foreign Key (Index instead of constraint)
 CREATE INDEX lounge_post_fk01 ON lounge_post (profile_id);
 

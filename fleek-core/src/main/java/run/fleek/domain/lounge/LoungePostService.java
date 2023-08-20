@@ -21,8 +21,9 @@ public class LoungePostService {
   }
 
   @Transactional(readOnly = true)
-  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode) {
-    return loungePostRepository.pageLoungePosts(size, page, readerProfileId, topicCode);
+  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, Long readerProfileId, String topicCode,
+                                           String writerName, String keyword) {
+    return loungePostRepository.pageLoungePosts(size, page, readerProfileId, topicCode, writerName, keyword);
   }
 
   @Transactional(readOnly = true)

@@ -56,15 +56,16 @@ public class LoungePostApplication {
   }
 
   @Transactional(readOnly = true)
-  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, String profileName, String topicCode) {
+  public LoungePostPageDto pageLoungePosts(Integer size, Integer page, String profileName, String topicCode,
+                                           String writerName, String keyword) {
     if (StringUtils.hasLength(profileName)) {
       Profile readerProfile = profileService.getProfileByProfileName(profileName)
         .orElseThrow(() -> new FleekException("존재하지 않는 프로필입니다."));
 
-      return loungePostService.pageLoungePosts(size, page, readerProfile.getProfileId(), topicCode);
+      return loungePostService.pageLoungePosts(size, page, readerProfile.getProfileId(), topicCode, writerName, keyword);
     }
 
-    return loungePostService.pageLoungePosts(size, page, null, topicCode);
+    return loungePostService.pageLoungePosts(size, page, null, topicCode, writerName, keyword);
   }
 
   @Transactional(readOnly = true)

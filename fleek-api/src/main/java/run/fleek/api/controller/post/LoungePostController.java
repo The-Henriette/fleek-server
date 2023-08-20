@@ -34,8 +34,11 @@ public class LoungePostController {
 
   @GetMapping("/lounge/posts")
   public LoungePostPageDto pageLoungePosts(@RequestParam Integer size, @RequestParam Integer page,
-                                           @RequestParam(required = false) String profileName, @RequestParam(required = false) String topicCode) {
-    return loungePostApplication.pageLoungePosts(size, page, profileName, topicCode);
+                                           @RequestParam(required = false) String profileName,
+                                           @RequestParam(required = false) String topicCode,
+                                           @RequestParam(required = false) String writerName,
+                                           @RequestParam(required = false) String keyword) {
+    return loungePostApplication.pageLoungePosts(size, page, profileName, topicCode, writerName, keyword);
   }
 
   @PostMapping("/lounge/post/{postId}")
