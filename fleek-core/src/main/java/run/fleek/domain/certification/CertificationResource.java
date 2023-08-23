@@ -9,6 +9,7 @@ import run.fleek.enums.CertificationStatus;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -35,6 +36,9 @@ public class CertificationResource implements SystemMetadata {
 
   @Column(name = "resource_context")
   private String resourceContext;
+
+  @Column(name = "resource_code")
+  private String resourceCode;
 
   @Column(name = "certification_status")
   @Enumerated(EnumType.STRING)
@@ -63,6 +67,7 @@ public class CertificationResource implements SystemMetadata {
       .userCertification(userCertification)
       .resourceUrl(dto.getResourceUrl())
       .resourceContext(dto.getResourceContext())
+      .resourceCode(UUID.randomUUID().toString())
       .certificationStatus(CertificationStatus.PENDING)
       .build();
   }

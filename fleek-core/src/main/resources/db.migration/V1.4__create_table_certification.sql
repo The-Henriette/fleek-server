@@ -26,6 +26,7 @@ CREATE TABLE user_certification (
     fleek_user_id bigint,
     certification_code varchar(255),
     certification_status varchar(50),
+    certification_method varchar(50),
     active boolean,
     created_at bigint NOT NULL,
     updated_at bigint NOT NULL
@@ -48,12 +49,15 @@ CREATE TABLE certification_resource (
     user_certification_id bigint,
     resource_url varchar(255),
     resource_context varchar(255),
+    resource_code varchar(255),
     certification_status varchar(50),
     reject_reason varchar(255),
     reject_reason_detail varchar(255),
     created_at bigint NOT NULL,
     updated_at bigint NOT NULL
 );
+
+alter table certification_resource add constraint certification_resource_uk01 unique (resource_code);
 
 -- Indexes
 CREATE INDEX certification_resource_idx01 ON certification_resource (created_at);

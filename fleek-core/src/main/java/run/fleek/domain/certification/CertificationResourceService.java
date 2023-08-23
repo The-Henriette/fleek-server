@@ -13,8 +13,8 @@ public class CertificationResourceService {
   private final CertificationResourceRepository certificationResourceRepository;
 
   @Transactional
-  public void addCertificationResources(List<CertificationResource> resources) {
-    certificationResourceRepository.saveAll(resources);
+  public List<CertificationResource> addCertificationResources(List<CertificationResource> resources) {
+    return certificationResourceRepository.saveAll(resources);
   }
 
   public List<CertificationResource> listCertificationResources(UserCertification userCertification) {

@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
-  Optional<UserAuth> getUserAuthByFleekUser_FleekUserId(Long fleekUserId);
+  Optional<UserAuth> getFirstByFleekUser_FleekUserId(Long fleekUserId);
   Optional<UserAuth> getUserAuthByRefreshToken(String refreshToken);
 }

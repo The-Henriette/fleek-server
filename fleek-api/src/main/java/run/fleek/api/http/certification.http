@@ -13,9 +13,10 @@ Authorization: Bearer {{accessToken}}
 
 {
   "certificationCode": "COLLEGE",
+  "certificationMethod": "EMAIL",
   "resources": [
     {
-      "resourceUrl": "randomImageUrl",
+      "resourceUrl": "rlacksque119@snu.ac.kr",
       "resourceContext": "서울대학교"
     }
   ]

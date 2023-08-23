@@ -5,6 +5,7 @@ import run.fleek.common.jpa.CreatedAtListener;
 import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.domain.users.FleekUser;
+import run.fleek.enums.CertificationMethod;
 import run.fleek.enums.CertificationStatus;
 
 import javax.persistence.*;
@@ -35,6 +36,10 @@ public class UserCertification implements SystemMetadata {
   @Enumerated(EnumType.STRING)
   private CertificationStatus certificationStatus;
 
+  @Column(name = "certification_method")
+  @Enumerated(EnumType.STRING)
+  private CertificationMethod certificationMethod;
+
   @Column(name = "active")
   private Boolean active;
 
@@ -44,10 +49,11 @@ public class UserCertification implements SystemMetadata {
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
 
-  public UserCertification(Certification targetCertification, FleekUser fleekUser) {
+  public UserCertification(Certification targetCertification, FleekUser fleekUser, CertificationMethod method) {
     this.certificationCode = targetCertification.getCertificationCode();
     this.fleekUser = fleekUser;
     this.certificationStatus = CertificationStatus.PENDING;
     this.active = true;
+    this.certificationMethod = method;
   }
 }

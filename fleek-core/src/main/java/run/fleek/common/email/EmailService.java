@@ -7,6 +7,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -19,13 +20,13 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class EmailService {
-  private static final String DEV_TEAM_EMAIL_ADDRESS = "pasta-backend-developer@techtaka.com";
 
   @Value("${spring.mail.username}")
   private String from;
 
   public final JavaMailSender emailSender;
 
+  @Async(value = "defaultTaskExecutor")
   public void send(String to, String subject, String text) {
     sendSimpleMessage(to, subject, text);
   }

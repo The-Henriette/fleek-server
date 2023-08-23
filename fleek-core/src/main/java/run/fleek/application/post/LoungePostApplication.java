@@ -68,7 +68,7 @@ public class LoungePostApplication {
     return loungePostService.pageLoungePosts(size, page, null, topicCode, writerName, keyword);
   }
 
-  @Transactional(readOnly = true)
+  @Transactional
   public LoungePostDto viewLoungePost(Long postId, String profileName) {
 
     LoungePostVo loungePost;

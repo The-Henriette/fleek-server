@@ -1,8 +1,18 @@
-server:
-  address: 192.168.0.103 # local only
-
 #server:
-#  address: 211.48.72.127
+#  address: 192.168.0.103 # local only
+
+server:
+  address: 61.82.182.201
+
+fleek:
+  service:
+    common:
+      server:
+        thread:
+          core-pool-size: 5
+          max-pool-size: 10
+          queue-capacity: 20
+
 
 jwt:
   secret: 68576D5A7134743777217A25432A462D4A614E635266556A586E3272357538782F413F4428472B4B6250655367566B5970337336763979244226452948404D63

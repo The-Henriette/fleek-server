@@ -49,8 +49,8 @@ public class UserAuth implements SystemMetadata {
 
   public UserAuth update(TokenDto tokenDto) {
     this.accessToken = tokenDto.getAccessToken();
-    this.refreshToken = tokenDto.getRefreshToken();
-    this.expiredAt = tokenDto.getRefreshTokenExpiresAt();
+//    this.refreshToken = tokenDto.getRefreshToken();
+//    this.expiredAt = tokenDto.getRefreshTokenExpiresAt();
     return this;
   }
 

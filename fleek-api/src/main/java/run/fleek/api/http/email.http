@@ -4,7 +4,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "to": "rlacksque119@snu.ac.kr",
-  "subject": "[Fleek] 링크를 클릭해 학교 인증을 진행해주세요",
+  "to": "monthlychance@gmail.com",
+  "subject": "[Fleek] 링크를 클릭해 학교 인증을 진행해주세요 Async2",
   "text": "https://fleek.run"
 }

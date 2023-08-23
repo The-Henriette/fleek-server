@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CertificationRegisterDto {
   private String certificationCode;
+  private String certificationMethod;
   private List<CertificationResourceDto> resources;
 }

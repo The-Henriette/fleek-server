@@ -66,6 +66,24 @@ public class AuthApplication {
       .build();
   }
 
+  public TokenDto addVerifiedUserAuth(FleekUser fleekUser, boolean isDev) {
+    UserAuth userAuth;
+    if (isDev) {
+      userAuth = userAuthService.putUserAuthDev(fleekUser);
+    } else {
+      userAuth = userAuthService.addUserAuth(fleekUser);
+    }
+
+    userAuth = userAuthService.addUserAuth(fleekUser);
+    return TokenDto.builder()
+      .accessToken(userAuth.getAccessToken())
+      .refreshToken(userAuth.getRefreshToken())
+      .grantType("Bearer")
+      .accessTokenExpiresAt(userAuth.getAccessTokenExpiresAt())
+      .refreshTokenExpiresAt(userAuth.getExpiredAt())
+      .build();
+  }
+
   public VerificationResultDto verify(VerificationDto verificationDto) {
     UserVerification userVerification = userVerificationService.getVerificationByCode(verificationDto.getVerificationCode())
       .orElseThrow(new FleekException());
@@ -73,15 +91,7 @@ public class AuthApplication {
     if (verificationDto.getVerificationNumber().equals(userVerification.getVerificationNumber())) {
       userVerificationService.verify(userVerification);
       if (Objects.nonNull(userVerification.getFleekUser())) {
-        UserAuth userAuth = userAuthService.addUserAuth(userVerification.getFleekUser());
-//        TokenDto tokenDto = tokenProvider.generateTokenDto(userVerification.getFleekUser());
-        TokenDto tokenDto = TokenDto.builder()
-          .accessToken(userAuth.getAccessToken())
-          .refreshToken(userAuth.getRefreshToken())
-          .grantType("Bearer")
-          .accessTokenExpiresAt(userAuth.getAccessTokenExpiresAt())
-          .refreshTokenExpiresAt(userAuth.getExpiredAt())
-          .build();
+        TokenDto tokenDto = addVerifiedUserAuth(userVerification.getFleekUser(), false);
 
         return VerificationResultDto.success(tokenDto);
       }
