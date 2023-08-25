@@ -7,6 +7,7 @@ import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.client.RestTemplate;
 import run.fleek.configuration.database.RelationalDatabaseConfig;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -57,5 +58,10 @@ public class FleekCommonConfig {
     taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
     taskExecutor.initialize();
     return taskExecutor;
+  }
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
   }
 }

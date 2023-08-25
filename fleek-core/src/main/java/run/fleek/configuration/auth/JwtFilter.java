@@ -20,6 +20,8 @@ public class JwtFilter extends OncePerRequestFilter {
   public static final String AUTHORIZATION_HEADER = "Authorization";
   public static final String BEARER_PREFIX = "Bearer ";
 
+  public static final String FRUITMAN_PREFIX = "fruitman";
+
   private final FleekTokenProvider FleekTokenProvider;
   private final FleekAuthenticationProvider FleekAuthenticationProvider;
   private AntPathMatcher antPathMatcher = new AntPathMatcher();
@@ -38,6 +40,13 @@ public class JwtFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
+
+    if (request.getRequestURI().contains(FRUITMAN_PREFIX)) {
+      this.handleFruitManRequest(jwt);
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     try {
       String idStr = this.FleekTokenProvider.validateToken(jwt);
 
@@ -54,6 +63,10 @@ public class JwtFilter extends OncePerRequestFilter {
       response.setContentType("application/json;charset=UTF-8");
       response.getWriter().write(mapper.writeValueAsString(FleekErrorResponse.from("Failed to authenticate", e.getMessage())));
     }
+  }
+
+  private void handleFruitManRequest(String jwt) {
+
   }
 
   private boolean isPublicPath(String requestURI) {

@@ -46,6 +46,19 @@ public class FleekWebClient {
     .clientConnector(new ReactorClientHttpConnector(httpClient))
     .build();
 
+  private final WebClient urlFormWebClient = WebClient.builder()
+    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    .exchangeStrategies(
+      ExchangeStrategies.builder()
+        .codecs(configurer ->
+          configurer.defaultCodecs()
+            .maxInMemorySize(2 * 1024 * 1024)   //  2MB
+        )
+        .build()
+    )
+    .clientConnector(new ReactorClientHttpConnector(httpClient))
+    .build();
+
   public WebClient.ResponseSpec get(String uri) {
     MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 

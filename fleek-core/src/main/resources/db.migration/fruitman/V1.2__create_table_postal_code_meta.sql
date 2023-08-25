@@ -1,0 +1,30 @@
+-- Table
+CREATE TABLE public.postal_code_meta (
+     postal_code varchar(10) PRIMARY KEY,
+     sido varchar(10),
+     sido_eng varchar(25),
+     sigungu varchar(25),
+     sigungu_eng varchar(50),
+     eupmyeon varchar(25),
+     eupmyeon_eng varchar(50),
+     road_code varchar(25),
+     road_name varchar(25),
+     road_name_eng varchar(50),
+     underground_yn varchar(5),
+     building_main_no varchar(10),
+     building_sub_no varchar(10),
+     building_manage_no varchar(30),
+     delivery_name varchar(50),
+     sigungu_building_name varchar(50),
+     legal_dong_code varchar(25),
+     legal_dong_name varchar(25),
+     ri_name varchar(20),
+     administrative_dong_name varchar(25),
+     mountain_yn varchar(5),
+     jibun_main_no varchar(5),
+     eupmyeon_dong_serial_no varchar(25),
+     jibun_sub_no varchar(25),
+     old_postal_code varchar(7),
+     postal_code_serial_no varchar(25)
+);
+

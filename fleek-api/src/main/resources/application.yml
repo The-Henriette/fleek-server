@@ -1,8 +1,8 @@
-#server:
-#  address: 192.168.0.103 # local only
-
 server:
-  address: 61.82.182.201
+  address: 192.168.0.103 # local only
+
+#server:
+#  address: 61.82.182.201
 
 fleek:
   service:
@@ -75,7 +75,12 @@ aws:
 
 external:
   token:
-    kakao: 82699b2e0b597f59994b16dd559bdfd4
+    kakao: 2569de666a3b52efcf64f88fb09a7424
+
+redirect:
+  kakao: http://192.168.0.103:8080/fruitman/provider/redirect
+#  kakao: https://api.fleek.run/fruitman/provider/redirect # prod
+
 
 logging:
   level:

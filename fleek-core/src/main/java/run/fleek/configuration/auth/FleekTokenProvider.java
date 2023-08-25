@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import run.fleek.configuration.auth.dto.TokenDto;
 import run.fleek.configuration.auth.vo.FleekPrincipalVo;
+import run.fleek.domain.fruitman.user.FruitManUser;
 import run.fleek.domain.users.FleekUser;
 import run.fleek.utils.TimeUtil;
 
@@ -31,6 +32,32 @@ public class FleekTokenProvider {
   public FleekTokenProvider(@Value("${jwt.secret}") String secretKey) {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     this.key = Keys.hmacShaKeyFor(keyBytes);
+  }
+
+  public TokenDto generateTokenDto(FruitManUser fruitManUser) {
+    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND - 60000;
+
+    String accessToken = Jwts.builder().setSubject(fruitManUser.getFruitManUserId().toString())
+      .claim("id", fruitManUser.getFruitManUserId().toString())
+      .claim("auth", "[]")
+      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND + 60000))
+      .signWith(this.key, SignatureAlgorithm.HS512).compact();
+
+    long refreshTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND;
+
+    String refreshToken = Jwts.builder().setSubject(fruitManUser.getFruitManUserId().toString())
+      .claim("id", fruitManUser.getFruitManUserId().toString())
+      .claim("auth", "[]")
+      .setExpiration(new Date(refreshTokenExpiresAt)).signWith(this.key, SignatureAlgorithm.HS512).compact();
+
+    return TokenDto.builder()
+      .grantType(GRANT_TYPE)
+      .accessToken(accessToken)
+      .refreshToken(refreshToken)
+      .accessTokenExpiresAt(accessTokenExpiresAt)
+      .refreshTokenExpiresAt(refreshTokenExpiresAt)
+      .build();
+
   }
 
   public TokenDto generateTokenDto(FleekUser fleekUser) {
