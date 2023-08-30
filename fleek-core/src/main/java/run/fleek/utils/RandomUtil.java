@@ -1,5 +1,6 @@
 package run.fleek.utils;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public final class RandomUtil {
@@ -10,6 +11,17 @@ public final class RandomUtil {
     int randomNumber = random.nextInt(max - min + 1) + min;
 
     return String.format("%06d", randomNumber);
+  }
+
+  public static String generateRandomString() {
+    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    SecureRandom random = new SecureRandom();
+    StringBuilder sb = new StringBuilder(8);
+    for (int i = 0; i < 8; i++) {
+      int index = random.nextInt(characters.length());
+      sb.append(characters.charAt(index));
+    }
+    return sb.toString();
   }
 
 }

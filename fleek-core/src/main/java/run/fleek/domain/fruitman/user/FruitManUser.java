@@ -34,6 +34,9 @@ public class FruitManUser implements SystemMetadata {
   @Column(name = "nickname")
   private String nickname;
 
+  @Column(name = "email")
+  private String email;
+
   @Column(name = "profile_url")
   private String profileUrl;
 

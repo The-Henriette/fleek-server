@@ -1,0 +1,52 @@
+
+### social login
+GET {{base_uri}}/fruitman/login/{providerCode}
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWQiOiIxIiwiYXV0aCI6IltdIiwiZXhwIjoxNjkzMzE1MjYyfQ.oDoVNjEdexXaBK0K7GjY8oAoW5_p35Nx_i3X4T-z0tjJLHTWEv0EjgkX3yz_69KIhBFWfRSWgoHwdd66GD4YmQ
+
+### get user info
+GET {{base_uri}}/fruitman/me
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+
+### SKU
+### SKU 등록
+POST {{base_uri}}/fruitman/sku
+Content-Type: application/json
+
+{
+  "skuName": "물복 황도 4kg 9~11수",
+  "skuMainImage": "fruitman/sku/샤인머스켓_메인.png",
+  "skuImages": ["샤인머스켓1.png","샤인머스켓2.png","샤인머스켓3.png","샤인머스켓4.png"]
+}
+
+### DEAL
+### DEAL 등록
+POST {{base_uri}}/fruitman/deal
+Content-Type: application/json
+
+{
+  "dealName": "8/30 물복 황도 4kg 9~11수",
+  "dealSkus": [
+    {
+      "skuId": 2
+    }
+  ],
+  "markerPrice":
+}
+
+### 환불계좌등록
+POST {{base_uri}}/fruitman/refund-info
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+{
+  "refundAccountName": "여창준",
+  "refundBankName": "국민",
+  "refundAccountNumber": "123123123123"
+}
+
+
+### 환불계좌조회
+GET {{base_uri}}/fruitman/refund-info
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+

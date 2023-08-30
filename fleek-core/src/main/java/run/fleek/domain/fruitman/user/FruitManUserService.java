@@ -22,4 +22,10 @@ public class FruitManUserService {
   public void addUser(FruitManUser fruitManUser) {
     fruitManUserRepository.save(fruitManUser);
   }
+
+  @Transactional(readOnly = true)
+  public FruitManUser getFruitManUser(Long userId) {
+    return fruitManUserRepository.findById(userId)
+      .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+  }
 }

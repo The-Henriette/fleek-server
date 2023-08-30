@@ -9,6 +9,7 @@ CREATE TABLE fruit_man_user (
     provider_id varchar(255),
     nickname varchar(255),
     profile_url varchar(255),
+    email varchar(255),
     created_at bigint NOT NULL,
     updated_at bigint NOT NULL
 );

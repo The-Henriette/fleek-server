@@ -41,11 +41,11 @@ public class JwtFilter extends OncePerRequestFilter {
       return;
     }
 
-    if (request.getRequestURI().contains(FRUITMAN_PREFIX)) {
-      this.handleFruitManRequest(jwt);
-      filterChain.doFilter(request, response);
-      return;
-    }
+//    if (request.getRequestURI().contains(FRUITMAN_PREFIX)) {
+//      this.handleFruitManRequest(jwt);
+//      filterChain.doFilter(request, response);
+//      return;
+//    }
 
     try {
       String idStr = this.FleekTokenProvider.validateToken(jwt);

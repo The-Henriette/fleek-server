@@ -63,6 +63,7 @@ public class KakaoProvider implements FruitManAuthProvider {
         .providerId(kakaoId.getUserId())
         .nickname(kakaoId.getNickname())
         .profileUrl(kakaoId.getPicture())
+        .email(kakaoId.getEmail())
         .build();
       fruitManUserService.addUser(fruitManUser);
     }

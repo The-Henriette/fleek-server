@@ -18,8 +18,7 @@ import run.fleek.utils.TimeUtil;
 import java.security.Key;
 import java.util.Date;
 
-import static run.fleek.common.constants.Constants.Auth.ACCESS_TOKEN_TTL_MILLISECOND;
-import static run.fleek.common.constants.Constants.Auth.REFRESH_TOKEN_TTL_MILLISECOND;
+import static run.fleek.common.constants.Constants.Auth.*;
 
 
 @Slf4j
@@ -35,12 +34,12 @@ public class FleekTokenProvider {
   }
 
   public TokenDto generateTokenDto(FruitManUser fruitManUser) {
-    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND - 60000;
+    long accessTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + FRUIT_MAN_ACCESS_TOKEN_TTL_MILLISECOND - 60000;
 
     String accessToken = Jwts.builder().setSubject(fruitManUser.getFruitManUserId().toString())
       .claim("id", fruitManUser.getFruitManUserId().toString())
       .claim("auth", "[]")
-      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + ACCESS_TOKEN_TTL_MILLISECOND + 60000))
+      .setExpiration(new Date(TimeUtil.getCurrentTimeMillisUtc() + FRUIT_MAN_ACCESS_TOKEN_TTL_MILLISECOND + 60000))
       .signWith(this.key, SignatureAlgorithm.HS512).compact();
 
     long refreshTokenExpiresAt = TimeUtil.getCurrentTimeMillisUtc() + REFRESH_TOKEN_TTL_MILLISECOND;
