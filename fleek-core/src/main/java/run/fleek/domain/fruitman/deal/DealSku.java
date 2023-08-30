@@ -8,6 +8,8 @@ import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.domain.fruitman.sku.Sku;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -52,7 +54,7 @@ public class DealSku implements SystemMetadata {
       .deal(deal)
       .sku(sku)
       .producedLocation(dealSkuDto.getProducedLocation())
-      .producedAt(dealSkuDto.getProducedAt().getTime())
+      .producedAt(Optional.ofNullable(dealSkuDto.getProducedAt()).map(Date::getTime).orElse(null))
       .producedBy(dealSkuDto.getProducedBy())
       .build();
   }

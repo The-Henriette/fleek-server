@@ -9,6 +9,7 @@ CREATE TABLE public.user_deal (
       deal_id BIGINT,
       order_id VARCHAR(255),
       ordered_at BIGINT,
+      pdd BIGINT,
       paid_at BIGINT,
       tracking_status VARCHAR(255),
       purchase_option VARCHAR(255),

@@ -8,6 +8,8 @@ import run.fleek.utils.JsonUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static run.fleek.common.constants.Constants.CDN_PREFIX;
+
 @Getter
 @Setter
 @Builder
@@ -27,6 +29,10 @@ public class DealDto {
   private String dealThumbnail;
   private Long effectedAt;
   private Long expiredAt;
+
+  public String getDealThumbnail() {
+    return CDN_PREFIX + dealThumbnail;
+  }
 
   public static DealDto from(DealVo vo) {
     return DealDto.builder()

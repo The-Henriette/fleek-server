@@ -7,6 +7,9 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWQiOiIxIiwiYXV0aCI6I
 GET {{base_uri}}/fruitman/me
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
+### add Delivery Group
+POST {{base_uri}}/fruitman/delivery/area/SIDO?unitKeyList=서울특별시&groupName=서울시 전역
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 ### SKU
 ### SKU 등록
@@ -31,8 +34,32 @@ Content-Type: application/json
       "skuId": 2
     }
   ],
-  "markerPrice":
+  "marketPrice": 44500,
+  "salesPrice": 39000,
+  "deliveryPrice": 0,
+  "dealThumbnail": null,
+  "dealImages": null,
+  "deliveryMethods": ["DIRECT", "FREE"],
+  "deliveryGroupId": 1,
+  "targetDate": "2023-08-30",
+  "requiredQuantity": 30,
+  "purchaseOptions": [
+    {
+      "purchaseTypeCode": "TEAM",
+      "price": 39000
+    },
+    {
+      "purchaseTypeCode": "ALONE",
+      "price": 78000
+    }
+  ]
 }
+
+### DEAL 조회
+GET {{base_uri}}/fruitman/deal/today
+
+### Deal Detail 조회
+GET {{base_uri}}/fruitman/deal/2
 
 ### 환불계좌등록
 POST {{base_uri}}/fruitman/refund-info

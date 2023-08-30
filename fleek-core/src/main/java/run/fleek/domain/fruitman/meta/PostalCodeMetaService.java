@@ -20,7 +20,11 @@ public class PostalCodeMetaService {
     return postalCodeMetaRepository.findAll();
   }
 
-  public List<PostalCodeMeta> listPostalCodeMetaBySido(String sido) {
-    return postalCodeMetaRepository.findAllBySido(sido);
+  public List<PostalCodeMeta> listPostalCodeMetaBySido(List<String> sido) {
+    return postalCodeMetaRepository.findAllBySidoIn(sido);
+  }
+
+  public List<PostalCodeMeta> listPostalCodeMetaBySigungu(List<String> sigungu) {
+    return postalCodeMetaRepository.findAllBySigunguIn(sigungu);
   }
 }

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.fleek.common.client.FleekWebClient;
 import run.fleek.configuration.auth.FleekUserContext;
+import run.fleek.domain.fruitman.delivery.DeliveryAreaGroup;
 import run.fleek.domain.fruitman.delivery.DeliveryAreaGroupService;
+import run.fleek.domain.fruitman.meta.PostalCodeMeta;
 import run.fleek.domain.fruitman.meta.PostalCodeMetaService;
 import run.fleek.domain.fruitman.meta.dto.PostalCodeMetaDto;
 import run.fleek.domain.fruitman.user.FruitManUser;
@@ -52,10 +54,21 @@ public class FruitManMetaController {
   }
 
   @PostMapping("/fruitman/delivery/area/{unit}")
-  public void addDeliveryAreaGroup(@PathVariable String unit, @RequestParam String unitKey) {
+  public void addDeliveryAreaGroup(@PathVariable String unit, @RequestParam List<String> unitKeyList, @RequestParam String groupName) {
+    List<PostalCodeMeta> postalCodeMetaList;
     if (unit.equals("SIDO")) {
-
+      postalCodeMetaList = postalCodeMetaService.listPostalCodeMetaBySido(unitKeyList);
+    } else if (unit.equals("SIGUNGU")) {
+      postalCodeMetaList = postalCodeMetaService.listPostalCodeMetaBySigungu(unitKeyList);
+    } else {
+      throw new IllegalArgumentException("Invalid unit: " + unit);
     }
+
+    DeliveryAreaGroup deliveryAreaGroup = DeliveryAreaGroup.builder()
+      .deliveryAreaGroupName(groupName)
+      .build();
+
+    deliveryAreaGroupService.addDeliveryAreaGroup(deliveryAreaGroup, postalCodeMetaList);
   }
 
 //  @GetMapping("/fruitman/postal-code/temp")

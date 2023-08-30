@@ -3,6 +3,10 @@ package run.fleek.domain.fruitman.delivery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.fleek.domain.fruitman.meta.PostalCodeMeta;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +23,16 @@ public class DeliveryAreaGroupService {
   @Transactional(readOnly = true)
   public boolean isAvailable(DeliveryAreaGroup deliveryAreaGroup, String postalCode) {
     return deliveryAreaRepository.existsByDeliveryAreaGroupAndPostalCode(deliveryAreaGroup, postalCode);
+  }
+
+  @Transactional
+  public void addDeliveryAreaGroup(DeliveryAreaGroup deliveryAreaGroup, List<PostalCodeMeta> postalCodeMetaList) {
+    deliveryAreaGroupRepository.save(deliveryAreaGroup);
+    deliveryAreaRepository.saveAll(postalCodeMetaList.stream()
+      .map(postalCodeMeta -> DeliveryArea.builder()
+        .deliveryAreaGroup(deliveryAreaGroup)
+        .postalCode(postalCodeMeta.getPostalCode())
+        .build())
+      .collect(Collectors.toList()));
   }
 }

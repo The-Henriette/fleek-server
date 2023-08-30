@@ -9,6 +9,8 @@ import run.fleek.utils.JsonUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static run.fleek.common.constants.Constants.CDN_PREFIX;
+
 @Getter
 @Setter
 @Builder
@@ -29,6 +31,16 @@ public class DealDetailDto {
   private Integer requiredQuantity;
   private Integer currentQuantity;
   private Integer remainingQuantity;
+
+  public List<String> getImageList() {
+    return imageList.stream()
+      .map(s -> CDN_PREFIX + s)
+      .collect(Collectors.toList());
+  }
+
+  public String getDealThumbnail() {
+    return CDN_PREFIX + dealThumbnail;
+  }
 
   public void setDealInfo(Deal deal) {
     this.dealId = deal.getDealId();
