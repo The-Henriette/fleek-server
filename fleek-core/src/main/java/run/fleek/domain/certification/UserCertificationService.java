@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.domain.users.FleekUser;
+import run.fleek.enums.CertificationStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,11 @@ public class UserCertificationService {
     @Transactional(readOnly = true)
     public List<UserCertification> listUserCertifications(Long userId) {
       return userCertificationRepository.findAllByFleekUser_FleekUserIdAndActiveIsTrue(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserCertification> listConfirmedUserCertifications(Long userId) {
+        return userCertificationRepository.findAllByFleekUser_FleekUserIdAndCertificationStatus(userId, CertificationStatus.ACCEPTED);
     }
 
     @Transactional(readOnly = true)

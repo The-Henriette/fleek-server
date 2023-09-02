@@ -11,4 +11,8 @@ public class FruitManUserInfoDto {
   private String nickName;
   private String email;
   private String profileUrl;
+  private String refundAccountName;
+  private String refundBankName;
+  private String refundAccountNumber;
+
 }

@@ -22,6 +22,11 @@ public class DealService {
     return dealRepository.listDealIn(from, to);
   }
 
+  @Transactional
+  public List<Deal> listDealByIds(List<Long> dealIds) {
+    return dealRepository.findAllById(dealIds);
+  }
+
   @Transactional(readOnly = true)
   public Deal getDeal(Long dealId) {
     return dealRepository.findById(dealId)

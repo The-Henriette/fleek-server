@@ -4,6 +4,7 @@ import lombok.*;
 import run.fleek.common.jpa.CreatedAtListener;
 import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
+import run.fleek.domain.fruitman.deal.Cart;
 import run.fleek.domain.fruitman.deal.Deal;
 import run.fleek.domain.fruitman.user.FruitManUser;
 import run.fleek.enums.DealTrackingStatus;
@@ -33,6 +34,10 @@ public class UserDeal implements SystemMetadata {
   @JoinColumn(name = "deal_id")
   @ManyToOne(fetch = FetchType.LAZY)
   private Deal deal;
+
+  @JoinColumn(name = "cart_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Cart cart;
 
   @Column(name = "order_id")
   private String orderId;

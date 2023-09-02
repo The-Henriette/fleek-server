@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderAddDto {
-  private Long dealId;
+  private Long cartId;
   private String recipientName;
   private String recipientPhoneNumber;
   private String postalCode;
@@ -16,5 +16,4 @@ public class OrderAddDto {
   private String subAddress;
   private String paymentMethod;
   private ReceiptInfoDto receiptInfo;
-  private String purchaseOption;
 }

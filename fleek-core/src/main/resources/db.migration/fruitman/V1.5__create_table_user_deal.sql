@@ -105,3 +105,7 @@ CREATE TABLE public.user_payment_receipt (
 CREATE INDEX idx_user_payment_receipt_user_payment_id ON public.user_payment_receipt (user_payment_id);
 CREATE INDEX user_payment_receipt_idx01 ON public.user_payment_receipt (created_at);
 CREATE INDEX user_payment_receipt_idx02 ON public.user_payment_receipt (updated_at);
+
+alter table user_payment add column payment_due bigint;
+alter table user_payment add column refund_due bigint;
+alter table user_payment add column refund_amount bigint;

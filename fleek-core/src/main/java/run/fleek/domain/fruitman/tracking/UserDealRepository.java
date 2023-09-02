@@ -2,6 +2,7 @@ package run.fleek.domain.fruitman.tracking;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import run.fleek.domain.fruitman.deal.Cart;
 import run.fleek.domain.fruitman.deal.Deal;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface UserDealRepository extends JpaRepository<UserDeal, Long>, UserD
   List<UserDeal> findAllByDeal(Deal deal);
 
   Optional<UserDeal> findByOrderId(String orderId);
+
+  List<UserDeal> findAllByCart(Cart cart);
 }

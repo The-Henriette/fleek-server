@@ -17,8 +17,13 @@ public class DealPurchaseOptionService {
     dealPurchaseOptionRepository.saveAll(options);
   }
 
-  @Transactional
+  @Transactional(readOnly = true)
   public List<DealPurchaseOption> listDealPurchaseOption(Deal deal) {
     return dealPurchaseOptionRepository.findByDeal(deal);
+  }
+
+  @Transactional(readOnly = true)
+  public List<DealPurchaseOption> listDealPurchaseOption(List<Deal> deals) {
+    return dealPurchaseOptionRepository.findAllByDealIn(deals);
   }
 }

@@ -4,16 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import run.fleek.application.fruitman.order.dto.OrderAddDto;
-import run.fleek.application.fruitman.order.dto.OrderDetailDto;
-import run.fleek.application.fruitman.order.dto.OrderDto;
-import run.fleek.application.fruitman.order.dto.OrderPageDto;
+import run.fleek.application.fruitman.order.dto.*;
 import run.fleek.common.exception.FleekException;
 import run.fleek.configuration.auth.FleekUserContext;
-import run.fleek.domain.fruitman.deal.Deal;
-import run.fleek.domain.fruitman.deal.DealPurchaseOption;
-import run.fleek.domain.fruitman.deal.DealPurchaseOptionService;
-import run.fleek.domain.fruitman.deal.DealService;
+import run.fleek.domain.fruitman.deal.*;
 import run.fleek.domain.fruitman.tracking.*;
 import run.fleek.domain.fruitman.user.FruitManUser;
 import run.fleek.domain.fruitman.user.FruitManUserService;
@@ -45,31 +39,46 @@ public class OrderApplication {
   private final UserPaymentReceiptService userPaymentReceiptService;
   private final UserDeliveryDetailService userDeliveryDetailService;
   private final UserRefundInfoService userRefundInfoService;
+  private final CartService cartService;
+
+  private String generateOrderId() {
+    return String.format("%s_%s",
+      TimeUtil.convertEpochToDateString(TimeUtil.getCurrentTimeMillisUtc()),
+      RandomUtil.generateRandomString());
+  }
+
+  private UserDeal addUserDeal(Cart cart, Long dealId) {
+    Deal deal = dealService.getDeal(dealId);
+    Long orderedAt = TimeUtil.getCurrentTimeMillisUtc();
+    Long pdd = TimeUtil.toStartOfNextDaySeoul(new Date(deal.getExpiredAt())).getTime() - 1;
+
+    UserDeal userDeal = UserDeal.builder()
+      .fruitManUser(cart.getFruitManUser())
+      .deal(deal)
+      .orderId(this.generateOrderId())
+      .orderedAt(orderedAt)
+      .paidAt(null)
+      .trackingStatus(DealTrackingStatus.PENDING)
+      .pdd(pdd)
+      .purchaseOption(cart.getPurchaseOption())
+      .cart(cart)
+      .build();
+    userDealService.addUserDeal(userDeal);
+    return userDeal;
+  }
 
   @Transactional
   public OrderDto addOrder(OrderAddDto orderAddDto) {
-    Deal deal = dealService.getDeal(orderAddDto.getDealId());
-    Map<PurchaseOption, DealPurchaseOption> dealPurchaseOptionMap = dealPurchaseOptionService.listDealPurchaseOption(deal).stream()
+    Cart cart = cartService.getCart(orderAddDto.getCartId());
+    UserDeal userDeal = userDealService.getUserDeals(cart).get(0);
+
+    Map<PurchaseOption, DealPurchaseOption> dealPurchaseOptionMap = dealPurchaseOptionService.listDealPurchaseOption(userDeal.getDeal()).stream()
       .collect(Collectors.toMap(DealPurchaseOption::getPurchaseOption, dealPurchaseOption -> dealPurchaseOption));
 
-    Long userId = fleekUserContext.getUserId();
-    FruitManUser fruitManUser = fruitManUserService.getFruitManUser(userId);
-    DealTrackingStatus status = DealTrackingStatus.PENDING; // TODO : Toss Payment 연동 시 변경
-    String orderId = String.format("%s_%s", TimeUtil.convertEpochToDateString(TimeUtil.getCurrentTimeMillisUtc()), RandomUtil.generateRandomString());
-    Long pdd = TimeUtil.toStartOfNextDaySeoul(new Date(deal.getExpiredAt())).getTime() - 1;
-
+    DealTrackingStatus status = userDeal.getTrackingStatus();
     Long orderedAt = TimeUtil.getCurrentTimeMillisUtc();
+    userDeal.setOrderedAt(orderedAt);
 
-    UserDeal userDeal = UserDeal.builder()
-      .fruitManUser(fruitManUser)
-      .deal(deal)
-      .orderId(orderId)
-      .orderedAt(orderedAt)
-      .paidAt(null)
-      .trackingStatus(status)
-      .pdd(pdd)
-      .purchaseOption(PurchaseOption.valueOf(orderAddDto.getPurchaseOption()))
-      .build();
     userDealService.addUserDeal(userDeal);
 
     UserDealTracking userDealTracking = UserDealTracking.builder()
@@ -80,6 +89,7 @@ public class OrderApplication {
     userDealTrackingService.addUserDealTracking(userDealTracking);
 
     UserDeliveryDetail userDeliveryDetail = UserDeliveryDetail.builder()
+      .userDeal(userDeal)
       .recipientName(orderAddDto.getRecipientName())
       .recipientPhoneNumber(orderAddDto.getRecipientPhoneNumber())
       .postalCode(orderAddDto.getPostalCode())
@@ -92,7 +102,7 @@ public class OrderApplication {
       .userDeal(userDeal)
       .paymentMethod(PaymentMethod.valueOf(orderAddDto.getPaymentMethod()))
       .paymentDue(orderedAt + 3600000)
-      .amount(dealPurchaseOptionMap.get(PurchaseOption.valueOf(orderAddDto.getPurchaseOption())).getPrice())
+      .amount(dealPurchaseOptionMap.get(cart.getPurchaseOption()).getPrice())
       .build();
     userPaymentService.addUserPayment(userPayment);
 
@@ -107,10 +117,10 @@ public class OrderApplication {
     }
 
     return OrderDto.builder()
-      .orderId(orderId)
-      .dealId(deal.getDealId())
-      .dealName(deal.getDealName())
-      .purchasePrice(dealPurchaseOptionMap.get(PurchaseOption.valueOf(orderAddDto.getPurchaseOption())).getPrice())
+      .orderId(cart.getOrderId())
+      .dealId(userDeal.getDeal().getDealId())
+      .dealName(userDeal.getDeal().getDealName())
+      .purchasePrice(dealPurchaseOptionMap.get(cart.getPurchaseOption()).getPrice())
       .dealTrackingStatus(status.getName())
       .dealTrackingStatusDescription(status.getDescription())
       .build();
@@ -171,4 +181,51 @@ public class OrderApplication {
 
     userDealService.addUserDeal(userDeal);
   }
+
+  @Transactional
+  public CartDto addCart(CartAddDto cartAddDto) {
+    Long userId = fleekUserContext.getUserId();
+    FruitManUser fruitManUser = fruitManUserService.getFruitManUser(userId);
+
+    Cart cart = Cart.builder()
+      .cartType(CartType.valueOf(cartAddDto.getCartType()))
+      .purchaseOption(PurchaseOption.valueOf(cartAddDto.getPurchaseOption()))
+      .fruitManUser(fruitManUser)
+      .orderId(this.generateOrderId())
+      .build();
+    cartService.addCart(cart);
+
+    List<UserDeal> dealList = cartAddDto.getDealIds().stream()
+      .map(dealId -> this.addUserDeal(cart, dealId))
+      .collect(Collectors.toList());
+
+    return CartDto.builder()
+      .cartId(cart.getCartId())
+      .purchaseOption(cart.getPurchaseOption().name())
+      .cartType(cart.getCartType().name())
+      .orderId(cart.getOrderId())
+      .dealIds(dealList.stream()
+        .map(ud -> ud.getDeal().getDealId())
+        .collect(Collectors.toList()))
+      .build();
+  }
+
+  @Transactional(readOnly = true)
+  public CartDto getCart(Long cartId) {
+    Cart cart = cartService.getCart(cartId);
+    List<UserDeal> userDealList = userDealService.getUserDeals(cart);
+
+    return CartDto.builder()
+      .cartId(cart.getCartId())
+      .purchaseOption(cart.getPurchaseOption().name())
+      .cartType(cart.getCartType().name())
+      .orderId(cart.getOrderId())
+      .dealIds(userDealList.stream()
+        .map(ud -> ud.getDeal().getDealId())
+        .collect(Collectors.toList()))
+      .build();
+
+  }
+
+
 }

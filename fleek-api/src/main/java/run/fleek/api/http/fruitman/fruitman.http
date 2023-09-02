@@ -7,9 +7,19 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWQiOiIxIiwiYXV0aCI6I
 GET {{base_uri}}/fruitman/me
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
+### Token Refresh
+POST {{base_uri}}/fruitman/auth/refresh
+Content-Type: application/json
+
+{
+  "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ",
+  "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ"
+}
+
 ### add Delivery Group
 POST {{base_uri}}/fruitman/delivery/area/SIDO?unitKeyList=서울특별시&groupName=서울시 전역
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
 
 ### SKU
 ### SKU 등록
@@ -28,7 +38,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "8/30 물복 황도 4kg 9~11수",
+  "dealName": "9/02 물복 황도 4kg 9~11수",
   "dealSkus": [
     {
       "skuId": 2
@@ -41,7 +51,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 1,
-  "targetDate": "2023-08-30",
+  "targetDate": "2023-09-02",
   "requiredQuantity": 30,
   "purchaseOptions": [
     {
@@ -59,7 +69,23 @@ Content-Type: application/json
 GET {{base_uri}}/fruitman/deal/today
 
 ### Deal Detail 조회
-GET {{base_uri}}/fruitman/deal/2
+GET {{base_uri}}/fruitman/deal/3
+
+### Cart 등록
+POST {{base_uri}}/fruitman/cart
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+{
+  "dealIds": [3],
+  "purchaseOption": "TEAM",
+  "cartType": "ORDER_SHEET"
+}
+
+### cart 조회
+GET {{base_uri}}/fruitman/cart/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
 
 ### 환불계좌등록
 POST {{base_uri}}/fruitman/refund-info
@@ -72,8 +98,41 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6I
   "refundAccountNumber": "123123123123"
 }
 
-
 ### 환불계좌조회
 GET {{base_uri}}/fruitman/refund-info
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
+### 배송 가능 지역 여부 조회
+GET {{base_uri}}/fruitman/deal/3/postal-code/04320/available
+
+### 주문생성
+POST {{base_uri}}/fruitman/order
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+{
+  "cartId": 1,
+  "recipientName": "김찬협",
+  "recipientPhoneNumber": "01089011823",
+  "postalCode": "01000",
+  "mainAddress": "우리집",
+  "subAddress": "상세한 주소",
+  "paymentMethod": "BANK_TRANSFER",
+  "receiptInfo": {
+    "receiptPurpose": "DEDUCTION",
+    "receiptTargetType": "PHONE_NUMBER",
+    "receiptTarget": "01012345678"
+  }
+}
+
+### 주문목록조회
+GET {{base_uri}}/fruitman/order
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+### 주문 상세 조회
+GET {{base_uri}}/fruitman/order/20230902_MVdpG0vY
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+### 주문 취소
+POST {{base_uri}}/fruitman/order/20230902_MVdpG0vY/cancel
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ

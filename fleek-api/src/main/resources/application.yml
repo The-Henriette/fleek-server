@@ -1,5 +1,5 @@
-server:
-  address: 192.168.0.103 # local only
+#server:
+#  address: 192.168.0.103 # local only
 
 #server:
 #  address: 61.82.182.201

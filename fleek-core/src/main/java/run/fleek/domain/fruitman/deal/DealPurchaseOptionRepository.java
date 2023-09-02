@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface DealPurchaseOptionRepository extends JpaRepository<DealPurchaseOption, Long> {
   List<DealPurchaseOption> findByDeal(Deal deal);
+
+  List<DealPurchaseOption> findAllByDealIn(List<Deal> deals);
 }

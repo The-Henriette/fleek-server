@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import run.fleek.application.certification.CertificationApplication;
+import run.fleek.application.certification.CertificationHolder;
 import run.fleek.application.profile.dto.ProfileInfoMetaDto;
 import run.fleek.application.profile.dto.ProfileOptionMetaDto;
 import run.fleek.application.profile.dto.ProfileViewDto;
 import run.fleek.application.profile.vo.ProfileEditDto;
 import run.fleek.common.exception.FleekException;
+import run.fleek.domain.certification.UserCertificationService;
 import run.fleek.domain.certification.dto.CertificationDto;
 import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.ProfileService;
@@ -25,6 +27,7 @@ import run.fleek.domain.profile.info.ProfileInfoService;
 import run.fleek.domain.profile.type.ProfileInfoType;
 import run.fleek.domain.profile.type.ProfileInfoTypeOption;
 import run.fleek.domain.profile.vo.ProfileVo;
+import run.fleek.enums.CertificationStatus;
 import run.fleek.enums.ImageType;
 import run.fleek.enums.ProfileInfoCategory;
 import run.fleek.enums.ProfileInfoInputType;
@@ -44,7 +47,8 @@ public class ProfileApplication {
   private final ProfileImageService profileImageService;
   private final ProfileInfoTypeHolder profileInfoTypeHolder;
   private final ProfileInfoProcessor profileInfoProcessor;
-  private final CertificationApplication certificationApplication;
+  private final UserCertificationService userCertificationService;
+  private final CertificationHolder certificationHolder;
 
   @Transactional
   public void putProfileDetail(ProfileEditDto dto) {
@@ -83,7 +87,14 @@ public class ProfileApplication {
     List<ProfileImage> profileImageList = profileImageService.listProfileImageByProfileId(targetProfile.getProfileId());
     List<CertificationDto> certificationDtoList = Lists.newArrayList();
     if (Objects.nonNull(targetProfile.getUserId())) {
-      certificationDtoList = certificationApplication.listUserCertifications(targetProfile.getUserId());
+      certificationDtoList = userCertificationService.listConfirmedUserCertifications(targetProfile.getUserId()).stream()
+        .map(uc -> CertificationDto.builder()
+          .certificationCode(uc.getCertificationCode())
+          .certificationName(certificationHolder.getCertification(uc.getCertificationCode()).getCertificationName())
+          .certificationDescription(certificationHolder.getCertification(uc.getCertificationCode()).getCertificationDescription())
+          .certificationStatus(uc.getCertificationStatus().name())
+          .build())
+        .collect(Collectors.toList());
     }
     return this.buildProfileDetail(targetProfile, profileInfoList, profileImageList, certificationDtoList);
   }

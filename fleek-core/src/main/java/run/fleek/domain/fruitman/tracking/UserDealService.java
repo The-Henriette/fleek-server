@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.application.fruitman.order.dto.OrderPageDto;
+import run.fleek.domain.fruitman.deal.Cart;
 import run.fleek.domain.fruitman.deal.Deal;
 import run.fleek.domain.fruitman.user.FruitManUser;
 
@@ -38,5 +39,10 @@ public class UserDealService {
   @Transactional(readOnly = true)
   public UserDeal getUserDeal(String orderId) {
     return userDealRepository.findByOrderId(orderId).orElseThrow(() -> new IllegalArgumentException("해당 주문이 존재하지 않습니다."));
+  }
+
+  @Transactional(readOnly = true)
+  public List<UserDeal> getUserDeals(Cart cart) {
+    return userDealRepository.findAllByCart(cart);
   }
 }

@@ -3,10 +3,7 @@ package run.fleek.api.controller.fruitman.order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.fleek.application.fruitman.order.OrderApplication;
-import run.fleek.application.fruitman.order.dto.OrderAddDto;
-import run.fleek.application.fruitman.order.dto.OrderDetailDto;
-import run.fleek.application.fruitman.order.dto.OrderDto;
-import run.fleek.application.fruitman.order.dto.OrderPageDto;
+import run.fleek.application.fruitman.order.dto.*;
 
 import java.util.List;
 
@@ -15,6 +12,16 @@ import java.util.List;
 public class FruitManOrderController {
 
   private final OrderApplication orderApplication;
+
+  @PostMapping("/fruitman/cart")
+  public CartDto addCart(@RequestBody CartAddDto cartAddDto) {
+    return orderApplication.addCart(cartAddDto);
+  }
+
+  @GetMapping("/fruitman/cart/{cartId}")
+  public CartDto getCart(@PathVariable Long cartId) {
+    return orderApplication.getCart(cartId);
+  }
 
   @PostMapping("/fruitman/order")
   public OrderDto addOrder(@RequestBody OrderAddDto orderAddDto) {

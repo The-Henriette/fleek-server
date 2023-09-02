@@ -6,11 +6,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.result.view.RedirectView;
 import run.fleek.api.controller.fruitman.auth.dto.FruitManUserInfoDto;
+import run.fleek.application.auth.dto.RefreshRequestDto;
 import run.fleek.application.fruitman.auth.FruitManAuthApplication;
+import run.fleek.configuration.auth.FleekTokenProvider;
 import run.fleek.configuration.auth.FleekUserContext;
 import run.fleek.configuration.auth.dto.TokenDto;
 import run.fleek.domain.fruitman.user.FruitManUser;
 import run.fleek.domain.fruitman.user.FruitManUserService;
+import run.fleek.domain.fruitman.user.UserRefundInfo;
+import run.fleek.domain.fruitman.user.UserRefundInfoService;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +23,8 @@ public class FruitManAuthController {
   private final FruitManAuthApplication fruitManAuthApplication;
   private final FleekUserContext fleekUserContext;
   private final FruitManUserService fruitManUserService;
+  private final UserRefundInfoService userRefundInfoService;
+  private final FleekTokenProvider fleekTokenProvider;
 
   @GetMapping("/fruitman/me")
   public FruitManUserInfoDto getMyInfo() {
@@ -26,10 +32,16 @@ public class FruitManAuthController {
     Long userId = fleekUserContext.getUserId();
     FruitManUser fruitManUser = fruitManUserService.getFruitManUser(userId);
 
+    UserRefundInfo refundInfo = userRefundInfoService.getUserRefundInfo(fruitManUser)
+      .orElse(UserRefundInfo.builder().build());
+
     return FruitManUserInfoDto.builder()
       .email(fruitManUser.getEmail())
       .nickName(fruitManUser.getNickname())
       .profileUrl(fruitManUser.getProfileUrl())
+      .refundAccountName(refundInfo.getRefundAccountName())
+      .refundBankName(refundInfo.getRefundBankName())
+      .refundAccountNumber(refundInfo.getRefundAccountNumber())
       .build();
   }
 
@@ -58,4 +70,13 @@ public class FruitManAuthController {
       .build();
 
   }
+
+  @PostMapping("/fruitman/auth/refresh")
+  public TokenDto refresh(@RequestBody RefreshRequestDto refreshRequestDto) {
+    Long id = fleekTokenProvider.getId(refreshRequestDto.getAccessToken());
+    return fleekTokenProvider.generateTokenDto(FruitManUser.builder()
+        .fruitManUserId(id)
+      .build());
+  }
+
 }
