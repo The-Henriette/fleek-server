@@ -5,7 +5,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWQiOiIxIiwiYXV0aCI6I
 
 ### get user info
 GET {{base_uri}}/fruitman/me
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWQiOiIzIiwiYXV0aCI6IltdIiwiZXhwIjoxNzA0NDY3MTY4fQ.m40Fkr_ozGQDdWnazfWq7oXnac2LPV_S5_4i34OmzI5kx6TpkbcPs8QEt_GWuU7mKxtsSxGpRQUhy68yaAUL-A
 
 ### Token Refresh
 POST {{base_uri}}/fruitman/auth/refresh
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ### add Delivery Group
 POST {{base_uri}}/fruitman/delivery/area/SIDO?unitKeyList=서울특별시&groupName=서울시 전역
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzOTkyODY0fQ.U77cjBxuKBx6aGsM1scjUlASY82waKZQYKdPl2FXNvyZcozvR3PzVcQ6Nikl4zlnw_8s5diHQKX4TJoWqqCNKA
 
 
 ### SKU
@@ -29,7 +29,7 @@ Content-Type: application/json
 {
   "skuName": "물복 황도 4kg 9~11수",
   "skuMainImage": "fruitman/sku/샤인머스켓_메인.png",
-  "skuImages": ["샤인머스켓1.png","샤인머스켓2.png","샤인머스켓3.png","샤인머스켓4.png"]
+  "skuImages": ["fruitman/sku/샤인머스켓1.png","fruitman/sku/샤인머스켓2.png","fruitman/sku/샤인머스켓3.png","fruitman/sku/샤인머스켓4.png"]
 }
 
 ### DEAL
@@ -38,7 +38,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/02 물복 황도 4kg 9~11수",
+  "dealName": "9/08 물복 황도 4kg 9~11수",
   "dealSkus": [
     {
       "skuId": 2
@@ -51,8 +51,8 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 1,
-  "targetDate": "2023-09-02",
-  "requiredQuantity": 30,
+  "targetDate": "2023-09-08",
+  "requiredQuantity": 20,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "TEAM",
@@ -69,7 +69,7 @@ Content-Type: application/json
 GET {{base_uri}}/fruitman/deal/today
 
 ### Deal Detail 조회
-GET {{base_uri}}/fruitman/deal/3
+GET {{base_uri}}/fruitman/deal/5
 
 ### Cart 등록
 POST {{base_uri}}/fruitman/cart
@@ -77,13 +77,13 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 {
-  "dealIds": [3],
+  "dealIds": [4],
   "purchaseOption": "TEAM",
   "cartType": "ORDER_SHEET"
 }
 
 ### cart 조회
-GET {{base_uri}}/fruitman/cart/1
+GET {{base_uri}}/fruitman/cart/6
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 
@@ -111,18 +111,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 {
-  "cartId": 1,
+  "cartId": 4,
   "recipientName": "김찬협",
   "recipientPhoneNumber": "01089011823",
   "postalCode": "01000",
   "mainAddress": "우리집",
   "subAddress": "상세한 주소",
   "paymentMethod": "BANK_TRANSFER",
-  "receiptInfo": {
-    "receiptPurpose": "DEDUCTION",
-    "receiptTargetType": "PHONE_NUMBER",
-    "receiptTarget": "01012345678"
-  }
+  "receiptInfo": null
 }
 
 ### 주문목록조회
@@ -136,3 +132,17 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6I
 ### 주문 취소
 POST {{base_uri}}/fruitman/order/20230902_MVdpG0vY/cancel
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+### 피드 조회
+GET {{base_uri}}/fruitman/feed
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+### 주문 결제 확정
+POST {{base_uri}}/fruitman/order/20230908_pq5y7Y5p/payment/success
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
+
+{
+  "paymentKey": "samplePaymentKey",
+  "amount": 39000
+}

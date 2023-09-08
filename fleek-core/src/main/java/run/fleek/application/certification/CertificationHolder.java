@@ -2,10 +2,10 @@ package run.fleek.application.certification;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import run.fleek.domain.certification.Certification;
-import run.fleek.domain.certification.CertificationService;
+import run.fleek.enums.Certification;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,13 +14,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CertificationHolder {
 
-  private final CertificationService certificationService;
   private Map<String, Certification> certificationMap;
 
   @PostConstruct
   public void init() {
-    certificationMap = certificationService.listCertifications().stream()
-      .collect(Collectors.toMap(Certification::getCertificationCode, Function.identity()));
+    certificationMap = Arrays.stream(Certification.values())
+      .collect(Collectors.toMap(Certification::getName, Function.identity()));
   }
 
   public Certification getCertification(String certificationCode) {

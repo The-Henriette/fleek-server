@@ -18,7 +18,7 @@ public class UserCertificationService {
     @Transactional
     public UserCertification addUserCertification(UserCertification userCertification) {
         boolean existsActiveCertification =
-          userCertificationRepository.existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(userCertification.getFleekUser().getFleekUserId(), userCertification.getCertificationCode());
+          userCertificationRepository.existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(userCertification.getFleekUser().getFleekUserId(), userCertification.getCertificationCode().getName());
 
         if (existsActiveCertification) {
             userCertification.setActive(false);

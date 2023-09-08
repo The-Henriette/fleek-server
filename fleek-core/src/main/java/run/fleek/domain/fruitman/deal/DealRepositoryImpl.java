@@ -23,7 +23,7 @@ public class DealRepositoryImpl extends FleekQueryDslRepositorySupport implement
     return from(qDeal)
       .innerJoin(qDeal.deliveryAreaGroup, qDeliveryAreaGroup)
       .innerJoin(qDealConstraint).on(qDeal.dealId.eq(qDealConstraint.deal.dealId))
-      .where(qDeal.effectedAt.lt(expiredAt), qDeal.expiredAt.goe(effectedAt))
+      .where(qDeal.effectedAt.lt(expiredAt), qDeal.expiredAt.gt(effectedAt))
       .select(DEAL_VO_PROJECTION)
       .orderBy(qDeal.updatedAt.desc())
       .fetch();

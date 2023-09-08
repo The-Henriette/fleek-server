@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import run.fleek.application.auth.AuthApplication;
 import run.fleek.application.auth.SignUpApplication;
 import run.fleek.application.auth.dto.*;
+import run.fleek.application.certification.KcbAuthenticator;
+import run.fleek.application.certification.dto.KcbCertRequestDto;
 import run.fleek.configuration.auth.dto.TokenDto;
 import run.fleek.enums.VerificationType;
 
@@ -17,6 +19,8 @@ public class AuthController {
 
   private final SignUpApplication signUpApplication;
   private final AuthApplication authApplication;
+
+  private final KcbAuthenticator kcbAuthenticator;
 
   @PostMapping("/auth/sign-up")
   public SignUpResultDto signUp(@RequestBody SignUpDto signUpDto) {
@@ -41,5 +45,10 @@ public class AuthController {
   @PostMapping("/auth/refresh")
   public TokenDto refresh(@RequestBody RefreshRequestDto refreshRequestDto) {
     return authApplication.refresh(refreshRequestDto);
+  }
+
+  @PostMapping("/auth/kcb/test")
+  public String addCertRequest(@RequestBody KcbCertRequestDto kcbCertRequestDto) {
+    return kcbAuthenticator.addCertRequest(kcbCertRequestDto);
   }
 }

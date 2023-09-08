@@ -41,6 +41,15 @@ public class Cart implements SystemMetadata {
   @Column(name = "order_id")
   private String orderId;
 
+  @Column(name = "payment_detail")
+  private String paymentDetail;
+
+  @Column(name = "delivery_price")
+  private Integer deliveryPrice;
+
+  @Column(name = "purchase_price")
+  private Integer purchasePrice;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 

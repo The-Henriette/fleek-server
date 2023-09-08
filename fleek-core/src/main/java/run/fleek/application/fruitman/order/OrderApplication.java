@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.application.fruitman.order.dto.*;
+import run.fleek.common.client.toss.TossWebclient;
+import run.fleek.common.client.toss.dto.TossPaymentRequestDto;
+import run.fleek.common.client.toss.dto.TossPaymentResponseDto;
 import run.fleek.common.exception.FleekException;
 import run.fleek.configuration.auth.FleekUserContext;
 import run.fleek.domain.fruitman.deal.*;
@@ -14,6 +17,7 @@ import run.fleek.domain.fruitman.user.FruitManUserService;
 import run.fleek.domain.fruitman.user.UserRefundInfo;
 import run.fleek.domain.fruitman.user.UserRefundInfoService;
 import run.fleek.enums.*;
+import run.fleek.utils.JsonUtil;
 import run.fleek.utils.RandomUtil;
 import run.fleek.utils.TimeUtil;
 
@@ -40,6 +44,8 @@ public class OrderApplication {
   private final UserDeliveryDetailService userDeliveryDetailService;
   private final UserRefundInfoService userRefundInfoService;
   private final CartService cartService;
+  private final TossWebclient tossWebclient;
+  private final DealConstraintService dealConstraintService;
 
   private String generateOrderId() {
     return String.format("%s_%s",
@@ -55,7 +61,7 @@ public class OrderApplication {
     UserDeal userDeal = UserDeal.builder()
       .fruitManUser(cart.getFruitManUser())
       .deal(deal)
-      .orderId(this.generateOrderId())
+      .orderId(cart.getOrderId())
       .orderedAt(orderedAt)
       .paidAt(null)
       .trackingStatus(DealTrackingStatus.PENDING)
@@ -110,7 +116,7 @@ public class OrderApplication {
       UserPaymentReceipt userReceiptInfo = UserPaymentReceipt.builder()
         .userPayment(userPayment)
         .receiptPurpose(ReceiptPurpose.valueOf(orderAddDto.getReceiptInfo().getReceiptPurpose()))
-        .receiptTargetType(ReceiptTargetType.valueOf(orderAddDto.getReceiptInfo().getReceiptTargetType()))
+        .receiptTargetType(Optional.ofNullable(orderAddDto.getReceiptInfo()).map(r -> ReceiptTargetType.valueOf(r.getReceiptTargetType())).orElse(null))
         .receiptTarget(orderAddDto.getReceiptInfo().getReceiptTarget())
         .build();
       userPaymentReceiptService.addUserPaymentReceipt(userReceiptInfo);
@@ -193,6 +199,18 @@ public class OrderApplication {
       .fruitManUser(fruitManUser)
       .orderId(this.generateOrderId())
       .build();
+    Integer purchasePrice = dealPurchaseOptionService.listDealPurchaseOption(cartAddDto.getDealIds()).stream()
+      .filter(dpo -> dpo.getPurchaseOption().equals(cart.getPurchaseOption()))
+      .map(DealPurchaseOption::getPrice)
+      .reduce(0, Integer::sum);
+
+    Integer deliveryPrice = dealService.listDealByIds(cartAddDto.getDealIds()).stream()
+      .map(Deal::getDeliveryPrice)
+      .reduce(0, Integer::sum);
+
+    cart.setPurchasePrice(purchasePrice);
+    cart.setDeliveryPrice(deliveryPrice);
+
     cartService.addCart(cart);
 
     List<UserDeal> dealList = cartAddDto.getDealIds().stream()
@@ -207,6 +225,8 @@ public class OrderApplication {
       .dealIds(dealList.stream()
         .map(ud -> ud.getDeal().getDealId())
         .collect(Collectors.toList()))
+      .purchasePrice(cart.getPurchasePrice())
+      .deliveryPrice(cart.getDeliveryPrice())
       .build();
   }
 
@@ -223,8 +243,42 @@ public class OrderApplication {
       .dealIds(userDealList.stream()
         .map(ud -> ud.getDeal().getDealId())
         .collect(Collectors.toList()))
+      .purchasePrice(cart.getPurchasePrice())
+      .deliveryPrice(cart.getDeliveryPrice())
       .build();
 
+  }
+
+  @Transactional
+  public TossPaymentResponseDto updatePaymentStatus(String orderId, PaymentRequestDto dto) {
+    Cart cart = cartService.getCartByOrderId(orderId);
+    List<UserDeal> userDealList = userDealService.getUserDeals(cart);
+
+    TossPaymentRequestDto requestDto = TossPaymentRequestDto.from(dto, orderId);
+    TossPaymentResponseDto tossPaymentResponseDto = tossWebclient.requestPayment(requestDto);
+
+    cart.setPaymentDetail(JsonUtil.write(tossPaymentResponseDto));
+    cartService.addCart(cart);
+
+    userDealList.forEach(userDeal -> {
+      userDeal.setTrackingStatus(DealTrackingStatus.PAID);
+      userDeal.setPaidAt(TimeUtil.getCurrentTimeMillisUtc());
+      userDealService.addUserDeal(userDeal);
+
+      UserDealTracking userDealTracking = UserDealTracking.builder()
+        .userDeal(userDeal)
+        .trackingAt(TimeUtil.getCurrentTimeMillisUtc())
+        .trackingStatus(DealTrackingStatus.PAID)
+        .build();
+      userDealTrackingService.addUserDealTracking(userDealTracking);
+
+      Deal deal = userDeal.getDeal();
+      DealConstraint constraint = dealConstraintService.getDealConstraint(deal);
+      constraint.setCurrentQuantity(constraint.getCurrentQuantity() + 1);
+      dealConstraintService.addDealConstraint(constraint);
+    });
+
+    return tossPaymentResponseDto;
   }
 
 

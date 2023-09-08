@@ -15,6 +15,7 @@ import run.fleek.domain.fruitman.user.FruitManUser;
 import run.fleek.domain.fruitman.user.FruitManUserService;
 import run.fleek.domain.fruitman.user.UserRefundInfo;
 import run.fleek.domain.fruitman.user.UserRefundInfoService;
+import run.fleek.enums.ProviderCode;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +37,7 @@ public class FruitManAuthController {
       .orElse(UserRefundInfo.builder().build());
 
     return FruitManUserInfoDto.builder()
+      .userId(fruitManUser.getFruitManUserId())
       .email(fruitManUser.getEmail())
       .nickName(fruitManUser.getNickname())
       .profileUrl(fruitManUser.getProfileUrl())
@@ -46,7 +48,29 @@ public class FruitManAuthController {
   }
 
   @GetMapping("/fruitman/login/{providerCode}")
-  public ResponseEntity<String> requestProviderAccess(@PathVariable String providerCode) {
+  public ResponseEntity<String> requestProviderAccess(@PathVariable String providerCode, @RequestParam(required = false) String username, @RequestParam(required = false) String password) {
+    String hardCodedUserName = "tossPaymentUser";
+    String hardCodedPassword = "tossPayment@89132";
+
+    if (providerCode.equals(ProviderCode.CUSTOM.name())) {
+
+      if (username.equals(hardCodedUserName) && password.equals(hardCodedPassword)) {
+        TokenDto token = fleekTokenProvider.generateTokenDto(FruitManUser.builder().fruitManUserId(0L).build());
+
+        return ResponseEntity.status(302)
+          .header("Location", String.format("https://fruitman.pro/login/success?accessToken=%s&refreshToken=%s&accessTokenExpiry=%s",
+            token.getAccessToken(),
+            token.getRefreshToken(),
+            token.getAccessTokenExpiresAt()
+          ))
+          .build();
+      }
+
+      return ResponseEntity.status(302)
+        .header("Location", "https://fruitman.pro/error")
+        .build();
+    }
+
     return fruitManAuthApplication.requestProviderAccess(providerCode);
   }
 

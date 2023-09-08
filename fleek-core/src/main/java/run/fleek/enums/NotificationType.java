@@ -25,14 +25,15 @@ public enum NotificationType {
   private final String message;
 
   public static NotificationType ofConfirm(String certificationCode) {
-    if (certificationCode.equals("FACE")) {
-      return FACE_CERTIFICATION_ACCEPTED;
-    } else if (certificationCode.equals("COMPANY")) {
-      return COMPANY_CERTIFICATION_ACCEPTED;
-    } else if (certificationCode.equals("COLLEGE")) {
-      return COLLEGE_CERTIFICATION_ACCEPTED;
-    } else {
-      return INBODY_CERTIFICATION_ACCEPTED;
+    switch (certificationCode) {
+      case "FACE":
+        return FACE_CERTIFICATION_ACCEPTED;
+      case "COMPANY":
+        return COMPANY_CERTIFICATION_ACCEPTED;
+      case "COLLEGE":
+        return COLLEGE_CERTIFICATION_ACCEPTED;
+      default:
+        return INBODY_CERTIFICATION_ACCEPTED;
     }
   }
 }

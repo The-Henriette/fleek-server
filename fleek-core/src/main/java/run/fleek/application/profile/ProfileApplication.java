@@ -89,9 +89,9 @@ public class ProfileApplication {
     if (Objects.nonNull(targetProfile.getUserId())) {
       certificationDtoList = userCertificationService.listConfirmedUserCertifications(targetProfile.getUserId()).stream()
         .map(uc -> CertificationDto.builder()
-          .certificationCode(uc.getCertificationCode())
-          .certificationName(certificationHolder.getCertification(uc.getCertificationCode()).getCertificationName())
-          .certificationDescription(certificationHolder.getCertification(uc.getCertificationCode()).getCertificationDescription())
+          .certificationCode(uc.getCertificationCode().getName())
+          .certificationName(certificationHolder.getCertification(uc.getCertificationCode().getName()).getName())
+          .certificationDescription(certificationHolder.getCertification(uc.getCertificationCode().getName()).getDescription())
           .certificationStatus(uc.getCertificationStatus().name())
           .build())
         .collect(Collectors.toList());

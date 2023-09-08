@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.fleek.application.fruitman.order.OrderApplication;
 import run.fleek.application.fruitman.order.dto.*;
+import run.fleek.common.client.toss.dto.TossPaymentResponseDto;
 
 import java.util.List;
 
@@ -41,5 +42,17 @@ public class FruitManOrderController {
   @PostMapping("/fruitman/order/{orderId}/cancel")
   public void cancelOrder(@PathVariable String orderId) {
     orderApplication.cancelOrder(orderId);
+  }
+
+  @PostMapping("/fruitman/order/{orderId}/payment/{status}")
+  public TossPaymentResponseDto updatePaymentStatus(@PathVariable String orderId,
+                                                    @PathVariable String status,
+                                                    @RequestBody PaymentRequestDto dto) {
+    if (status.equals("success")) {
+      return orderApplication.updatePaymentStatus(orderId, dto);
+    } else {
+      orderApplication.cancelOrder(orderId);
+      return null;
+    }
   }
 }

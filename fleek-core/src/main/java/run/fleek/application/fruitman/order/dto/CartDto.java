@@ -16,4 +16,6 @@ public class CartDto {
   private String cartType;
   private String orderId;
   private List<Long> dealIds;
+  private Integer purchasePrice;
+  private Integer deliveryPrice;
 }

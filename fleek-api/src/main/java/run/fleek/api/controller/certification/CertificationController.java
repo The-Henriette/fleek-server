@@ -26,7 +26,7 @@ public class CertificationController {
     UserCertification certification = certificationApplication.confirmCertification(userCertificationId);
 
     notificationApplication.sendNotification(
-      NotificationType.ofConfirm(certification.getCertificationCode()),
+      NotificationType.ofConfirm(certification.getCertificationCode().getName()),
       certification.getUserCertificationId().toString(),
       null,
       certification.getFleekUser()
@@ -43,6 +43,5 @@ public class CertificationController {
   public void requestCertification(@RequestBody CertificationRegisterDto certificationRegisterDto) {
     certificationApplication.addCertification(fleekUserContext.fetchUser(), certificationRegisterDto);
   }
-
 
 }

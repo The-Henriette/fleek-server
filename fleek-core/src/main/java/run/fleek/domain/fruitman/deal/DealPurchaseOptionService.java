@@ -23,7 +23,7 @@ public class DealPurchaseOptionService {
   }
 
   @Transactional(readOnly = true)
-  public List<DealPurchaseOption> listDealPurchaseOption(List<Deal> deals) {
-    return dealPurchaseOptionRepository.findAllByDealIn(deals);
+  public List<DealPurchaseOption> listDealPurchaseOption(List<Long> dealIds) {
+    return dealPurchaseOptionRepository.findAllByDeal_DealIdIn(dealIds);
   }
 }

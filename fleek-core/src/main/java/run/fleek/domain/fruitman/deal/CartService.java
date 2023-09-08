@@ -19,4 +19,10 @@ public class CartService {
     return cartRepository.findById(cartId)
       .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니입니다."));
   }
+
+  @Transactional(readOnly = true)
+  public Cart getCartByOrderId(String orderId) {
+    return cartRepository.findByOrderId(orderId)
+      .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니입니다."));
+  }
 }

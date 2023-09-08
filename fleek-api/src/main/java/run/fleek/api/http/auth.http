@@ -30,4 +30,16 @@ Content-Type: application/json
   "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiaWQiOiI0IiwiYXV0aCI6IltdIiwiZXhwIjoxNzAxMTExOTM4fQ.6eboGHS9_4pi4g_58EHjZBC_rZPKtq5J-pybiERoCaVAy8wQ0HDQOZ6F6Sbj9-HJa5lUfv7sQl6VoxbuxJz8uA"
 }
 
+### kcb Test
+POST {{base_uri}}/auth/kcb/test
+Content-Type: application/json; charset=UTF-8
+
+{
+  "NAME": "김찬협",
+  "BIRTHDAY": "19980119",
+  "SEX_CD": "M",
+  "NTV_FRNR_CD": "L",
+  "TEL_COM_CD": "02",
+  "TEL_NO": "01089011823"
+}
 

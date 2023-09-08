@@ -9,5 +9,5 @@ import java.util.List;
 public interface DealPurchaseOptionRepository extends JpaRepository<DealPurchaseOption, Long> {
   List<DealPurchaseOption> findByDeal(Deal deal);
 
-  List<DealPurchaseOption> findAllByDealIn(List<Deal> deals);
+  List<DealPurchaseOption> findAllByDeal_DealIdIn(List<Long> deals);
 }

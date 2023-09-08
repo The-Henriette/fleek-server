@@ -10,6 +10,7 @@ import run.fleek.domain.certification.*;
 import run.fleek.domain.certification.dto.CertificationDto;
 import run.fleek.domain.certification.dto.CertificationRegisterDto;
 import run.fleek.domain.users.FleekUser;
+import run.fleek.enums.Certification;
 import run.fleek.enums.CertificationMethod;
 import run.fleek.enums.CertificationStatus;
 
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CertificationApplication {
 
-  private final CertificationService certificationService;
   private final CertificationResourceService certificationResourceService;
   private final UserCertificationService userCertificationService;
   private final CertificationProcessor certificationProcessor;
@@ -40,7 +40,7 @@ public class CertificationApplication {
     String resourceCode = resources.get(0).getResourceCode();
 
     if (dto.getCertificationMethod().equals(CertificationMethod.EMAIL.name())) {
-      emailService.send(dto.getResources().get(0).getResourceUrl(), String.format("[Fleek] %s 메일입니다.", targetCertification.getCertificationName()), String.format("아래 링크를 클릭해 인증을 완료해주세요\n%s", "https://api.fleek.run/certification/resource/" + resourceCode));
+      emailService.send(dto.getResources().get(0).getResourceUrl(), String.format("[Fleek] %s 메일입니다.", targetCertification.getName()), String.format("아래 링크를 클릭해 인증을 완료해주세요\n%s", "https://api.fleek.run/certification/resource/" + resourceCode));
     }
     devCertificationNotifier.sendNotification(String.format("신규 인증 요청 추가 - 유저번호 :  %s, 인증유형: %s, 인증요청ID: %s", fleekUser.getPhoneNumber(), userCertification.getCertificationCode(), userCertification.getUserCertificationId().toString()));
   }
@@ -58,7 +58,7 @@ public class CertificationApplication {
     certificationResourceService.addCertificationResources(resources);
 
     Optional<UserCertification> activeCertificationOpt = userCertificationService.getActiveCertification(
-      userCertification.getFleekUser(), userCertification.getCertificationCode()
+      userCertification.getFleekUser(), userCertification.getCertificationCode().getName()
     );
 
     if (activeCertificationOpt.isPresent() && !activeCertificationOpt.get().getUserCertificationId().equals(userCertificationId)) {
@@ -78,9 +78,9 @@ public class CertificationApplication {
   public List<CertificationDto> listUserCertifications(Long userId) {
     return userCertificationService.listUserCertifications(userId).stream()
       .map(cer -> CertificationDto.builder()
-        .certificationCode(cer.getCertificationCode())
-        .certificationName(certificationHolder.getCertification(cer.getCertificationCode()).getCertificationName())
-        .certificationDescription(certificationHolder.getCertification(cer.getCertificationCode()).getCertificationDescription())
+        .certificationCode(cer.getCertificationCode().getName())
+        .certificationName(certificationHolder.getCertification(cer.getCertificationCode().getDescription()).getName())
+        .certificationDescription(certificationHolder.getCertification(cer.getCertificationCode().getDescription()).getDescription())
         .certificationStatus(cer.getCertificationStatus().name())
         .build())
       .collect(Collectors.toList());

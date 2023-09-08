@@ -8,7 +8,8 @@ public final class Constants {
     "/error**", "/hello", "/auth/sign-up", "/auth/sign-in", "/auth/username/validate", "/profile/{profileId}/detail",
     "/favicon.ico", "/auth/login", "/auth/verify", "/auth/refresh", "/dev/session",
     "/chat/create/external", "/file/upload", "/terms", "/notification/admin", "/fruitman/hello", "/fruitman/sku",
-    "/fruitman/deal/**", "/fruitman/login/{providerCode}", "/fruitman/provider/redirect", "/fruitman/auth/refresh"
+    "/fruitman/deal/**", "/fruitman/login/{providerCode}", "/fruitman/provider/redirect", "/fruitman/auth/refresh",
+    "/fruitman/feed", "/auth/kcb/test"
   };
 
   public static final class Auth {

@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum PaymentMethod {
   CASH_ON_DELIVERY("Cash on Delivery"),
   BANK_TRANSFER("무통장입금"),
+  TOSS("토스페이먼츠"),
   CREDIT_CARD("신용카드"),
   DEBIT_CARD("체크카드"),
   VOUCHER("상품권");

@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FruitManUserInfoDto {
+  private Long userId;
   private String nickName;
   private String email;
   private String profileUrl;

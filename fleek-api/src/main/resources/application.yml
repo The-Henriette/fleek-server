@@ -76,10 +76,13 @@ aws:
 external:
   token:
     kakao: 2569de666a3b52efcf64f88fb09a7424
+    toss: test_sk_GePWvyJnrKbmyAgaaObVgLzN97Eo
+  url:
+    toss: https://api.tosspayments.com
 
 redirect:
-  kakao: http://192.168.0.103:8080/fruitman/provider/redirect
-#  kakao: https://api.fleek.run/fruitman/provider/redirect # prod
+#  kakao: http://192.168.0.103:8080/fruitman/provider/redirect
+  kakao: https://api.fleek.run/fruitman/provider/redirect # prod
 
 
 logging:

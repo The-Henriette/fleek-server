@@ -20,3 +20,9 @@ CREATE INDEX cart_idx02 ON public.cart (updated_at);
 
 alter table user_deal add column cart_id bigint;
 create index user_deal_idx_cart_id on user_deal (cart_id);
+
+alter table cart add column payment_detail text;
+
+alter table cart add column purchase_price integer;
+alter table cart add column delivery_price integer;
+
