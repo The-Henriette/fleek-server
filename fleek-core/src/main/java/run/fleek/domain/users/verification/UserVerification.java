@@ -42,19 +42,23 @@ public class UserVerification implements SystemMetadata {
   @Column(name = "verified")
   private Boolean verified;
 
+  @Column(name = "user_certification_id")
+  private Long userCertificationId;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 
   @Column(name = "updated_at", nullable = false)
   private Long updatedAt;
 
-  public static UserVerification init(VerificationType verificationType, FleekUser fleekUser) {
+  public static UserVerification init(VerificationType verificationType, FleekUser fleekUser, Long userCertificationId) {
     return UserVerification.builder()
       .fleekUser(fleekUser)
       .verificationType(verificationType)
       .verificationCode(UUID.randomUUID().toString())
       .verificationNumber(RandomUtil.generateRandomSixDigitNumber())
       .verified(false)
+      .userCertificationId(userCertificationId)
       .build();
   }
 

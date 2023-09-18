@@ -15,8 +15,8 @@ public class UserVerificationService {
   private final UserVerificationRepository userVerificationRepository;
 
   @Transactional
-  public UserVerification addUserVerification(VerificationType verificationType, FleekUser fleekUser) {
-    return userVerificationRepository.save(UserVerification.init(verificationType, fleekUser));
+  public UserVerification addUserVerification(VerificationType verificationType, FleekUser fleekUser, Long userCertificationId) {
+    return userVerificationRepository.save(UserVerification.init(verificationType, fleekUser, userCertificationId));
   }
 
   @Transactional(readOnly = true)

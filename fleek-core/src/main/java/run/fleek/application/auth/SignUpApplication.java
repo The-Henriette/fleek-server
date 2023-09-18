@@ -15,6 +15,7 @@ import run.fleek.common.constants.NamePool;
 import run.fleek.common.exception.FleekException;
 import run.fleek.configuration.auth.FleekTokenProvider;
 import run.fleek.configuration.auth.dto.TokenDto;
+import run.fleek.domain.certification.UserCertification;
 import run.fleek.domain.chat.Chat;
 import run.fleek.domain.chat.ProfileChat;
 import run.fleek.domain.chat.ProfileChatService;
@@ -92,7 +93,7 @@ public class SignUpApplication {
     termApplication.addUserTerms(signUpDto.getUserTerms(), fleekUser);
 
     // save photo certification
-    certificationApplication.addCertification(fleekUser, signUpDto.getCertification());
+    UserCertification userCertification = certificationApplication.addCertification(fleekUser, signUpDto.getCertification());
     UserAuth userAuth = userAuthService.addUserAuth(fleekUser);
     TokenDto token = TokenDto.builder()
       .accessToken(userAuth.getAccessToken())
@@ -109,6 +110,8 @@ public class SignUpApplication {
 
     result.setToken(token);
     result.setChatProfileKey(profile.getChatProfileKey());
+
+    certificationApplication.processFaceCertification(userCertification);
     return result;
   }
 }

@@ -36,4 +36,17 @@ public enum NotificationType {
         return INBODY_CERTIFICATION_ACCEPTED;
     }
   }
+
+  public static NotificationType ofReject(String certificationCode) {
+    switch (certificationCode) {
+      case "FACE":
+        return FACE_CERTIFICATION_REJECTED;
+      case "COMPANY":
+        return COMPANY_CERTIFICATION_REJECTED;
+      case "COLLEGE":
+        return COLLEGE_CERTIFICATION_REJECTED;
+      default:
+        return INBODY_CERTIFICATION_REJECTED;
+    }
+  }
 }

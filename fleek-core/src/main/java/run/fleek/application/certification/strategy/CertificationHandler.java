@@ -9,4 +9,5 @@ import java.util.List;
 public interface CertificationHandler {
   Certification getCertification();
   void handle(UserCertification userCertification, List<CertificationResource> resources);
+  void verify(UserCertification userCertification, List<CertificationResource> resources);
 }

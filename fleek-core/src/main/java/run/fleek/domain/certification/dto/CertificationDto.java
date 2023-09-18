@@ -12,4 +12,5 @@ public class CertificationDto {
   private String certificationName;
   private String certificationDescription;
   private String certificationStatus;
+  private Boolean rejectRead;
 }

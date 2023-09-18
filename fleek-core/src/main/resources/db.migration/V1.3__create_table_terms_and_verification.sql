@@ -21,6 +21,8 @@ CREATE INDEX user_verification_idx02 ON user_verification (updated_at);
 -- Foreign Key (Index instead of constraint)
 CREATE INDEX user_verification_fk01 ON user_verification (fleek_user_id);
 
+alter table user_verification add column user_certification_id bigint;
+
 -- Sequence
 DROP SEQUENCE IF EXISTS term_seq;
 CREATE SEQUENCE term_seq INCREMENT BY 1 START WITH 1 NO CYCLE;

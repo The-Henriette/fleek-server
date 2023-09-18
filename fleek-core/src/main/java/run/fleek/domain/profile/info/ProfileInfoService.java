@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.domain.profile.Profile;
+import run.fleek.domain.profile.type.ProfileInfoType;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -21,5 +23,9 @@ public class ProfileInfoService {
   @Transactional
   public void putProfileInfos(List<ProfileInfo> updateTargets) {
     profileInfoRepository.saveAll(updateTargets);
+  }
+
+  public List<ProfileInfo> listProfileInfosByType(List<Profile> profiles, ProfileInfoType profileInfoType) {
+    return profileInfoRepository.findAllByProfileInAndTypeCode(profiles, profileInfoType.getProfileInfoTypeCode());
   }
 }

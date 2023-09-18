@@ -32,6 +32,8 @@ public class FaceCertificationHandler implements CertificationHandler {
     return Certification.FACE;
   }
 
+
+
   @Override
   public void handle(UserCertification userCertification, List<CertificationResource> resources) {
     FleekUser fleekUser = userCertification.getFleekUser();
@@ -54,6 +56,11 @@ public class FaceCertificationHandler implements CertificationHandler {
     });
 
     profileImageService.addProfileImageList(facePics);
+
+  }
+
+  @Override
+  public void verify(UserCertification userCertification, List<CertificationResource> resources) {
 
   }
 }

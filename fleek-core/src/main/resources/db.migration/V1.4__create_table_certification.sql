@@ -39,6 +39,8 @@ CREATE INDEX user_certification_idx02 ON user_certification (updated_at);
 -- Foreign Key (Index instead of constraint)
 CREATE INDEX user_certification_fk01 ON user_certification (fleek_user_id);
 
+alter table user_certification add column reject_read bool default true;
+
 -- Sequence
 DROP SEQUENCE IF EXISTS certification_resource_seq;
 CREATE SEQUENCE certification_resource_seq INCREMENT BY 1 START WITH 1 NO CYCLE;

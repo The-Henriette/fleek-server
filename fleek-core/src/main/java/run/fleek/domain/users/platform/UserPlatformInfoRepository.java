@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserPlatformInfoRepository extends JpaRepository<UserPlatformInfo, Long> {
   Optional<UserPlatformInfo> findByPushToken(String previousPushToken);
+  Optional<UserPlatformInfo> findByPushTokenAndFleekUser(String previousPushToken, FleekUser fleekUser);
 
   List<UserPlatformInfo> findByFleekUser(FleekUser fleekUser);
 }

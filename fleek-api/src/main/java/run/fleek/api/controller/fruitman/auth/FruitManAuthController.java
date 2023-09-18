@@ -58,7 +58,7 @@ public class FruitManAuthController {
         TokenDto token = fleekTokenProvider.generateTokenDto(FruitManUser.builder().fruitManUserId(0L).build());
 
         return ResponseEntity.status(302)
-          .header("Location", String.format("https://fruitman.pro/login/success?accessToken=%s&refreshToken=%s&accessTokenExpiry=%s",
+          .header("Location", String.format("http://localhost:3000/login/success?accessToken=%s&refreshToken=%s&accessTokenExpiry=%s",
             token.getAccessToken(),
             token.getRefreshToken(),
             token.getAccessTokenExpiresAt()

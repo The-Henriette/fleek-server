@@ -1,6 +1,16 @@
 ### Confirm Certification
-POST {{base_uri}}/certification/16/confirm
+POST {{base_uri}}/certification/47/confirm
 Authorization: Bearer {{accessToken}}
+
+### reject Certification
+POST {{base_uri}}/certification/46/reject
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "rejectReason": "씨발 좆같음",
+  "rejectReasonDetail": "씹 좆같음"
+}
 
 ###
 GET {{base_uri}}/user/certifications
@@ -21,3 +31,8 @@ Authorization: Bearer {{accessToken}}
     }
   ]
 }
+
+###
+GET {{base_uri}}/certification/COLLEGE/user
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

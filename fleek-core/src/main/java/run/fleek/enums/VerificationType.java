@@ -6,4 +6,5 @@ import lombok.Getter;
 public enum VerificationType {
   SIGNUP,
   SIGNIN,
+  CERTIFICATION
 }

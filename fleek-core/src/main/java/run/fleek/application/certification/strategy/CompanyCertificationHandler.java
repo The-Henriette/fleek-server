@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import run.fleek.application.profile.ProfileInfoTypeHolder;
 import run.fleek.domain.certification.CertificationResource;
+import run.fleek.domain.certification.EmailDomainMeta;
+import run.fleek.domain.certification.EmailDomainMetaService;
 import run.fleek.domain.certification.UserCertification;
 import run.fleek.domain.profile.Profile;
 import run.fleek.domain.profile.ProfileService;
@@ -13,8 +15,10 @@ import run.fleek.domain.profile.info.ProfileInfoService;
 import run.fleek.domain.profile.type.ProfileInfoType;
 import run.fleek.domain.users.FleekUser;
 import run.fleek.enums.Certification;
+import run.fleek.utils.EmailUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,6 +29,7 @@ public class CompanyCertificationHandler implements CertificationHandler {
 
   private final ProfileInfoService profileInfoService;
   private final ProfileInfoTypeHolder profileInfoTypeHolder;
+  private final EmailDomainMetaService emailDomainMetaService;
 
   @Override
   public Certification getCertification() {
@@ -53,5 +58,18 @@ public class CompanyCertificationHandler implements CertificationHandler {
 
     profileInfoService.putProfileInfos(profileInfoList);
 
+  }
+
+  @Override
+  public void verify(UserCertification userCertification, List<CertificationResource> resources) {
+    String emailDomain = EmailUtil.extractDomainFromEmail(resources.get(0).getResourceUrl());
+
+    Optional<EmailDomainMeta> emailDomainMetaOptional =
+      emailDomainMetaService.getByDomainAndCertificationCode(emailDomain, userCertification.getCertificationCode());
+
+    if (emailDomainMetaOptional.isPresent()) {
+      resources.get(0).setResourceContext(emailDomainMetaOptional.get().getTargetName());
+      this.handle(userCertification, resources);
+    }
   }
 }

@@ -6,13 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import run.fleek.application.certification.CertificationApplication;
 import run.fleek.application.certification.CertificationHolder;
 import run.fleek.application.profile.dto.ProfileInfoMetaDto;
 import run.fleek.application.profile.dto.ProfileOptionMetaDto;
 import run.fleek.application.profile.dto.ProfileViewDto;
 import run.fleek.application.profile.vo.ProfileEditDto;
 import run.fleek.common.exception.FleekException;
+import run.fleek.domain.certification.UserBadgeService;
 import run.fleek.domain.certification.UserCertificationService;
 import run.fleek.domain.certification.dto.CertificationDto;
 import run.fleek.domain.profile.Profile;
@@ -49,6 +49,7 @@ public class ProfileApplication {
   private final ProfileInfoProcessor profileInfoProcessor;
   private final UserCertificationService userCertificationService;
   private final CertificationHolder certificationHolder;
+  private final UserBadgeService userBadgeService;
 
   @Transactional
   public void putProfileDetail(ProfileEditDto dto) {
@@ -87,12 +88,12 @@ public class ProfileApplication {
     List<ProfileImage> profileImageList = profileImageService.listProfileImageByProfileId(targetProfile.getProfileId());
     List<CertificationDto> certificationDtoList = Lists.newArrayList();
     if (Objects.nonNull(targetProfile.getUserId())) {
-      certificationDtoList = userCertificationService.listConfirmedUserCertifications(targetProfile.getUserId()).stream()
+      certificationDtoList = userBadgeService.listUserBadge(targetProfile.getUserId()).stream()
         .map(uc -> CertificationDto.builder()
           .certificationCode(uc.getCertificationCode().getName())
           .certificationName(certificationHolder.getCertification(uc.getCertificationCode().getName()).getName())
           .certificationDescription(certificationHolder.getCertification(uc.getCertificationCode().getName()).getDescription())
-          .certificationStatus(uc.getCertificationStatus().name())
+          .certificationStatus(CertificationStatus.ACCEPTED.name())
           .build())
         .collect(Collectors.toList());
     }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ProfileInfoRepository extends JpaRepository<ProfileInfo, Long> {
   List<ProfileInfo> findAllByProfile_ProfileId(Long profileId);
+
+  List<ProfileInfo> findAllByProfileInAndTypeCode(List<Profile> profiles, String profileInfoTypeCode);
 }

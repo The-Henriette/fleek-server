@@ -55,9 +55,9 @@ public class AuthApplication {
     Optional<FleekUser> fleekUser = fleekUserService.getUserByPhoneNumber(phoneNumber);
     UserVerification userVerification;
     if (fleekUser.isPresent()) {
-      userVerification = userVerificationService.addUserVerification(verificationType, fleekUser.get());
+      userVerification = userVerificationService.addUserVerification(verificationType, fleekUser.get(), null);
     } else {
-      userVerification = userVerificationService.addUserVerification(verificationType, null);
+      userVerification = userVerificationService.addUserVerification(verificationType, null, null);
     }
 
     devVerificationNotifier.send(userVerification.getVerificationNumber());

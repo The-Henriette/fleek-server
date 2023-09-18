@@ -42,6 +42,9 @@ public class UserCertification implements SystemMetadata {
   @Enumerated(EnumType.STRING)
   private CertificationMethod certificationMethod;
 
+  @Column(name = "reject_read")
+  private Boolean rejectRead;
+
   @Column(name = "active")
   private Boolean active;
 
@@ -57,5 +60,6 @@ public class UserCertification implements SystemMetadata {
     this.certificationStatus = CertificationStatus.PENDING;
     this.active = true;
     this.certificationMethod = method;
+    this.rejectRead = true;
   }
 }

@@ -21,4 +21,9 @@ public class InbodyCertificationHandler implements CertificationHandler {
   public void handle(UserCertification userCertification, List<CertificationResource> resources) {
 
   }
+
+  @Override
+  public void verify(UserCertification userCertification, List<CertificationResource> resources) {
+
+  }
 }

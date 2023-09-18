@@ -3,6 +3,7 @@ package run.fleek.domain.certification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import run.fleek.domain.users.FleekUser;
+import run.fleek.enums.Certification;
 import run.fleek.enums.CertificationStatus;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface UserCertificationRepository extends JpaRepository<UserCertifica
   List<UserCertification> findAllByFleekUser_FleekUserIdAndCertificationStatus(Long userId, CertificationStatus certificationStatus);
   List<UserCertification> findAllByFleekUser_FleekUserIdAndActiveIsTrue(Long userId);
 
-  boolean existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(Long fleekUserId, String certificationCode);
+  boolean existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(Long fleekUserId, Certification certificationCode);
 
-  Optional<UserCertification> findByFleekUserAndCertificationCodeAndActiveIsTrue(FleekUser fleekUser, String certificationCode);
+  Optional<UserCertification> findByFleekUserAndCertificationCodeAndActiveIsTrue(FleekUser fleekUser, Certification certificationCode);
 }

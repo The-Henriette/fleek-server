@@ -1,11 +1,14 @@
 package run.fleek.domain.certification;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.domain.users.FleekUser;
+import run.fleek.enums.Certification;
 import run.fleek.enums.CertificationStatus;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +19,23 @@ public class UserCertificationService {
     private final UserCertificationRepository userCertificationRepository;
 
     @Transactional
+    public UserCertification putUserCertification(UserCertification userCertification) {
+        return userCertificationRepository.save(userCertification);
+    }
+
+    @Transactional
     public UserCertification addUserCertification(UserCertification userCertification) {
         boolean existsActiveCertification =
-          userCertificationRepository.existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(userCertification.getFleekUser().getFleekUserId(), userCertification.getCertificationCode().getName());
+          userCertificationRepository.existsByFleekUser_FleekUserIdAndActiveIsTrueAndCertificationCode(userCertification.getFleekUser().getFleekUserId(), userCertification.getCertificationCode());
 
         if (existsActiveCertification) {
-            userCertification.setActive(false);
+            UserCertification preExistentUserCertification =
+              userCertificationRepository.findByFleekUserAndCertificationCodeAndActiveIsTrue(
+                userCertification.getFleekUser(),
+                userCertification.getCertificationCode())
+                .orElseThrow();
+            preExistentUserCertification.setActive(false);
+            userCertificationRepository.save(preExistentUserCertification);
         }
         return userCertificationRepository.save(userCertification);
     }
@@ -29,6 +43,11 @@ public class UserCertificationService {
     @Transactional(readOnly = true)
     public Optional<UserCertification> getUserCertification(Long userCertificationId) {
       return userCertificationRepository.findById(userCertificationId);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserCertification> getUserCertificationByUserAndType(FleekUser user, Certification certification) {
+      return userCertificationRepository.findByFleekUserAndCertificationCodeAndActiveIsTrue(user, certification);
     }
 
     @Transactional(readOnly = true)
@@ -41,8 +60,12 @@ public class UserCertificationService {
         return userCertificationRepository.findAllByFleekUser_FleekUserIdAndCertificationStatus(userId, CertificationStatus.ACCEPTED);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<UserCertification> getActiveCertification(FleekUser fleekUser, String certificationCode) {
-      return userCertificationRepository.findByFleekUserAndCertificationCodeAndActiveIsTrue(fleekUser, certificationCode);
+    @Async
+    @Transactional
+    public void resolveRejection(UserCertification userCertification) {
+        if (!userCertification.getRejectRead()) {
+            userCertification.setRejectRead(true);
+            userCertificationRepository.save(userCertification);
+        }
     }
 }

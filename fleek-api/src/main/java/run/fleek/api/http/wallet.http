@@ -4,5 +4,5 @@ GET {{base_uri}}/wallet
 Authorization: Bearer {{accessToken}}
 
 ### increment
-POST {{base_uri}}/wallet/purchase?increment=10
+POST {{base_uri}}/wallet/purchase?increment=-500
 Authorization: Bearer {{accessToken}}

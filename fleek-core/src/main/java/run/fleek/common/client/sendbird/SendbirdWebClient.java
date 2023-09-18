@@ -16,10 +16,10 @@ import java.util.Map;
 public class SendbirdWebClient {
 
 //  private final String sendbirdUri = "https://api-6EAB14E9-EB51-4E9C-B14C-1B25E2420C9C.sendbird.com/v3/"; // production
-  private final String sendbirdUri = "https://api-881DA4ED-EF8A-4A88-926D-7BE1EC3ACF7D.sendbird.com/v3/"; // local
+  private final String sendbirdUri = "https://api-BB65F2D7-EAC5-403E-8E9B-40103DFE4AA8.sendbird.com/v3/"; // local
 
 //  private final String sendbirdToken = "f929720544a30c5c2d0a7668d9ef9b2fbc07f22a"; // production
-  private final String sendbirdToken = "0ee87fbb9282a9d3b37bc820edd2e80863896089"; // local
+  private final String sendbirdToken = "5af7260d38456d19baa0ade886dffb95931b79ca"; // local
 
   private final FleekWebClient fleekWebClient;
 

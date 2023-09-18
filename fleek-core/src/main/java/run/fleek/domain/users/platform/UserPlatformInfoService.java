@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import run.fleek.domain.users.FleekUser;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,12 @@ public class UserPlatformInfoService {
     UserPlatformInfo userPlatformInfo;
 
     if (StringUtils.hasLength(previousPushToken)) {
-      userPlatformInfo = userPlatformInfoRepository.findByPushToken(previousPushToken)
-        .orElseThrow(() -> new IllegalArgumentException("UserPlatformInfo not found"));
+      Optional<UserPlatformInfo> info = userPlatformInfoRepository.findByPushTokenAndFleekUser(previousPushToken, fleekUser);
+      userPlatformInfo = info.orElseGet(() -> UserPlatformInfo.builder()
+        .fleekUser(fleekUser)
+        .platformType(platformType)
+        .pushToken(pushToken)
+        .build());
       userPlatformInfo.setPushToken(pushToken);
       userPlatformInfo.setPlatformType(platformType);
     } else {

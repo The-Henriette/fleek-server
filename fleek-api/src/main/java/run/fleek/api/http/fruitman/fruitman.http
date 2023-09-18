@@ -27,9 +27,9 @@ POST {{base_uri}}/fruitman/sku
 Content-Type: application/json
 
 {
-  "skuName": "물복 황도 4kg 9~11수",
-  "skuMainImage": "fruitman/sku/샤인머스켓_메인.png",
-  "skuImages": ["fruitman/sku/샤인머스켓1.png","fruitman/sku/샤인머스켓2.png","fruitman/sku/샤인머스켓3.png","fruitman/sku/샤인머스켓4.png"]
+  "skuName": "캠벨 포도 3kg 9~11수",
+  "skuMainImage": "fruitman/sku/캠벨_메인.png",
+  "skuImages": ["fruitman/sku/캠벨1.png","fruitman/sku/캠벨2png","fruitman/sku/캠벨3.png","fruitman/sku/캠벨4.png","fruitman/sku/캠벨5.png","fruitman/sku/캠벨6.png","fruitman/sku/캠벨7.png","fruitman/sku/캠벨8.png","fruitman/sku/캠벨9.png","fruitman/sku/캠벨10.png"]
 }
 
 ### DEAL
@@ -38,10 +38,10 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/08 물복 황도 4kg 9~11수",
+  "dealName": "9/18 샤인머스캣 4kg 4~5수",
   "dealSkus": [
     {
-      "skuId": 2
+      "skuId": 1
     }
   ],
   "marketPrice": 44500,
@@ -51,7 +51,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 1,
-  "targetDate": "2023-09-08",
+  "targetDate": "2023-09-18",
   "requiredQuantity": 20,
   "purchaseOptions": [
     {
@@ -65,6 +65,40 @@ Content-Type: application/json
   ]
 }
 
+### DEAL
+### DEAL 등록
+POST {{base_uri}}/fruitman/deal
+Content-Type: application/json
+
+{
+  "dealName": "9/18 캠벨 포도 3kg 9~11수",
+  "dealSkus": [
+    {
+      "skuId": 2
+    }
+  ],
+  "marketPrice": 110000,
+  "salesPrice": 31000,
+  "deliveryPrice": 0,
+  "dealThumbnail": null,
+  "dealImages": null,
+  "deliveryMethods": ["DIRECT", "FREE"],
+  "deliveryGroupId": 1,
+  "targetDate": "2023-09-18",
+  "requiredQuantity": 30,
+  "purchaseOptions": [
+    {
+      "purchaseTypeCode": "TEAM",
+      "price": 31000
+    },
+    {
+      "purchaseTypeCode": "ALONE",
+      "price": 62000
+    }
+  ]
+}
+
+
 ### DEAL 조회
 GET {{base_uri}}/fruitman/deal/today
 
@@ -77,7 +111,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 {
-  "dealIds": [4],
+  "dealIds": [5],
   "purchaseOption": "TEAM",
   "cartType": "ORDER_SHEET"
 }
@@ -111,22 +145,30 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 {
-  "cartId": 4,
-  "recipientName": "김찬협",
-  "recipientPhoneNumber": "01089011823",
-  "postalCode": "01000",
-  "mainAddress": "우리집",
-  "subAddress": "상세한 주소",
-  "paymentMethod": "BANK_TRANSFER",
+  "cartId": 7,
+  "mainAddress": "서울 관악구 낙성대역3길 3",
+  "paymentMethod": "TOSS",
+  "postalCode": "08793",
+  "recipientName": "이용준",
+  "recipientPhoneNumber": "01093416751",
+  "subAddress": "제대로 입력",
   "receiptInfo": null
 }
 
-### 주문목록조회
-GET {{base_uri}}/fruitman/order
+
+
+
+### 딜 참여자 조회
+GET {{base_uri}}/fruitman/deal/8/participants
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
+
+### 주문목록조회
+GET {{base_uri}}/fruitman/order
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwIiwiaWQiOiIwIiwiYXV0aCI6IltdIiwiZXhwIjoxNzA0NjgwNzA2fQ.PdUWDdpMckqM4S9XCWNerZzLg_Y0ihqqEdqDwMBDVMjChMqo3zC0DxOGehr0nEjOYTBlZqXvV8nhF9cz-C4INA
+
 ### 주문 상세 조회
-GET {{base_uri}}/fruitman/order/20230902_MVdpG0vY
+GET {{base_uri}}/fruitman/order/20230911_qcAGIv0S
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6IltdIiwiZXhwIjoxNzAzNjgzNDAyfQ.mVWFB7MveTo-FEiiPmP1vN10ChxkaNTsAjFVwzZU0XvYIJPJy7MASZo6tiW0YJBjb3jKm4TN_WdozKkRDMv0CQ
 
 ### 주문 취소
