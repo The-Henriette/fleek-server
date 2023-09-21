@@ -11,4 +11,6 @@ public interface UserDeliveryDetailRepository extends JpaRepository<UserDelivery
   UserDeliveryDetail findByUserDeal(UserDeal userDeal);
 
   List<UserDeliveryDetail> findAllByUserDeal_Deal(Deal deal);
+
+  List<UserDeliveryDetail> findAllByUserDealIn(List<UserDeal> userDealList);
 }

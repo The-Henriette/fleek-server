@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserPaymentRepository extends JpaRepository<UserPayment, Long> {
-  UserPayment findByUserDeal(UserDeal userDeal);
+  UserPayment findFirstByUserDeal(UserDeal userDeal);
 }

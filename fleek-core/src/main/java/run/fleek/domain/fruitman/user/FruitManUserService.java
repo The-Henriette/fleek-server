@@ -3,6 +3,7 @@ package run.fleek.domain.fruitman.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.fleek.common.exception.FleekException;
 import run.fleek.enums.ProviderCode;
 
 import java.util.Optional;
@@ -26,6 +27,6 @@ public class FruitManUserService {
   @Transactional(readOnly = true)
   public FruitManUser getFruitManUser(Long userId) {
     return fruitManUserRepository.findById(userId)
-      .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+      .orElseThrow(() -> new FleekException("존재하지 않는 사용자입니다."));
   }
 }

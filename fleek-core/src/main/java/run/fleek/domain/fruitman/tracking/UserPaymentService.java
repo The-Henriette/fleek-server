@@ -16,6 +16,6 @@ public class UserPaymentService {
   }
 
   public UserPayment getUserPayment(UserDeal userDeal) {
-    return userPaymentRepository.findByUserDeal(userDeal);
+    return userPaymentRepository.findFirstByUserDeal(userDeal);
   }
 }

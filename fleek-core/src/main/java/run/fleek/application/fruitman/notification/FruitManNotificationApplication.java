@@ -95,7 +95,13 @@ public class FruitManNotificationApplication {
       return;
     }
 
-    List<UserDeliveryDetail> details = userDeliveryDetailService.getUserDeliveryDetailsByDeal(deal);
+    List<UserDeal> successTargetDeals = userDealService.listUserDeal(deal).stream()
+      .filter(ud -> ud.getTrackingStatus().equals(DealTrackingStatus.TEAM_PURCHASE_PENDING) &&
+        ud.getPurchaseOption().equals(PurchaseOption.TEAM))
+      .collect(Collectors.toList());
+
+    List<UserDeliveryDetail> details = userDeliveryDetailService.listUserDeliveryDetailBy(successTargetDeals);
+
     List<NhnMessageRequestDto.NhnRecipientDto> recipientDtoList = details.stream()
       .map(UserDeliveryDetail::getRecipientPhoneNumber)
       .map(ph -> NhnMessageRequestDto.NhnRecipientDto.builder()
@@ -109,10 +115,9 @@ public class FruitManNotificationApplication {
     deal.setDealStatus(DealStatus.SUCCESS);
     dealService.addDeal(deal);
 
-    List<UserDeal> userDealList = userDealService.listUserDeal(deal);
     List<UserDeal> putUserDealList = Lists.newArrayList();
     List<UserDealTracking> userDealTrackingList = Lists.newArrayList();
-    userDealList.forEach(ud -> {
+    successTargetDeals.forEach(ud -> {
       if (ud.getPurchaseOption().equals(PurchaseOption.TEAM)) {
         ud.setTrackingStatus(DealTrackingStatus.TEAM_PURCHASE_SUCCESS);
         putUserDealList.add(ud);

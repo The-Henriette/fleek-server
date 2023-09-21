@@ -1,0 +1,127 @@
+### 스큐등록 - 엘바트 황도
+POST {{base_uri}}/fruitman/sku
+Content-Type: application/json
+
+{
+  "skuName": "엘바트 황도 4kg 8~11수",
+  "skuMainImage": "fruitman/sku/elbertpeach_main.png",
+  "skuImages": ["fruitman/sku/elbertpeach_detail.png"]
+}
+
+### 스큐등록 - 샤인 머스캣
+POST {{base_uri}}/fruitman/sku
+Content-Type: application/json
+
+{
+  "skuName": "샤인 머스캣 4kg 4~5수",
+  "skuMainImage": "fruitman/sku/shine_main.png",
+  "skuImages": ["fruitman/sku/shine_detail.png"]
+}
+
+### 스큐등록 - 멜론
+POST {{base_uri}}/fruitman/sku
+Content-Type: application/json
+
+{
+  "skuName": "멜론 8kg 4수",
+  "skuMainImage": "fruitman/sku/gochangmelon_main.png",
+  "skuImages": ["fruitman/sku/gochangmelon_detail.png"]
+}
+
+### 딜 등록 - 엘바트 황도
+POST {{base_uri}}/fruitman/deal
+Content-Type: application/json
+
+{
+  "dealName": "9/21 엘바트 황도 4kg 8~11수",
+  "dealSkus": [
+    {
+      "skuId": 3
+    }
+  ],
+  "marketPrice": 69800,
+  "salesPrice": 34900,
+  "deliveryPrice": 0,
+  "dealThumbnail": null,
+  "dealImages": null,
+  "deliveryMethods": ["DIRECT", "FREE"],
+  "deliveryGroupId": 0,
+  "targetDate": "2023-09-21",
+  "requiredQuantity": 30,
+  "purchaseOptions": [
+    {
+      "purchaseTypeCode": "ALONE",
+      "price": 69800
+    },
+    {
+      "purchaseTypeCode": "TEAM",
+      "price": 34900
+    }
+  ]
+}
+
+### 딜 등록 - 멜론
+POST {{base_uri}}/fruitman/deal
+Content-Type: application/json
+
+{
+  "dealName": "9/21 멜론 8kg 4수",
+  "dealSkus": [
+    {
+      "skuId": 5
+    }
+  ],
+  "marketPrice": 99800,
+  "salesPrice": 49900,
+  "deliveryPrice": 0,
+  "dealThumbnail": null,
+  "dealImages": null,
+  "deliveryMethods": ["DIRECT", "FREE"],
+  "deliveryGroupId": 0,
+  "targetDate": "2023-09-21",
+  "requiredQuantity": 30,
+  "purchaseOptions": [
+    {
+      "purchaseTypeCode": "ALONE",
+      "price": 99800
+    },
+    {
+      "purchaseTypeCode": "TEAM",
+      "price": 49900
+    }
+  ]
+}
+
+### 딜 등록 - 샤인머스캣
+POST {{base_uri}}/fruitman/deal
+Content-Type: application/json
+
+{
+  "dealName": "9/21 샤인 머스캣 4kg 4~5수",
+  "dealSkus": [
+    {
+      "skuId": 4
+    }
+  ],
+  "marketPrice": 85800,
+  "salesPrice": 42900,
+  "deliveryPrice": 0,
+  "dealThumbnail": null,
+  "dealImages": null,
+  "deliveryMethods": ["DIRECT", "FREE"],
+  "deliveryGroupId": 0,
+  "targetDate": "2023-09-21",
+  "requiredQuantity": 30,
+  "purchaseOptions": [
+    {
+      "purchaseTypeCode": "ALONE",
+      "price": 85800
+    },
+    {
+      "purchaseTypeCode": "TEAM",
+      "price": 42900
+    }
+  ]
+}
+
+

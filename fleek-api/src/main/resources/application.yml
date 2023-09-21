@@ -55,18 +55,18 @@ spring:
   datasource:
     hikari:
 #      jdbc-url: 'jdbc:postgresql://host.docker.internal:5432/fleek?reWriteBatchedInserts=true'
-      jdbc-url: 'jdbc:postgresql://localhost:5432/fleek?reWriteBatchedInserts=true'
-      driver-class-name: 'org.postgresql.Driver'
-      username: 'cherrypop'
-      password: '13o1714QO^WXep@A'
-      maximum-pool-size: 10
-      minimum-idle: 10
-#      jdbc-url: 'jdbc:postgresql://fleek-vpc-postgres-dev.clriishsxhuj.ap-northeast-2.rds.amazonaws.com/fleek?reWriteBatchedInserts=true'
+#      jdbc-url: 'jdbc:postgresql://localhost:5432/fleek?reWriteBatchedInserts=true'
 #      driver-class-name: 'org.postgresql.Driver'
-#      username: 'henriette'
-#      password: 'y!Z-Zy7h9R9rc!$bSfguTcz7#A7%'
+#      username: 'cherrypop'
+#      password: '13o1714QO^WXep@A'
 #      maximum-pool-size: 10
 #      minimum-idle: 10
+      jdbc-url: 'jdbc:postgresql://fleek-vpc-postgres-dev.clriishsxhuj.ap-northeast-2.rds.amazonaws.com/fleek?reWriteBatchedInserts=true'
+      driver-class-name: 'org.postgresql.Driver'
+      username: 'henriette'
+      password: 'y!Z-Zy7h9R9rc!$bSfguTcz7#A7%'
+      maximum-pool-size: 10
+      minimum-idle: 10
 
 
 aws:

@@ -25,4 +25,9 @@ public class UserDeliveryDetailService {
   public List<UserDeliveryDetail> getUserDeliveryDetailsByDeal(Deal Deal) {
     return userDeliveryDetailRepository.findAllByUserDeal_Deal(Deal);
   }
+
+  @Transactional
+  public List<UserDeliveryDetail> listUserDeliveryDetailBy(List<UserDeal> userDealList) {
+    return userDeliveryDetailRepository.findAllByUserDealIn(userDealList);
+  }
 }
