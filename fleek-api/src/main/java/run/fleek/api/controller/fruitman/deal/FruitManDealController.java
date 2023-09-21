@@ -23,6 +23,12 @@ public class FruitManDealController {
     return dealApplication.listTodayDeal();
   }
 
+  @GetMapping("/fruitman/deal/previous")
+  public DealPageDto listPreviousDeals(@RequestParam(defaultValue = "10") int size,
+                                       @RequestParam(defaultValue = "0") int page) {
+    return dealApplication.listPreviousDeals(size, page);
+  }
+
   @GetMapping("/fruitman/deal/{dealId}")
   public DealDetailDto getDealDetail(@PathVariable Long dealId) {
     return dealApplication.getDealDetail(dealId);

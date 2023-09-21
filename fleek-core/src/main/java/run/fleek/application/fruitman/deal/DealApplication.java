@@ -136,4 +136,9 @@ public class DealApplication {
       .deliveryAreaGroupName(deliveryAreaGroup.getDeliveryAreaGroupName())
       .build();
   }
+
+  public DealPageDto listPreviousDeals(int size, int page) {
+    Long todayBeginning = TimeUtil.toStartOfDaySeoul(new Date()).getTime();
+    return dealService.pageDealsBefore(todayBeginning, size, page);
+  }
 }

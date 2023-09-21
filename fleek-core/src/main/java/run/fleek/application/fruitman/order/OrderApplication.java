@@ -100,6 +100,7 @@ public class OrderApplication {
       .postalCode(orderAddDto.getPostalCode())
       .mainAddress(orderAddDto.getMainAddress())
       .subAddress(orderAddDto.getSubAddress())
+      .deliveryMemo(orderAddDto.getDeliveryMemo())
       .build();
     userDeliveryDetailService.addUserDeliveryDetail(userDeliveryDetail);
 

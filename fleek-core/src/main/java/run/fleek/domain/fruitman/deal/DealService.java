@@ -3,6 +3,7 @@ package run.fleek.domain.fruitman.deal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.fleek.application.fruitman.deal.dto.DealPageDto;
 import run.fleek.common.exception.FleekException;
 import run.fleek.domain.fruitman.deal.vo.DealVo;
 
@@ -32,5 +33,10 @@ public class DealService {
   public Deal getDeal(Long dealId) {
     return dealRepository.findById(dealId)
       .orElseThrow(() -> new FleekException("존재하지 않는 상품입니다."));
+  }
+
+  @Transactional(readOnly = true)
+  public DealPageDto pageDealsBefore(Long from, int size, int page) {
+    return dealRepository.pageDealsBefore(from, size, page);
   }
 }

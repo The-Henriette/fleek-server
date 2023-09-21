@@ -188,3 +188,8 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWQiOiIyIiwiYXV0aCI6I
   "paymentKey": "samplePaymentKey",
   "amount": 39000
 }
+
+### 이전 딜 조회
+GET {{base_uri}}/fruitman/deal/previous?size=10&page=0
+
+

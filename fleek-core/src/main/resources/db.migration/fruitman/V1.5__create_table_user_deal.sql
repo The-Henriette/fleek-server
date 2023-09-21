@@ -67,6 +67,8 @@ CREATE INDEX idx_user_delivery_detail_user_deal_id ON public.user_delivery_detai
 CREATE INDEX user_delivery_detail_idx01 ON public.user_delivery_detail (created_at);
 CREATE INDEX user_delivery_detail_idx02 ON public.user_delivery_detail (updated_at);
 
+alter table user_delivery_detail add column delivery_memo varchar(255);
+
 -- Create sequence for UserPayment
 DROP SEQUENCE IF EXISTS user_payment_seq;
 CREATE SEQUENCE user_payment_seq INCREMENT BY 1 START WITH 1 NO CYCLE;

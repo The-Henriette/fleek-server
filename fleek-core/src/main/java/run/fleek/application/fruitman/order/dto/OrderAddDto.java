@@ -14,6 +14,7 @@ public class OrderAddDto {
   private String postalCode;
   private String mainAddress;
   private String subAddress;
+  private String deliveryMemo;
   private String paymentMethod;
   private ReceiptInfoDto receiptInfo;
 }

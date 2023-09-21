@@ -41,6 +41,9 @@ public class UserDeliveryDetail implements SystemMetadata {
   @Column(name = "sub_address")
   private String subAddress;
 
+  @Column(name = "delivery_memo")
+  private String deliveryMemo;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 
