@@ -5,11 +5,14 @@ import run.fleek.application.fruitman.order.dto.OrderDto;
 import run.fleek.application.fruitman.order.dto.OrderPageDto;
 import run.fleek.application.fruitman.order.vo.OrderVo;
 import run.fleek.configuration.database.FleekQueryDslRepositorySupport;
+import run.fleek.domain.fruitman.deal.Deal;
 import run.fleek.domain.fruitman.deal.QDeal;
 import run.fleek.domain.fruitman.user.FruitManUser;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static run.fleek.enums.DealTrackingStatus.VISIBLE_STATES;
 
 public class UserDealRepositoryImpl extends FleekQueryDslRepositorySupport implements UserDealRepositoryCustom {
 
@@ -26,7 +29,7 @@ public class UserDealRepositoryImpl extends FleekQueryDslRepositorySupport imple
     QueryResults<OrderVo> vos = from(qUserDeal)
       .innerJoin(qUserDeal.deal, qDeal)
       .innerJoin(qUserPayment).on(qUserDeal.userDealId.eq(qUserPayment.userDeal.userDealId))
-      .where(qUserDeal.fruitManUser.eq(fruitManUser))
+      .where(qUserDeal.fruitManUser.eq(fruitManUser).and(qUserDeal.trackingStatus.in(VISIBLE_STATES)))
       .orderBy(qUserDeal.orderedAt.desc())
       .offset((long) page * size)
       .limit(size)

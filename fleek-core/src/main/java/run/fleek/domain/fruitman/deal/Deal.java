@@ -8,6 +8,7 @@ import run.fleek.common.jpa.SystemMetadata;
 import run.fleek.common.jpa.UpdatedAtListener;
 import run.fleek.domain.fruitman.delivery.DeliveryAreaGroup;
 import run.fleek.domain.fruitman.sku.Sku;
+import run.fleek.enums.DealStatus;
 import run.fleek.utils.JsonUtil;
 
 import javax.persistence.*;
@@ -50,6 +51,10 @@ public class Deal implements SystemMetadata {
   @Column(name = "delivery_methods")
   private String deliveryMethods;
 
+  @Column(name = "deal_status")
+  @Enumerated(EnumType.STRING)
+  private DealStatus dealStatus;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "delivery_area_group_id")
   private DeliveryAreaGroup deliveryAreaGroup;
@@ -72,6 +77,7 @@ public class Deal implements SystemMetadata {
       .marketPrice(dealAddDto.getMarketPrice())
       .salesPrice(dealAddDto.getSalesPrice())
       .deliveryPrice(dealAddDto.getDeliveryPrice())
+      .dealStatus(DealStatus.PENDING)
       .dealThumbnail(Optional.ofNullable(dealAddDto.getDealThumbnail()).orElse(skuMap.get(dealAddDto.getDealSkus().get(0).getSkuId()).getSkuMainImage()))
       .dealImages(CollectionUtils.isEmpty(dealAddDto.getDealImages()) ?
         skuMap.get(dealAddDto.getDealSkus().get(0).getSkuId()).getSkuImages() : JsonUtil.write(dealAddDto.getDealImages()))

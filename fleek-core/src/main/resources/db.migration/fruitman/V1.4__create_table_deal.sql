@@ -27,6 +27,8 @@ CREATE INDEX deal_idx03 ON public.deal (effected_at);
 CREATE INDEX deal_idx04 ON public.deal (expired_at);
 CREATE INDEX deal_idx05 ON public.deal (delivery_area_group_id);
 
+alter table deal add column deal_status varchar(25) default 'PENDING';
+
 -- Create sequence for DealConstraint
 DROP SEQUENCE IF EXISTS deal_constraint_seq;
 CREATE SEQUENCE deal_constraint_seq INCREMENT BY 1 START WITH 1 NO CYCLE;

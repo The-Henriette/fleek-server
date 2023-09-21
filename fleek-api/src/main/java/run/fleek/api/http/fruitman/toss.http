@@ -1,0 +1,9 @@
+### 결제취소
+POST https://api.tosspayments.com/v1/payments/AK6k75XwlOyL0qZ4G1VOaowmOA202P8oWb2MQYgmBDPdR9px/cancel
+Content-Type: application/json
+Idempotency-Key: 1234567890
+Authorization: Basic bGl2ZV9za18wUm5ZWDJ3NTMyQndwdmRaWlllM05leXFBcFFFOg==
+
+{
+  "cancelReason": "단순 변심"
+}

@@ -13,11 +13,11 @@ public class HelloController {
     private final AwsRekognitionWrapper awsRekognitionWrapper;
 
     @GetMapping("/hello")
-    public RekognitionResponseDto getHello() {
+    public String getHello() {
 
-        return awsRekognitionWrapper.compareFaces("fleek/samplesource.jpeg", "fleek/sampletarget.png");
+//        return awsRekognitionWrapper.compareFaces("fleek/samplesource.jpeg", "fleek/sampletarget.png");
 
-//        return "Fuck Yeah! - 9-08";
+        return "Fuck Yeah! - 9-18";
     }
 
 

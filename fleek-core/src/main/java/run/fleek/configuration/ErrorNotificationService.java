@@ -8,6 +8,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import run.fleek.common.email.EmailService;
+import run.fleek.common.notification.ServerErrorSlackNotifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,14 +22,16 @@ import static com.slack.api.model.block.composition.BlockCompositions.markdownTe
 @Service
 @RequiredArgsConstructor
 public class ErrorNotificationService {
-  private static final String DEV_TEAM_EMAIL_ADDRESS = "pasta-backend-developer@techtaka.com";
-  private static final List<String> PASTA_SLAVES = Arrays.asList("chance@techtaka.com", "mac@techtaka.com", "murloc@techtaka.com");
+  private static final String DEV_TEAM_EMAIL_ADDRESS = "fleek@henriette.world";
 
 //  @Value("${argo.service}")
   private final String serviceName = "fleek";
 
 //  @Value("${spring.profiles.active}")
   private final String profile = "dev";
+
+  private final EmailService emailService;
+  private final ServerErrorSlackNotifier serverErrorSlackNotifier;
 
   @Async(value = "defaultTaskExecutor")
   public void sendNotification(Exception ex) {
@@ -43,8 +47,8 @@ public class ErrorNotificationService {
       String localSubject = "[DEV!!!!!]" + subject;
       //PASTA_SLAVES.forEach(slave -> emailService.justSend(slave, localSubject, ExceptionUtils.getStackTrace(ex)));
     }
-//    serverErrorSlackNotifier.send(getErrorMessage(id, cause));
-//    emailService.sendOnlyInProduction(DEV_TEAM_EMAIL_ADDRESS, subject, ExceptionUtils.getStackTrace(ex));
+    serverErrorSlackNotifier.send(getErrorMessage(id, cause));
+    emailService.sendSimpleMessage(DEV_TEAM_EMAIL_ADDRESS, subject, ExceptionUtils.getStackTrace(ex));
   }
 
   @Async(value = "defaultTaskExecutor")

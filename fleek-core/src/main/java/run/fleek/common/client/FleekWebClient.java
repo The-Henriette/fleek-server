@@ -112,10 +112,10 @@ public class FleekWebClient {
       .retrieve()
       .onStatus(HttpStatus::is4xxClientError, response
         -> response.bodyToMono(String.class)
-        .flatMap(r -> Mono.error((Throwable) new FleekException(r))))
+        .flatMap(r -> Mono.error((Throwable) new RuntimeException(r))))
       .onStatus(HttpStatus::is5xxServerError, response
         -> response.bodyToMono(String.class)
-        .flatMap(r -> Mono.error((Throwable) new FleekException(r))));
+        .flatMap(r -> Mono.error((Throwable) new RuntimeException(r))));
   }
 
   public WebClient.ResponseSpec post(String uri, Object body, MultiValueMap<String, String> headers, long timeoutMillis) {

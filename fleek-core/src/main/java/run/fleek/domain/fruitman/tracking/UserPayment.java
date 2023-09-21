@@ -43,6 +43,9 @@ public class UserPayment implements SystemMetadata {
   @Column(name = "refund_amount")
   private Integer refundAmount;
 
+  @Column(name = "toss_payment_key")
+  private String tossPaymentKey;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 

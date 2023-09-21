@@ -7,6 +7,8 @@ import run.fleek.domain.fruitman.tracking.UserDeliveryDetail;
 import run.fleek.domain.fruitman.tracking.UserPayment;
 import run.fleek.domain.fruitman.user.UserRefundInfo;
 
+import static run.fleek.common.constants.Constants.CDN_PREFIX;
+
 @Getter
 @Setter
 @Builder
@@ -21,6 +23,7 @@ public class OrderDetailDto {
 
   private Long dealId;
   private String dealName;
+  private String dealImage;
   private String paymentMethod;
   private Integer purchasePrice;
   private Integer deliveryPrice;
@@ -38,6 +41,10 @@ public class OrderDetailDto {
 
   private Long updatedAt;
 
+  public String getDealImage() {
+    return CDN_PREFIX + dealImage;
+  }
+
   public void setUserDealInfo(UserDeal userDeal) {
     this.orderId = userDeal.getOrderId();
     this.dealTrackingStatus = userDeal.getTrackingStatus().getName();
@@ -52,6 +59,7 @@ public class OrderDetailDto {
     this.dealId = deal.getDealId();
     this.dealName = deal.getDealName();
     this.deliveryPrice = deal.getDeliveryPrice();
+    this.dealImage = deal.getDealThumbnail();
   }
 
   public void setUserPaymentInfo(UserPayment userPayment) {

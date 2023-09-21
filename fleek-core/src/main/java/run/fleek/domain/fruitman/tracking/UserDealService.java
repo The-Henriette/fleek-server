@@ -7,9 +7,16 @@ import run.fleek.application.fruitman.order.dto.OrderPageDto;
 import run.fleek.domain.fruitman.deal.Cart;
 import run.fleek.domain.fruitman.deal.Deal;
 import run.fleek.domain.fruitman.user.FruitManUser;
+import run.fleek.enums.DealTrackingStatus;
+import run.fleek.enums.PurchaseOption;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static run.fleek.enums.DealTrackingStatus.COUNTABLE_STATES;
+import static run.fleek.enums.DealTrackingStatus.VISIBLE_STATES;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +25,7 @@ public class UserDealService {
 
   @Transactional(readOnly = true)
   public Optional<UserDeal> getSampleParticipant(Deal deal) {
-    return userDealRepository.findFirstByDeal(deal);
+    return userDealRepository.findFirstByDealAndTrackingStatusInAndPurchaseOption(deal, new ArrayList<>(COUNTABLE_STATES), PurchaseOption.TEAM);
   }
 
   @Transactional(readOnly = true)
@@ -44,5 +51,14 @@ public class UserDealService {
   @Transactional(readOnly = true)
   public List<UserDeal> getUserDeals(Cart cart) {
     return userDealRepository.findAllByCart(cart);
+  }
+
+  @Transactional
+  public void putUserDealList(List<UserDeal> putUserDealList) {
+    if (putUserDealList.isEmpty()) {
+      return;
+    }
+
+    userDealRepository.saveAll(putUserDealList);
   }
 }

@@ -2,9 +2,11 @@ package run.fleek.api.controller.fruitman.order;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import run.fleek.application.fruitman.notification.FruitManNotificationApplication;
 import run.fleek.application.fruitman.order.OrderApplication;
 import run.fleek.application.fruitman.order.dto.*;
 import run.fleek.common.client.toss.dto.TossPaymentResponseDto;
+import run.fleek.domain.fruitman.tracking.UserDeal;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class FruitManOrderController {
 
   private final OrderApplication orderApplication;
+  private final FruitManNotificationApplication fruitManNotificationApplication;
 
   @PostMapping("/fruitman/cart")
   public CartDto addCart(@RequestBody CartAddDto cartAddDto) {
@@ -41,15 +44,23 @@ public class FruitManOrderController {
 
   @PostMapping("/fruitman/order/{orderId}/cancel")
   public void cancelOrder(@PathVariable String orderId) {
-    orderApplication.cancelOrder(orderId);
+     UserDeal userDeal = orderApplication.cancelOrder(orderId);
+      fruitManNotificationApplication.sendNotificationOnCancel(userDeal);
   }
 
   @PostMapping("/fruitman/order/{orderId}/payment/{status}")
-  public TossPaymentResponseDto updatePaymentStatus(@PathVariable String orderId,
+  public PaymentResponseDto updatePaymentStatus(@PathVariable String orderId,
                                                     @PathVariable String status,
                                                     @RequestBody PaymentRequestDto dto) {
     if (status.equals("success")) {
-      return orderApplication.updatePaymentStatus(orderId, dto);
+      PaymentResponseDto response = orderApplication.updatePaymentStatus(orderId, dto);
+      fruitManNotificationApplication.sendNotificationOnTeamPurchasePending(response.getOrderId());
+
+      if (response.getSuccess() && response.getRemainingCount() <= 0) {
+        fruitManNotificationApplication.sendNotificationOnTeamPurchaseSuccess(response.getOrderId());
+      }
+
+      return response;
     } else {
       orderApplication.cancelOrder(orderId);
       return null;

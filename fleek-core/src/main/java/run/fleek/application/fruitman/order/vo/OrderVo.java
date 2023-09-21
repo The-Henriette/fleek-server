@@ -19,6 +19,7 @@ public class OrderVo {
   private String orderId;
   private Long dealId;
   private String dealName;
+  private String dealImage;
   private Integer purchasePrice;
   private DealTrackingStatus dealTrackingStatus;
   private Long orderedAt;
@@ -34,6 +35,7 @@ public class OrderVo {
         QUserDeal.userDeal.orderId,
         QDeal.deal.dealId,
         QDeal.deal.dealName,
+        QDeal.deal.dealThumbnail,
         QUserPayment.userPayment.amount,
         QUserDeal.userDeal.trackingStatus,
         QUserDeal.userDeal.orderedAt,
@@ -49,6 +51,7 @@ public class OrderVo {
         .orderId(row.get(QUserDeal.userDeal.orderId))
         .dealId(row.get(QDeal.deal.dealId))
         .dealName(row.get(QDeal.deal.dealName))
+        .dealImage(row.get(QDeal.deal.dealThumbnail))
         .purchasePrice(row.get(QUserPayment.userPayment.amount))
         .dealTrackingStatus(row.get(QUserDeal.userDeal.trackingStatus))
         .orderedAt(row.get(QUserDeal.userDeal.orderedAt))

@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TossPaymentResponseDto {
+
+  private Boolean success;
+  private String errorCode;
+  private String errorMessage;
   @JsonProperty("mId")
   private String merchantId;
 

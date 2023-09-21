@@ -86,6 +86,8 @@ CREATE INDEX idx_user_payment_user_deal_id ON public.user_payment (user_deal_id)
 CREATE INDEX user_payment_idx01 ON public.user_payment (created_at);
 CREATE INDEX user_payment_idx02 ON public.user_payment (updated_at);
 
+alter table user_payment add column toss_payment_key text;
+
 -- Create sequence for UserPaymentReceipt
 DROP SEQUENCE IF EXISTS user_payment_receipt_seq;
 CREATE SEQUENCE user_payment_receipt_seq INCREMENT BY 1 START WITH 1 NO CYCLE;

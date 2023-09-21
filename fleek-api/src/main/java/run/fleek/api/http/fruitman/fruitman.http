@@ -38,10 +38,10 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/18 샤인머스캣 4kg 4~5수",
+  "dealName": "9/21 샤인머스캣 4kg 4~5수",
   "dealSkus": [
     {
-      "skuId": 1
+      "skuId": 2
     }
   ],
   "marketPrice": 44500,
@@ -51,7 +51,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 1,
-  "targetDate": "2023-09-18",
+  "targetDate": "2023-09-21",
   "requiredQuantity": 20,
   "purchaseOptions": [
     {
@@ -71,7 +71,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/18 캠벨 포도 3kg 9~11수",
+  "dealName": "9/21 캠벨 포도 3kg 9~11수",
   "dealSkus": [
     {
       "skuId": 2
@@ -84,7 +84,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 1,
-  "targetDate": "2023-09-18",
+  "targetDate": "2023-09-21",
   "requiredQuantity": 30,
   "purchaseOptions": [
     {

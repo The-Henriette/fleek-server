@@ -14,6 +14,7 @@ import run.fleek.domain.fruitman.sku.SkuService;
 import run.fleek.domain.fruitman.tracking.UserDeal;
 import run.fleek.domain.fruitman.tracking.UserDealService;
 import run.fleek.domain.fruitman.user.FruitManUser;
+import run.fleek.enums.PurchaseOption;
 import run.fleek.utils.MaskingUtil;
 import run.fleek.utils.TimeUtil;
 
@@ -24,6 +25,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static run.fleek.common.constants.Constants.FruitMan.DEFAULT_DEAL_START_TIME;
+import static run.fleek.enums.DealTrackingStatus.COUNTABLE_STATES;
+import static run.fleek.enums.DealTrackingStatus.VISIBLE_STATES;
 
 @Component
 @RequiredArgsConstructor
@@ -104,7 +107,10 @@ public class DealApplication {
   public DealParticipantsDto getDealParticipants(Long dealId) {
     Deal deal = dealService.getDeal(dealId);
     DealConstraint constraint = dealConstraintService.getDealConstraint(deal);
-    List<UserDeal> participants = userDealService.listUserDeal(deal);
+    List<UserDeal> participants = userDealService.listUserDeal(deal).stream()
+      .filter(d -> COUNTABLE_STATES.contains(d.getTrackingStatus()))
+      .filter(d -> d.getPurchaseOption().equals(PurchaseOption.TEAM))
+      .collect(Collectors.toList());
     return DealParticipantsDto.builder()
       .dealId(dealId)
       .effectedAt(deal.getEffectedAt())

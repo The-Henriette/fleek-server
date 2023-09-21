@@ -1,7 +1,6 @@
 package run.fleek.application.fruitman.order;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.application.fruitman.order.dto.*;
@@ -21,8 +20,8 @@ import run.fleek.utils.JsonUtil;
 import run.fleek.utils.RandomUtil;
 import run.fleek.utils.TimeUtil;
 
-import java.sql.Time;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static run.fleek.common.constants.Constants.FruitMan.DEFAULT_REFUND_TIME;
@@ -160,8 +159,9 @@ public class OrderApplication {
   }
 
   @Transactional
-  public void cancelOrder(String orderId) {
+  public UserDeal cancelOrder(String orderId) {
     UserDeal userDeal = userDealService.getUserDeal(orderId);
+    DealTrackingStatus originalStatus = userDeal.getTrackingStatus();
     if (!REFUNDABLE_STATES.contains(userDeal.getTrackingStatus())) {
       throw new FleekException("주문 취소가 불가능한 상태입니다.");
     }
@@ -178,20 +178,37 @@ public class OrderApplication {
       .build();
     userDealTrackingService.addUserDealTracking(userDealTracking);
 
-    if (PAID_STATES.contains(userDeal.getTrackingStatus())) {
+    if (PAID_STATES.contains(originalStatus)) {
       UserPayment userPayment = userPaymentService.getUserPayment(userDeal);
       userPayment.setRefundDue(cancelledAt + DEFAULT_REFUND_TIME);
       userPayment.setRefundAmount(userPayment.getAmount());
+
+      if (userPayment.getPaymentMethod().equals(PaymentMethod.TOSS)) {
+        tossWebclient.cancelPayment(userPayment);
+      }
       userPaymentService.addUserPayment(userPayment);
+
+      if (originalStatus.equals(DealTrackingStatus.TEAM_PURCHASE_PENDING)) {
+        DealConstraint constraint = dealConstraintService.getDealConstraint(userDeal.getDeal());
+        constraint.setCurrentQuantity(Math.max(constraint.getCurrentQuantity() - 1, 0));
+        dealConstraintService.addDealConstraint(constraint);
+      }
     }
 
     userDealService.addUserDeal(userDeal);
+    return userDeal;
   }
 
   @Transactional
   public CartDto addCart(CartAddDto cartAddDto) {
     Long userId = fleekUserContext.getUserId();
     FruitManUser fruitManUser = fruitManUserService.getFruitManUser(userId);
+
+    List<Deal> deals = dealService.listDealByIds(cartAddDto.getDealIds());
+    if (deals.stream().anyMatch(d -> d.getDealStatus().equals(DealStatus.SUCCESS)) &&
+      cartAddDto.getPurchaseOption().equals(PurchaseOption.TEAM.name())) {
+      throw new FleekException("품절된 상품이 포함되어 있습니다.");
+    }
 
     Cart cart = Cart.builder()
       .cartType(CartType.valueOf(cartAddDto.getCartType()))
@@ -250,36 +267,64 @@ public class OrderApplication {
   }
 
   @Transactional
-  public TossPaymentResponseDto updatePaymentStatus(String orderId, PaymentRequestDto dto) {
+  public PaymentResponseDto updatePaymentStatus(String orderId, PaymentRequestDto dto) {
     Cart cart = cartService.getCartByOrderId(orderId);
     List<UserDeal> userDealList = userDealService.getUserDeals(cart);
 
     TossPaymentRequestDto requestDto = TossPaymentRequestDto.from(dto, orderId);
     TossPaymentResponseDto tossPaymentResponseDto = tossWebclient.requestPayment(requestDto);
+    if (!tossPaymentResponseDto.getSuccess()) {
+      return PaymentResponseDto.builder()
+        .success(false)
+        .failureCode(tossPaymentResponseDto.getErrorCode())
+        .failureReason(tossPaymentResponseDto.getErrorMessage())
+        .build();
+    }
 
     cart.setPaymentDetail(JsonUtil.write(tossPaymentResponseDto));
     cartService.addCart(cart);
 
+    AtomicInteger remainingCount = new AtomicInteger();
+
     userDealList.forEach(userDeal -> {
-      userDeal.setTrackingStatus(DealTrackingStatus.PAID);
+      DealTrackingStatus status;
+      if (userDeal.getPurchaseOption().equals(PurchaseOption.TEAM)) {
+        status = DealTrackingStatus.TEAM_PURCHASE_PENDING;
+      } else {
+        status = DealTrackingStatus.PAID;
+      }
+
+      userDeal.setTrackingStatus(status);
       userDeal.setPaidAt(TimeUtil.getCurrentTimeMillisUtc());
       userDealService.addUserDeal(userDeal);
+
+      UserPayment userPayment = userPaymentService.getUserPayment(userDeal);
+      userPayment.setTossPaymentKey(tossPaymentResponseDto.getPaymentKey());
+      userPaymentService.addUserPayment(userPayment);
 
       UserDealTracking userDealTracking = UserDealTracking.builder()
         .userDeal(userDeal)
         .trackingAt(TimeUtil.getCurrentTimeMillisUtc())
-        .trackingStatus(DealTrackingStatus.PAID)
+        .trackingStatus(status)
         .build();
       userDealTrackingService.addUserDealTracking(userDealTracking);
 
       Deal deal = userDeal.getDeal();
       DealConstraint constraint = dealConstraintService.getDealConstraint(deal);
-      constraint.setCurrentQuantity(constraint.getCurrentQuantity() + 1);
-      dealConstraintService.addDealConstraint(constraint);
+      if (userDeal.getPurchaseOption().equals(PurchaseOption.TEAM)) {
+        constraint.setCurrentQuantity(constraint.getCurrentQuantity() + 1);
+        dealConstraintService.addDealConstraint(constraint);
+      }
+
+      remainingCount.addAndGet(constraint.getRequiredQuantity() - constraint.getCurrentQuantity());
     });
 
-    return tossPaymentResponseDto;
+    return PaymentResponseDto.builder()
+      .orderId(orderId)
+      .success(true)
+      .rawData(tossPaymentResponseDto)
+      .remainingCount(remainingCount.longValue())
+      .build();
   }
-
 
 }

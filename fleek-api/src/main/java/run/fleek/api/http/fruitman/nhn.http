@@ -1,0 +1,36 @@
+### 알림톡 발송 (치환) secret 90mMDo5o
+POST https://api-alimtalk.cloud.toast.com/alimtalk/v2.3/appkeys/ScHJApK1LlgyPUUU/messages
+Content-Type: application/json
+X-Secret-Key: 90mMDo5o
+
+{
+  "senderKey": "7d42c14eac290071945a55f49d9ccbfccce26f49",
+  "templateCode": "team_success",
+  "recipientList": [
+    {
+      "recipientNo": "01089011823",
+      "templateParameter": {
+        "상품명": "테스트"
+      }
+    }]
+}
+
+### 알림톡 발송 (치환) secret 90mMDo5o
+POST https://api-alimtalk.cloud.toast.com/alimtalk/v2.3/appkeys/ScHJApK1LlgyPUUU/messages
+Content-Type: application/json
+X-Secret-Key: 90mMDo5o
+
+{
+  "senderKey": "7d42c14eac290071945a55f49d9ccbfccce26f49",
+  "templateCode": "team_standby",
+  "recipientList": [
+    {
+      "recipientNo": "01089011823",
+      "templateParameter": {
+        "상품명": "9/21 샤인머스캣 ...",
+        "잔여갯수": "11"
+      }
+    }]
+}
+
+
