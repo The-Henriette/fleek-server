@@ -33,7 +33,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/21 엘바트 황도 4kg 8~11수",
+  "dealName": "9/22 엘바트 황도 4kg 8~11수",
   "dealSkus": [
     {
       "skuId": 3
@@ -46,7 +46,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 0,
-  "targetDate": "2023-09-21",
+  "targetDate": "2023-09-22",
   "requiredQuantity": 30,
   "purchaseOptions": [
     {
@@ -65,7 +65,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/21 멜론 8kg 4수",
+  "dealName": "9/22 멜론 8kg 4수",
   "dealSkus": [
     {
       "skuId": 5
@@ -78,7 +78,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 0,
-  "targetDate": "2023-09-21",
+  "targetDate": "2023-09-22",
   "requiredQuantity": 30,
   "purchaseOptions": [
     {
@@ -97,7 +97,7 @@ POST {{base_uri}}/fruitman/deal
 Content-Type: application/json
 
 {
-  "dealName": "9/21 샤인 머스캣 4kg 4~5수",
+  "dealName": "9/22 샤인 머스캣 4kg 4~5수",
   "dealSkus": [
     {
       "skuId": 4
@@ -110,7 +110,7 @@ Content-Type: application/json
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
   "deliveryGroupId": 0,
-  "targetDate": "2023-09-21",
+  "targetDate": "2023-09-22",
   "requiredQuantity": 30,
   "purchaseOptions": [
     {

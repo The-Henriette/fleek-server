@@ -17,7 +17,7 @@ public class HelloController {
 
 //        return awsRekognitionWrapper.compareFaces("fleek/samplesource.jpeg", "fleek/sampletarget.png");
 
-        return "Fuck Yeah! - 9-21 / 2";
+        return "Fuck Yeah! - 9-21 / 3";
     }
 
 
