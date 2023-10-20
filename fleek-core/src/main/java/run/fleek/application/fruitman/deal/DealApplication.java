@@ -1,7 +1,6 @@
 package run.fleek.application.fruitman.deal;
 
 import lombok.RequiredArgsConstructor;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import run.fleek.application.fruitman.deal.dto.*;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 
 import static run.fleek.common.constants.Constants.FruitMan.DEFAULT_DEAL_START_TIME;
 import static run.fleek.enums.DealTrackingStatus.COUNTABLE_STATES;
-import static run.fleek.enums.DealTrackingStatus.VISIBLE_STATES;
 
 @Component
 @RequiredArgsConstructor
@@ -107,7 +105,7 @@ public class DealApplication {
   public DealParticipantsDto getDealParticipants(Long dealId) {
     Deal deal = dealService.getDeal(dealId);
     DealConstraint constraint = dealConstraintService.getDealConstraint(deal);
-    List<UserDeal> participants = userDealService.listUserDeal(deal).stream()
+    List<UserDeal> participants = userDealService.listUserDealByDeal(deal).stream()
       .filter(d -> COUNTABLE_STATES.contains(d.getTrackingStatus()))
       .filter(d -> d.getPurchaseOption().equals(PurchaseOption.TEAM))
       .collect(Collectors.toList());

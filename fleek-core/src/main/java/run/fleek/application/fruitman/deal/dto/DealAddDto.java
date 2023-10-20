@@ -27,5 +27,6 @@ public class DealAddDto {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
   private Date targetDate;
   private Integer requiredQuantity;
+  private Integer quantityPerUser;
   private List<PurchaseOptionDto> purchaseOptions;
 }

@@ -32,6 +32,11 @@ public class DealConstraint implements SystemMetadata {
   @Column(name = "current_quantity")
   private Integer currentQuantity;
 
+//  User당 해당 Deal을 살 수 있는 최대 수량을 나타냄
+//  개인 구매의 경우 카운팅되지 않음.
+  @Column(name = "quantity_per_user")
+  private Integer quantityPerUser;
+
   @Column(name = "created_at", nullable = false)
   private Long createdAt;
 
@@ -43,6 +48,7 @@ public class DealConstraint implements SystemMetadata {
       .deal(deal)
       .requiredQuantity(dealAddDto.getRequiredQuantity())
       .currentQuantity(0)
+      .quantityPerUser(dealAddDto.getQuantityPerUser())
       .build();
   }
 

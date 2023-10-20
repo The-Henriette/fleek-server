@@ -7,16 +7,13 @@ import run.fleek.application.fruitman.order.dto.OrderPageDto;
 import run.fleek.domain.fruitman.deal.Cart;
 import run.fleek.domain.fruitman.deal.Deal;
 import run.fleek.domain.fruitman.user.FruitManUser;
-import run.fleek.enums.DealTrackingStatus;
 import run.fleek.enums.PurchaseOption;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static run.fleek.enums.DealTrackingStatus.COUNTABLE_STATES;
-import static run.fleek.enums.DealTrackingStatus.VISIBLE_STATES;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +26,16 @@ public class UserDealService {
   }
 
   @Transactional(readOnly = true)
-  public List<UserDeal> listUserDeal(Deal deal) {
+  public List<UserDeal> listUserDealByDeal(Deal deal) {
     return userDealRepository.findAllByDeal(deal);
   }
+
+  // 결제가 정상적으로 된 팀 구매 주문만 컬렉션에 담아서 반환
+  @Transactional(readOnly = true)
+  public List<UserDeal> listPaidTeamDeal(FruitManUser fruitmanUser, Deal deal) {
+    return userDealRepository.findAllByFruitManUserAndDealAndTrackingStatusInAndPurchaseOption(fruitmanUser, deal, new ArrayList<>(COUNTABLE_STATES), PurchaseOption.TEAM);
+  }
+
 
   @Transactional
   public void addUserDeal(UserDeal userDeal) {
@@ -62,3 +66,4 @@ public class UserDealService {
     userDealRepository.saveAll(putUserDealList);
   }
 }
+

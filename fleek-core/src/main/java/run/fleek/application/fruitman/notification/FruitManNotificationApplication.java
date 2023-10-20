@@ -95,7 +95,7 @@ public class FruitManNotificationApplication {
       return;
     }
 
-    List<UserDeal> successTargetDeals = userDealService.listUserDeal(deal).stream()
+    List<UserDeal> successTargetDeals = userDealService.listUserDealByDeal(deal).stream()
       .filter(ud -> ud.getTrackingStatus().equals(DealTrackingStatus.TEAM_PURCHASE_PENDING) &&
         ud.getPurchaseOption().equals(PurchaseOption.TEAM))
       .collect(Collectors.toList());
