@@ -32,6 +32,7 @@ import static run.fleek.enums.DealTrackingStatus.REFUNDABLE_STATES;
 @RequiredArgsConstructor
 public class OrderApplication {
 
+  private static final int ORDER_AMOUNT = 1;
   private final DealService dealService;
   private final FleekUserContext fleekUserContext;
   private final FruitManUserService fruitManUserService;
@@ -72,10 +73,28 @@ public class OrderApplication {
     return userDeal;
   }
 
+  // 미세한 함수 로직 변경(Input과 Output은 같음). 이유는 이후 ORDER_AMOUNT가 1이 아닌 경우에도 대응 가능하도록 하기 위함.
+  // Todo: 추후 AMOUNT 칼럼이 USER_DEAL에 추가될 경우, 더 이상 size()로 해결해서는 안됨.
+  private boolean isInvalidDeal(FruitManUser fruitmanUser, Deal deal) {
+    DealConstraint dealConstraint = dealConstraintService.getDealConstraint(deal);
+    Integer quantityPerUser = dealConstraint.getQuantityPerUser();
+    if (quantityPerUser > 0){
+      return userDealService.listPaidTeamDeal(fruitmanUser, deal).size() + ORDER_AMOUNT > dealConstraint.getQuantityPerUser();
+    }
+    return false;
+  }
   @Transactional
   public OrderDto addOrder(OrderAddDto orderAddDto) {
     Cart cart = cartService.getCart(orderAddDto.getCartId());
     UserDeal userDeal = userDealService.getUserDeals(cart).get(0);
+
+    Deal deal = userDeal.getDeal();
+    FruitManUser fruitManUser = userDeal.getFruitManUser();
+
+    if (isInvalidDeal(fruitManUser, deal) &&
+      userDeal.getPurchaseOption().equals(PurchaseOption.TEAM)){
+      throw new FleekException("해당 상품은 중복해서 구매할 수 없습니다.");
+    }
 
     Map<PurchaseOption, DealPurchaseOption> dealPurchaseOptionMap = dealPurchaseOptionService.listDealPurchaseOption(userDeal.getDeal()).stream()
       .collect(Collectors.toMap(DealPurchaseOption::getPurchaseOption, dealPurchaseOption -> dealPurchaseOption));
@@ -209,6 +228,11 @@ public class OrderApplication {
     if (deals.stream().anyMatch(d -> d.getDealStatus().equals(DealStatus.SUCCESS)) &&
       cartAddDto.getPurchaseOption().equals(PurchaseOption.TEAM.name())) {
       throw new FleekException("품절된 상품이 포함되어 있습니다.");
+    }
+
+    if (deals.stream().anyMatch(deal -> isInvalidDeal(fruitManUser, deal)) &&
+      cartAddDto.getPurchaseOption().equals(PurchaseOption.TEAM.name())){
+      throw new FleekException("해당 상품은 중복해서 구매할 수 없습니다.");
     }
 
     Cart cart = Cart.builder()

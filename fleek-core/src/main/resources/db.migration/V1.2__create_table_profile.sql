@@ -119,5 +119,5 @@ CREATE INDEX profile_info_type_option_idx01 ON profile_info_type_option (created
 CREATE INDEX profile_info_type_option_idx02 ON profile_info_type_option (updated_at);
 
 -- Foreign Key (Index instead of constraint)
-CREATE INDEX profile_info_type_option_fk01 ON profile_info_type_option (profile_info_type_id);
+CREATE INDEX profile_info_type_option_fk01 ON profile_info_type_option (profile_info_type_option_id);
 

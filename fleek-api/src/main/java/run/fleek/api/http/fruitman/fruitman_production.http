@@ -48,6 +48,7 @@ Content-Type: application/json
   "deliveryGroupId": 0,
   "targetDate": "2023-09-22",
   "requiredQuantity": 30,
+  "quantityPerUser": -1,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "ALONE",
@@ -80,6 +81,7 @@ Content-Type: application/json
   "deliveryGroupId": 0,
   "targetDate": "2023-09-22",
   "requiredQuantity": 30,
+  "quantityPerUser": -1,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "ALONE",
@@ -112,6 +114,7 @@ Content-Type: application/json
   "deliveryGroupId": 0,
   "targetDate": "2023-09-22",
   "requiredQuantity": 30,
+  "quantityPerUser": -1,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "ALONE",

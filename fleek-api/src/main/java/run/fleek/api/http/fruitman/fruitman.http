@@ -50,9 +50,10 @@ Content-Type: application/json
   "dealThumbnail": null,
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
-  "deliveryGroupId": 1,
+  "deliveryGroupId": 0,
   "targetDate": "2023-09-21",
   "requiredQuantity": 20,
+  "quantityPerUser": -1,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "TEAM",
@@ -83,9 +84,10 @@ Content-Type: application/json
   "dealThumbnail": null,
   "dealImages": null,
   "deliveryMethods": ["DIRECT", "FREE"],
-  "deliveryGroupId": 1,
+  "deliveryGroupId": 0,
   "targetDate": "2023-09-21",
   "requiredQuantity": 30,
+  "quantityPerUser": -1,
   "purchaseOptions": [
     {
       "purchaseTypeCode": "TEAM",
